@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import CharactersList from "../components/charactersList";
 import FriendsList from "../components/friendsList";
 import Message from "../components/message";
+import Navbar from "../components/navbar";
 class Home extends Component {
   // endPoint = "http://localhost:3000";
   // componentDidMount() {
@@ -16,7 +17,12 @@ class Home extends Component {
   //   return <p>Hello World</p>;
   // }
   render() {
-    return <FriendsList />;
+    return (
+      <>
+        <Navbar />
+        <FriendsList />
+      </>
+    );
   }
 }
 

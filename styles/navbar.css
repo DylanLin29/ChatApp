@@ -1,0 +1,25 @@
+.navbar {
+  background-color: #242a2e;
+}
+
+.fa-comments {
+  color: white;
+}
+
+.navbar-nav img {
+  height: 2.5rem;
+  border-radius: 0.4rem;
+  margin-right: 0.4rem;
+}
+
+.fa-angle-down {
+  color: white;
+}
+
+.navbar-brand span {
+  font-family: "Josefin Sans", sans-serif;
+  color: white;
+  margin-left: 1rem;
+  font-weight: 550;
+  letter-spacing: 0.1rem;
+}
