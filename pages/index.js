@@ -18,10 +18,10 @@ class Home extends Component {
   // }
   render() {
     return (
-      <>
+      <div className="chat-page">
         <Navbar />
         <FriendsList />
-      </>
+      </div>
     );
   }
 }

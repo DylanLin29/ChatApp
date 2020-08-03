@@ -1,3 +1,6 @@
+body {
+  overflow: hidden;
+}
 .chat-window {
   display: flex;
   flex-direction: row;
@@ -9,7 +12,7 @@
   flex-direction: column;
   border-right: 1px solid rgba(136, 133, 133, 0.5);
   width: 18rem;
-  height: 96.5vh;
+  height: 96.3vh;
 }
 
 .friends-list-container::-webkit-scrollbar {
@@ -68,6 +71,7 @@
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  height: 60vh;
   overflow: auto !important;
 }
 
@@ -107,4 +111,20 @@
   .friends-list-container {
     display: none;
   }
+}
+
+.chat-input textarea {
+  border: 0;
+  border-top: 1.5px solid rgba(136, 133, 133, 0.3);
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  height: 20vh;
+  letter-spacing: 0.03rem;
+  margin-top: 0;
+  resize: none;
+}
+
+.chat-input textarea:focus {
+  outline: none;
 }
