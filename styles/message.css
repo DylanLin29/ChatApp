@@ -1,0 +1,40 @@
+:root {
+  --clr-message-sent: #a5f1b8;
+  --clr-message-receive: #626468;
+}
+.message-sent,
+.message-receive {
+  padding: 0.3rem 0.5rem;
+  display: inline-block;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+}
+
+.message-sent {
+  background-color: var(--clr-message-sent);
+}
+
+.message-receive {
+  background-color: var(--clr-message-receive);
+  color: white;
+}
+
+.message-sent::after,
+.message-receive::after {
+  content: " ";
+  position: absolute;
+  top: 0.75rem;
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+}
+
+.message-sent::after {
+  border-left: 0.5rem solid var(--clr-message-sent);
+  right: -0.5rem;
+}
+
+.message-receive::after {
+  border-right: 0.5rem solid var(--clr-message-receive);
+  left: -0.5rem;
+}

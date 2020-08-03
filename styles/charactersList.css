@@ -1,0 +1,18 @@
+.characters-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.characters-list-container div {
+  width: 30rem;
+}
+
+.characters-list-container img {
+  height: 5rem;
+  border-radius: 50%;
+  padding: 0 1rem;
+  margin-top: 2rem;
+}

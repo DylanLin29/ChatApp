@@ -1,0 +1,67 @@
+.chat-window {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.friends-list-container {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(136, 133, 133, 0.5);
+  width: 18rem;
+  height: 100vh;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-area {
+  display: flex;
+  justify-content: center;
+  padding: 0.8rem 0;
+  border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
+  border-top: 1.5px solid rgba(136, 133, 133, 0.3);
+}
+
+.search-area input {
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem !important;
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
+}
+
+.friend-info img {
+  height: 2.5rem;
+  margin-right: 0.8rem;
+  border-radius: 0.4rem;
+}
+
+.chat-window-current-title {
+  display: flex;
+  padding: 0.55rem;
+  flex-direction: row;
+  border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
+  align-items: center;
+  width: 100%;
+  border-top: 1.5px solid rgba(136, 133, 133, 0.3);
+}
+
+.chat-window-current-title img {
+  height: 2.5rem;
+  border-radius: 0.4rem;
+  margin-right: 0.8rem;
+}
+
+@media screen and (max-width: 50rem) {
+  .friends-list-container {
+    display: none;
+  }
+}
