@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-const CharactersList = () => {
-  const [imgSelect, setImgSelect] = useState(0);
+const CharactersList = ({ handleSelect }) => {
+  const [imgSelect, setImgSelect] = useState(-1);
   const handleImgClick = (index) => {
-    console.log(index);
+    if (imgSelect === -1) {
+      setImgSelect(index);
+    }
   };
   const imagesLinks = [
     "https://playjoor.com/assets/avatar/matthew.png",
@@ -17,16 +19,36 @@ const CharactersList = () => {
   ];
   return (
     <div className="characters-list-container">
-      <div>
+      <h1>Pick Your Character</h1>
+      <div className="characters-list">
         {imagesLinks.map((imageLink, index) => {
           return (
             <img
               src={imageLink}
               key={`characters-${index}`}
               onClick={() => handleImgClick(index)}
+              className={
+                imgSelect === -1 || index === imgSelect ? "" : "character-hide"
+              }
             />
           );
         })}
+        {imgSelect !== -1 && (
+          <div className="characters-buttons">
+            <div
+              id="characters-continue-button"
+              onClick={() => handleSelect(imagesLinks[imgSelect])}
+            >
+              Continue
+            </div>
+            <div
+              id="characters-reselect-button"
+              onClick={() => setImgSelect(-1)}
+            >
+              Reselect
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

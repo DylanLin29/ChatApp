@@ -5,22 +5,12 @@ import FriendsList from "../components/friendsList";
 import Message from "../components/message";
 import Navbar from "../components/navbar";
 class Home extends Component {
-  // endPoint = "http://localhost:3000";
-  // componentDidMount() {
-  //   this.socket = io.connect(this.endPoint);
-  //   this.socket.on("chat", (data) => {
-  //     console.log("client side:", data);
-  //   });
-  //   this.socket.emit("chat", "hello server");
-  // }
-  // render() {
-  //   return <p>Hello World</p>;
-  // }
   render() {
     return (
       <div className="chat-page">
         <Navbar />
         <FriendsList />
+        {/* <CharactersList /> */}
       </div>
     );
   }

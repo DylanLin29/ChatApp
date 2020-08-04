@@ -1,7 +1,8 @@
 import { Input } from "semantic-ui-react";
 import Message from "./message";
-import { useState, useEffect, Component } from "react";
+import { Component } from "react";
 import io from "socket.io-client";
+import axios from "axios";
 const ENDPOINT = "http://localhost:3000";
 
 class FriendsList extends Component {
@@ -9,7 +10,7 @@ class FriendsList extends Component {
     super(props);
     this.state = {
       message: {
-        id: 1,
+        id: "",
         content: "",
       },
       response: [],
@@ -20,6 +21,12 @@ class FriendsList extends Component {
       updateResponses.push(data);
       this.setState({ response: updateResponses });
     });
+  }
+
+  async componentDidMount() {
+    const userInfo = await axios.get("http://localhost:3000/api/auth");
+    this.setState({ message: { id: userInfo.data.name, content: "" } });
+    console.log(userInfo.data);
   }
 
   handleInputChange = ({ currentTarget: input }) => {
