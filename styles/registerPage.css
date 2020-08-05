@@ -1,1 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap");
+.register-page {
+  background: linear-gradient(#f8c27c, rgba(155, 89, 182, 0.6));
+  width: 100%;
+  height: 100vh;
+}
 
+.register-form-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.register-form-hide {
+  position: relative;
+  z-index: 0;
+  opacity: 0;
+}
+
+.register-form-display {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: 30rem;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  margin-top: 3rem;
+}
+
+.register-form h2 {
+  color: #f8c27c;
+}
+
+.register-form input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  margin-top: 1rem;
+  width: 25rem;
+  font-family: "Catamaran", sans-serif;
+  letter-spacing: 0.02rem;
+  border-radius: 0.2rem;
+}
+
+.register-form input:focus {
+  outline: none;
+}
+
+.register-form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.choose-characters {
+  opacity: 1;
+}

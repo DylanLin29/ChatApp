@@ -12,6 +12,7 @@ class Register extends Component {
       password: "12345",
       imagePath: "",
     },
+    continueClick: false,
   };
 
   handleSelect = (imagePath) => {
@@ -22,12 +23,23 @@ class Register extends Component {
     });
   };
 
+  handleFormContinueClick = () => {
+    this.setState({ continueClick: true });
+  };
+
   render() {
     return (
       <div className="register-page">
         <Navbar />
-        <RegisterForm />
-        <CharactersList handleSelect={this.handleSelect} />
+        <RegisterForm
+          handleFormContinueClick={this.handleFormContinueClick}
+          charactersDisplay={this.state.continueClick}
+        />
+        <CharactersList
+          handleSelect={this.handleSelect}
+          charactersDisplay={this.state.continueClick}
+          charactersDisplay={this.state.continueClick}
+        />
       </div>
     );
   }
