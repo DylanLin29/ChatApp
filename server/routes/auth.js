@@ -3,16 +3,16 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 router.get("/", (req, res) => {
-  const auth = req.cookies;
-  console.log("x-auth", req.cookies["x-auth"]);
+  console.log("user-auth", req.cookies["user-auth"]);
   try {
-    const decoded = jwt.verify(req.cookies["x-auth"], "jwtkey");
-    console.log(decoded);
-    return res.json({ name: decoded.name });
+    const decoded = jwt.verify(req.cookies["user-auth"], process.env.JWT_KEY);
+    return res
+      .status(200)
+      .json({ name: decoded.name, imagePath: decoded.imagePath });
   } catch (err) {
     console.log(err);
   }
-  return res.json({ name: "dylan" });
+  return res.json({ success: false });
 });
 
 module.exports = router;

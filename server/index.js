@@ -16,12 +16,16 @@ nextApp
     app.use(express.json());
     app.use(cookieParser());
 
+    // Routes
     app.use("/api/register", register);
-
     app.use("/api/auth", auth);
 
     app.get("/register", (req, res) => {
       return nextApp.render(req, res, "/register", req.query);
+    });
+
+    app.get("/chat", (req, res) => {
+      return nextApp.render(req, res, "/chat", req.query);
     });
 
     app.all("*", (req, res) => {

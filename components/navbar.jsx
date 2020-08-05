@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-const Navbar = () => {
+const Navbar = ({ user }) => {
   return (
     <nav className="navbar navbar-expand">
       <div className="navbar-brand">
@@ -9,12 +9,14 @@ const Navbar = () => {
       </div>
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav ml-auto">
-          <li>
-            <img src="https://playjoor.com/assets/avatar/patrick.png" />
-            <FontAwesomeIcon icon={faAngleDown} />
-          </li>
-        </ul>
+        {user && (
+          <ul className="navbar-nav ml-auto">
+            <li>
+              <img src={user.imagePath} />
+              <FontAwesomeIcon icon={faAngleDown} />
+            </li>
+          </ul>
+        )}
       </div>
     </nav>
   );

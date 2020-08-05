@@ -2,15 +2,19 @@ import { Input } from "semantic-ui-react";
 import Message from "./message";
 import { Component } from "react";
 import io from "socket.io-client";
-import axios from "axios";
 const ENDPOINT = "http://localhost:3000";
 
 class FriendsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: {
+        name: "",
+        imagePath: "",
+      },
       message: {
         id: "",
+        imagePath: "",
         content: "",
       },
       response: [],
@@ -23,15 +27,11 @@ class FriendsList extends Component {
     });
   }
 
-  async componentDidMount() {
-    const userInfo = await axios.get("http://localhost:3000/api/auth");
-    this.setState({ message: { id: userInfo.data.name, content: "" } });
-    console.log(userInfo.data);
-  }
-
   handleInputChange = ({ currentTarget: input }) => {
     const newMessage = { ...this.state.message };
     newMessage.content = input.value;
+    newMessage.id = this.props.user.name;
+    newMessage.imagePath = this.props.user.imagePath;
     this.setState({ message: newMessage });
   };
 
@@ -77,15 +77,15 @@ class FriendsList extends Component {
               <span>Matthew</span>
             </div>
             <div className="chat-message-wrapper">
-              {this.state.response?.map(({ id, content }) => {
-                return id === this.state.message.id ? (
+              {this.state.response?.map(({ id, content, imagePath }) => {
+                return id === this.props.user.name ? (
                   <div className="chat-message chat-message-sent">
                     <Message messageType="message-sent" message={content} />
-                    <img src="https://playjoor.com/assets/avatar/patrick.png" />
+                    <img src={this.props.user.imagePath} />
                   </div>
                 ) : (
                   <div className="chat-message">
-                    <img src="https://playjoor.com/assets/avatar/matthew.png" />
+                    <img src={imagePath} />
                     <Message messageType="message-receive" message={content} />
                   </div>
                 );

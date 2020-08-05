@@ -8,24 +8,21 @@ const cookie = require("cookie");
 dbConnect();
 
 router.post("/", async (req, res) => {
-  console.log("register endpoint called");
   const newUser = await User.create(req.body);
   await newUser.save();
 
-  const token = jwt.sign({ name: newUser.name }, "jwtkey", {
-    expiresIn: "60d",
+  const token = jwt.sign(
+    { name: newUser.name, imagePath: newUser.imagePath },
+    process.env.JWT_KEY,
+    {
+      expiresIn: "1h",
+    }
+  );
+  res.cookie("user-auth", token, {
+    secure: process.env.NODE_ENV !== "development",
+    httpOnly: true,
+    maxAge: 3600000,
   });
-  res.cookie("x-auth", token);
-  // res.setHeader(
-  //   "Set-Cookie",
-  //   cookie.serialize("x-auth", token, {
-  //     httpOnly: true,
-  //     secure: process.env.NODE_ENV !== "development",
-  //     sameSite: "strict",
-  //     maxAge: 3600,
-  //     path: "/",
-  //   })
-  // );
   res.json({ success: true });
 });
 

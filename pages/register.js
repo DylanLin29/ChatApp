@@ -3,13 +3,13 @@ import CharactersList from "../components/charactersList";
 import RegisterForm from "../components/registerForm";
 import { Component } from "react";
 import axios from "axios";
+import Router from "next/router";
 
 class Register extends Component {
   state = {
     user: {
-      name: "lin22",
-      email: "",
-      password: "12345",
+      name: "",
+      password: "",
       imagePath: "",
     },
     continueClick: false,
@@ -21,10 +21,14 @@ class Register extends Component {
     this.setState({ user }, async () => {
       await axios.post("http://localhost:3000/api/register", this.state.user);
     });
+    Router.push("/chat");
   };
 
-  handleFormContinueClick = () => {
-    this.setState({ continueClick: true });
+  handleFormContinueClick = (username, password) => {
+    const user = { ...this.state.user };
+    user.name = username;
+    user.password = password;
+    this.setState({ continueClick: true, user });
   };
 
   render() {
