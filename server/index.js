@@ -46,6 +46,13 @@ nextApp
       socket.on("SEND_MESSAGE", function (data) {
         io.emit("RECEIVE_MESSAGE", data);
       });
+
+      socket.on("TYPING", (data) => {
+        socket.broadcast.emit("TYPING", data);
+      });
+      socket.on("NOT_TYPING", (data) => {
+        socket.broadcast.emit("NOT_TYPING", data);
+      });
     });
   })
   .catch((err) => {

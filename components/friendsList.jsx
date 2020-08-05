@@ -2,7 +2,9 @@ import { Input } from "semantic-ui-react";
 import Message from "./message";
 import { Component } from "react";
 import io from "socket.io-client";
+import _ from "lodash";
 const ENDPOINT = "http://localhost:3000";
+var timeout = undefined;
 
 class FriendsList extends Component {
   constructor(props) {
@@ -18,12 +20,23 @@ class FriendsList extends Component {
         content: "",
       },
       response: [],
+      typingUser: "",
     };
     this.socket = io(ENDPOINT);
     this.socket.on("RECEIVE_MESSAGE", (data) => {
       let updateResponses = this.state.response;
       updateResponses.push(data);
       this.setState({ response: updateResponses });
+    });
+
+    this.socket.on("TYPING", (data) => {
+      this.setState({ typingUser: data });
+    });
+
+    this.socket.on("NOT_TYPING", (data) => {
+      if (this.state.typingUser === data) {
+        this.setState({ typingUser: "" });
+      }
     });
   }
 
@@ -35,20 +48,34 @@ class FriendsList extends Component {
     this.setState({ message: newMessage });
   };
 
+  handleNoTyping = () => {
+    this.socket.emit("NOT_TYPING", this.props.user.name);
+  };
+
   handleInputEnter = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
     }
-    const removeSpaces = this.state.message.content.replace(/\s/g, "");
-    if (event.key === "Enter" && removeSpaces) {
-      this.socket.emit("SEND_MESSAGE", this.state.message);
-      const clearMessage = { ...this.state.message };
-      clearMessage.content = "";
-      this.setState({ message: clearMessage });
+
+    if (event.key !== "Enter") {
+      this.socket.emit("TYPING", this.props.user.name);
+      clearTimeout(timeout);
+      timeout = setTimeout(this.handleNoTyping, 5000);
+    } else {
+      const removeSpaces = this.state.message.content.replace(/\s/g, "");
+      if (event.key === "Enter" && removeSpaces) {
+        this.socket.emit("SEND_MESSAGE", this.state.message);
+        clearTimeout(timeout);
+        this.socket.emit("NOT_TYPING", this.props.user.name);
+        const clearMessage = { ...this.state.message };
+        clearMessage.content = "";
+        this.setState({ message: clearMessage });
+      }
     }
   };
 
   render() {
+    console.log(this.state.typingUser);
     return (
       <div>
         <div className="chat-window">
@@ -99,6 +126,9 @@ class FriendsList extends Component {
                 onChange={(event) => this.handleInputChange(event)}
                 value={this.state.message.content}
               />
+              {this.state.typingUser && (
+                <p>{this.state.typingUser} is typing...</p>
+              )}
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap");
 body {
   overflow: hidden;
 }
@@ -113,10 +114,14 @@ body {
   }
 }
 
+.chat-input {
+  text-align: center;
+}
+
 .chat-input textarea {
-  border: 0;
-  border-top: 1.5px solid rgba(136, 133, 133, 0.3);
-  width: 100%;
+  border: 1.5px solid rgba(136, 133, 133, 0.5);
+  border-radius: 0.3rem;
+  width: 98%;
   font-size: 1rem;
   padding: 0.5rem;
   height: 20vh;
@@ -127,4 +132,13 @@ body {
 
 .chat-input textarea:focus {
   outline: none;
+}
+
+.chat-input p {
+  text-align: left;
+  margin-left: 1%;
+  margin-top: 1rem;
+  font-family: "Catamaran", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.01rem;
 }
