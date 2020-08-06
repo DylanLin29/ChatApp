@@ -3,6 +3,7 @@ import { faComments, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Router from "next/router";
 import axios from "axios";
+const links = require("../config/links");
 
 const Navbar = ({ user }) => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navbar = ({ user }) => {
   };
 
   const handleLogout = async () => {
-    await axios.get("http://localhost:3000/api/logout");
+    await axios.get(links.logout);
     Router.push("/");
   };
 

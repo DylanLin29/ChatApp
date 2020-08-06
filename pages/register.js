@@ -4,6 +4,7 @@ import RegisterForm from "../components/registerForm";
 import { Component } from "react";
 import axios from "axios";
 import Router from "next/router";
+const links = require("../config/links");
 
 class Register extends Component {
   state = {
@@ -19,7 +20,7 @@ class Register extends Component {
     const user = { ...this.state.user };
     user.imagePath = imagePath;
     this.setState({ user }, async () => {
-      await axios.post("http://localhost:3000/api/register", this.state.user);
+      await axios.post(links.register, this.state.user);
     });
     Router.push("/chat");
   };

@@ -5,7 +5,8 @@ import io from "socket.io-client";
 import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
-const ENDPOINT = "http://localhost:3000";
+const links = require("../config/links");
+const ENDPOINT = links.connection;
 var timeout = undefined;
 
 class FriendsList extends Component {
@@ -108,7 +109,6 @@ class FriendsList extends Component {
   };
 
   render() {
-    console.log(this.state.typingUser);
     return (
       <div>
         <div className="chat-window">
