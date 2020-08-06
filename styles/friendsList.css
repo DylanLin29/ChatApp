@@ -30,13 +30,21 @@ body {
 .search-area {
   display: flex;
   justify-content: center;
+  flex-direction: row;
   padding: 0.8rem 0;
   border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
+  align-items: center;
 }
 
 .search-area input {
   font-size: 1rem;
   padding: 0.3rem 0.5rem !important;
+}
+
+.search-area .fa-plus-square {
+  margin-left: 0.5rem;
+  color: rgba(136, 133, 133, 0.3);
+  cursor: pointer;
 }
 
 .friend-info {
@@ -53,6 +61,10 @@ body {
   border-radius: 0.4rem;
 }
 
+.friend-info span {
+  cursor: default;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -61,11 +73,72 @@ body {
 
 .chat-window-current-title {
   display: flex;
-  padding: 0.5rem;
+  padding: 0.54rem;
   flex-direction: row;
   border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
   align-items: center;
   width: 100%;
+}
+
+.chat-groups-operations {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  width: 12rem;
+  margin-left: 0.5rem;
+  margin-top: 4.1rem;
+  position: absolute;
+  align-items: center;
+}
+
+.chat-groups-operations span {
+  cursor: pointer;
+  width: 12rem;
+  text-align: center;
+  padding-bottom: 0.7rem;
+  padding-top: 0.7rem;
+}
+
+.chat-groups-operations span:hover {
+  background-color: skyblue;
+  color: white;
+}
+
+.chat-groups-operations span:nth-child(1):hover {
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+/* .chat-groups-operations span:nth-child(2):hover {
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+} */
+
+.chat-groups-operations span:nth-child(2) {
+  padding-top: 0.5rem;
+  /* border-top: 1.5px solid rgba(136, 133, 133, 0.3); */
+  padding: 0.7rem;
+}
+
+.chat-groups-operations button {
+  background-color: white;
+  color: crimson;
+  width: 5rem;
+  border: crimson 1px solid;
+  border-radius: 0.2rem;
+  padding: 0.4rem;
+  margin: 0.5rem;
+}
+
+.chat-groups-operations button:hover {
+  color: white;
+  background-color: crimson;
+}
+
+.chat-groups-operations button:focus {
+  outline: none;
 }
 
 .chat-message-wrapper {
@@ -137,8 +210,9 @@ body {
 .chat-input p {
   text-align: left;
   margin-left: 1%;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   font-family: "Catamaran", sans-serif;
   font-size: 1.1rem;
   letter-spacing: 0.01rem;
+  color: rgba(136, 133, 133, 0.8);
 }

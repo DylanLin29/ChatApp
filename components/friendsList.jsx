@@ -3,12 +3,18 @@ import Message from "./message";
 import { Component } from "react";
 import io from "socket.io-client";
 import _ from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 const ENDPOINT = "http://localhost:3000";
 var timeout = undefined;
 
 class FriendsList extends Component {
   constructor(props) {
     super(props);
+
+    this.messagesRef = React.createRef();
+    this.searchRef = React.createRef();
+
     this.state = {
       user: {
         name: "",
@@ -21,12 +27,24 @@ class FriendsList extends Component {
       },
       response: [],
       typingUser: "",
+      currentChat: {
+        name: "",
+        imagePath: "",
+      },
+      addButtonClick: false,
     };
+  }
+
+  componentDidMount() {
     this.socket = io(ENDPOINT);
+
+    // listen to the server
     this.socket.on("RECEIVE_MESSAGE", (data) => {
       let updateResponses = this.state.response;
       updateResponses.push(data);
       this.setState({ response: updateResponses });
+      // set the messages always view at the bottom
+      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
     });
 
     this.socket.on("TYPING", (data) => {
@@ -74,6 +92,21 @@ class FriendsList extends Component {
     }
   };
 
+  handleOpenChat = () => {
+    this.setState({
+      currentChat: { name: "Group Chat", imagePath: "../images/groupChat.png" },
+    });
+  };
+
+  handleAddClick = () => {
+    this.setState({ addButtonClick: true });
+  };
+
+  handleJoinClick = () => {
+    this.setState({ addButtonClick: false });
+    this.searchRef.current.focus();
+  };
+
   render() {
     console.log(this.state.typingUser);
     return (
@@ -81,12 +114,17 @@ class FriendsList extends Component {
         <div className="chat-window">
           <div className="friends-list-container">
             <div className="search-area">
-              <Input placeholder="Search..." />
+              <Input placeholder="Search..." ref={this.searchRef} />
+              <FontAwesomeIcon
+                icon={faPlusSquare}
+                size="2x"
+                onClick={this.handleAddClick}
+              />
             </div>
             <div className="friends-list">
-              <div className="friend-info">
-                <img src="https://playjoor.com/assets/avatar/matthew.png" />
-                <span>Matthew</span>
+              <div className="friend-info" onClick={this.handleOpenChat}>
+                <img src="../images/groupChat.png" />
+                <span>Group Chat</span>
               </div>
               <div className="friend-info">
                 <img src="https://playjoor.com/assets/avatar/jenny.jpg" />
@@ -100,10 +138,21 @@ class FriendsList extends Component {
           </div>
           <div className="content">
             <div className="chat-window-current-title">
-              <img src="https://playjoor.com/assets/avatar/matthew.png" />
-              <span>Matthew</span>
+              <img src={this.state.currentChat.imagePath} />
+              <span>{this.state.currentChat.name}</span>
             </div>
-            <div className="chat-message-wrapper">
+            {this.state.addButtonClick && (
+              <div className="chat-groups-operations">
+                <span onClick={this.handleJoinClick}>Join a Group Chat</span>
+                <span>Create a Group Chat</span>
+                <button
+                  onClick={() => this.setState({ addButtonClick: false })}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+            <div className="chat-message-wrapper" ref={this.messagesRef}>
               {this.state.response?.map(({ id, content, imagePath }) => {
                 return id === this.props.user.name ? (
                   <div className="chat-message chat-message-sent">

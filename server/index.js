@@ -53,6 +53,10 @@ nextApp
       socket.on("NOT_TYPING", (data) => {
         socket.broadcast.emit("NOT_TYPING", data);
       });
+
+      socket.on("disconnect", () => {
+        io.emit("DISCONNECT", "some one just left");
+      });
     });
   })
   .catch((err) => {

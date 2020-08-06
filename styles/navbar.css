@@ -12,6 +12,10 @@
   margin-right: 0.4rem;
 }
 
+.navbar-nav li {
+  cursor: pointer;
+}
+
 .fa-angle-down {
   color: white;
 }
@@ -22,4 +26,36 @@
   margin-left: 1rem;
   font-weight: 550;
   letter-spacing: 0.1rem;
+}
+
+#sign-out-button {
+  color: crimson;
+  position: absolute;
+  background-color: white;
+  right: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  top: 3rem;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+#sign-out-button:after {
+  content: " ";
+  position: absolute;
+  right: 5px;
+  top: -5px;
+  border-top: none;
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid white;
+}
+
+#sign-out-button:hover {
+  color: white;
+  background-color: crimson;
+}
+
+#sign-out-button:hover:after {
+  border-bottom: 7px solid crimson;
 }
