@@ -1,12 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Router from "next/router";
+import axios from "axios";
+
 const Navbar = ({ user }) => {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const handleProflieClick = () => {
     let updateProfileOpen = !profileOpen;
     setProfileOpen(updateProfileOpen);
+  };
+
+  const handleLogout = async () => {
+    await axios.get("http://localhost:3000/api/logout");
+    Router.push("/");
   };
 
   return (
@@ -25,7 +33,11 @@ const Navbar = ({ user }) => {
             </li>
           </ul>
         )}
-        {profileOpen && <div id="sign-out-button">Sign Out</div>}
+        {profileOpen && (
+          <div id="sign-out-button" onClick={handleLogout}>
+            Sign Out
+          </div>
+        )}
       </div>
     </nav>
   );

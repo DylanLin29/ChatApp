@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon server/index.js",
     "build": "next build",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",

@@ -5,8 +5,10 @@ const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
+
 const register = require("./routes/register");
 const auth = require("./routes/auth");
+const logout = require("./routes/logout");
 
 nextApp
   .prepare()
@@ -19,6 +21,7 @@ nextApp
     // Routes
     app.use("/api/register", register);
     app.use("/api/auth", auth);
+    app.use("/api/logout", logout);
 
     app.get("/register", (req, res) => {
       return nextApp.render(req, res, "/register", req.query);
