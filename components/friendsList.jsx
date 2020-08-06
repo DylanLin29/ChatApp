@@ -1,10 +1,11 @@
 import { Input } from "semantic-ui-react";
-import Message from "./message";
 import { Component } from "react";
 import io from "socket.io-client";
 import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import Message from "./message";
+import CreateGroupForm from "../components/chatPageComponents/createGroupForm";
 const links = require("../config/links");
 const ENDPOINT = links.connection;
 var timeout = undefined;
@@ -33,6 +34,7 @@ class FriendsList extends Component {
         imagePath: "",
       },
       addButtonClick: false,
+      createFormOpen: false,
     };
   }
 
@@ -108,10 +110,22 @@ class FriendsList extends Component {
     this.searchRef.current.focus();
   };
 
+  handleCreateClick = () => {
+    this.setState({ createFormOpen: true, addButtonClick: false });
+  };
+
+  handleCreateFormClose = () => {
+    this.setState({ createFormOpen: false });
+  };
+
   render() {
     return (
       <div>
         <div className="chat-window">
+          <CreateGroupForm
+            createFormOpen={this.state.createFormOpen}
+            handleCreateFormClose={this.handleCreateFormClose}
+          />
           <div className="friends-list-container">
             <div className="search-area">
               <Input placeholder="Search..." ref={this.searchRef} />
@@ -144,7 +158,9 @@ class FriendsList extends Component {
             {this.state.addButtonClick && (
               <div className="chat-groups-operations">
                 <span onClick={this.handleJoinClick}>Join a Group Chat</span>
-                <span>Create a Group Chat</span>
+                <span onClick={this.handleCreateClick}>
+                  Create a Group Chat
+                </span>
                 <button
                   onClick={() => this.setState({ addButtonClick: false })}
                 >
