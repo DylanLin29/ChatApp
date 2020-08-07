@@ -3,7 +3,6 @@ const router = express.Router();
 const dbConnect = require("../utils/dbConnect");
 const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
-const cookie = require("cookie");
 
 dbConnect();
 
@@ -12,7 +11,7 @@ router.post("/", async (req, res) => {
   await newUser.save();
 
   const token = jwt.sign(
-    { name: newUser.name, imagePath: newUser.imagePath },
+    { name: newUser.name, imagePath: newUser.imagePath, _id: newUser._id },
     process.env.JWT_KEY,
     {
       expiresIn: "1h",

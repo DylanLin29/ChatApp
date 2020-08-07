@@ -11,6 +11,8 @@ class Chat extends Component {
       user: {
         name: "",
         imagePath: "",
+        _id: "",
+        groups: [],
       },
     };
   }

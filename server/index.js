@@ -9,6 +9,7 @@ const handle = nextApp.getRequestHandler();
 const register = require("./routes/register");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
+const createGroup = require("./routes/create-group");
 
 nextApp
   .prepare()
@@ -22,6 +23,7 @@ nextApp
     app.use("/api/register", register);
     app.use("/api/auth", auth);
     app.use("/api/logout", logout);
+    app.use("/api/create-group", createGroup);
 
     app.get("/register", (req, res) => {
       return nextApp.render(req, res, "/register", req.query);

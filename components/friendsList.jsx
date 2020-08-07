@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import Message from "./message";
 import CreateGroupForm from "../components/chatPageComponents/createGroupForm";
+import axios from "axios";
 const links = require("../config/links");
 const ENDPOINT = links.connection;
 var timeout = undefined;
@@ -95,14 +96,14 @@ class FriendsList extends Component {
     }
   };
 
-  handleOpenChat = () => {
+  handleOpenChat = (name, imagePath) => {
     this.setState({
-      currentChat: { name: "Group Chat", imagePath: "../images/groupChat.png" },
+      currentChat: { name: name, imagePath: imagePath },
     });
   };
 
   handleAddClick = () => {
-    this.setState({ addButtonClick: true });
+    this.setState({ addButtonClick: true, createFormOpen: false });
   };
 
   handleJoinClick = () => {
@@ -118,14 +119,19 @@ class FriendsList extends Component {
     this.setState({ createFormOpen: false });
   };
 
+  handleCreateFormSubmit = async (name, imagePath) => {
+    await axios.post(links.createGroup, {
+      name: name,
+      imagePath: imagePath,
+      _id: this.props.user._id,
+    });
+    this.setState({ createFormOpen: false });
+  };
+
   render() {
     return (
       <div>
         <div className="chat-window">
-          <CreateGroupForm
-            createFormOpen={this.state.createFormOpen}
-            handleCreateFormClose={this.handleCreateFormClose}
-          />
           <div className="friends-list-container">
             <div className="search-area">
               <Input placeholder="Search..." ref={this.searchRef} />
@@ -136,7 +142,18 @@ class FriendsList extends Component {
               />
             </div>
             <div className="friends-list">
-              <div className="friend-info" onClick={this.handleOpenChat}>
+              {this.props.user.groups.map(({ name, imagePath }) => {
+                return (
+                  <div
+                    className="friend-info"
+                    onClick={() => this.handleOpenChat(name, imagePath)}
+                  >
+                    <img src={imagePath} />
+                    <span>{name}</span>
+                  </div>
+                );
+              })}
+              {/* <div className="friend-info" onClick={this.handleOpenChat}>
                 <img src="../images/groupChat.png" />
                 <span>Group Chat</span>
               </div>
@@ -147,7 +164,7 @@ class FriendsList extends Component {
               <div className="friend-info">
                 <img src="https://playjoor.com/assets/avatar/joe.jpg" />
                 <span>Joe</span>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="content">
@@ -155,6 +172,11 @@ class FriendsList extends Component {
               <img src={this.state.currentChat.imagePath} />
               <span>{this.state.currentChat.name}</span>
             </div>
+            <CreateGroupForm
+              createFormOpen={this.state.createFormOpen}
+              handleCreateFormClose={this.handleCreateFormClose}
+              handleCreateFormSubmit={this.handleCreateFormSubmit}
+            />
             {this.state.addButtonClick && (
               <div className="chat-groups-operations">
                 <span onClick={this.handleJoinClick}>Join a Group Chat</span>
