@@ -24,12 +24,26 @@ class Chat extends Component {
     this.setState({ user: userInfo.data });
   }
 
+  handleCreateFormDoSubmit = async (name, imagePath) => {
+    const result = await axios.post(links.createGroup, {
+      name: name,
+      imagePath: imagePath,
+      _id: this.state.user._id,
+    });
+    const user = { ...this.state.user };
+    user.groups = result.data.groups;
+    this.setState({ user: user });
+  };
+
   render() {
     const { user } = this.state;
     return (
       <>
         <Navbar user={user} />
-        <FriendsList user={user} />
+        <FriendsList
+          user={user}
+          handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
+        />
       </>
     );
   }

@@ -1,0 +1,14 @@
+.login-page {
+  background: linear-gradient(#b2ebf2, #848ccf);
+  width: 100%;
+  height: 100vh;
+}
+
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form-wrapper .register-form h2 {
+  color: #b2ebf2;
+}

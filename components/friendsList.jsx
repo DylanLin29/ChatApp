@@ -120,11 +120,7 @@ class FriendsList extends Component {
   };
 
   handleCreateFormSubmit = async (name, imagePath) => {
-    await axios.post(links.createGroup, {
-      name: name,
-      imagePath: imagePath,
-      _id: this.props.user._id,
-    });
+    await this.props.handleCreateFormDoSubmit(name, imagePath);
     this.setState({ createFormOpen: false });
   };
 
@@ -153,18 +149,6 @@ class FriendsList extends Component {
                   </div>
                 );
               })}
-              {/* <div className="friend-info" onClick={this.handleOpenChat}>
-                <img src="../images/groupChat.png" />
-                <span>Group Chat</span>
-              </div>
-              <div className="friend-info">
-                <img src="https://playjoor.com/assets/avatar/jenny.jpg" />
-                <span>Jenny</span>
-              </div>
-              <div className="friend-info">
-                <img src="https://playjoor.com/assets/avatar/joe.jpg" />
-                <span>Joe</span>
-              </div> */}
             </div>
           </div>
           <div className="content">

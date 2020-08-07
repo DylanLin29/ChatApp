@@ -34,7 +34,9 @@ router.post("/", async (req, res) => {
     { $push: { groups: newGroupInfo._id } }
   );
 
-  res.status(200).json({ success: true });
+  const user = await User.findOne({ _id: req.body._id }).populate("groups");
+
+  res.status(200).json({ groups: user.groups });
 });
 
 module.exports = router;

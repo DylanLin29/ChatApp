@@ -7,6 +7,7 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 
 const register = require("./routes/register");
+const login = require("./routes/login");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
 const createGroup = require("./routes/create-group");
@@ -21,6 +22,7 @@ nextApp
 
     // Routes
     app.use("/api/register", register);
+    app.use("/api/login", login);
     app.use("/api/auth", auth);
     app.use("/api/logout", logout);
     app.use("/api/create-group", createGroup);
