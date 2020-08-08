@@ -4,8 +4,27 @@ const Group = require("../../models/group");
 const GroupInfo = require("../../models/groupInfo");
 const User = require("../../models/user");
 const dbConnect = require("../utils/dbConnect");
+const groupInfo = require("../../models/groupInfo");
 
 dbConnect();
+
+router.get("/", async (req, res) => {
+  const group = await GroupInfo.findOne({ name: req.query.groupName });
+  if (group) {
+    const completeGroup = await Group.findOne({ groupInfo: group._id });
+    return res.status(200).json({
+      success: true,
+      group: {
+        name: group.name,
+        imagePath: group.imagePath,
+        size: completeGroup.userlist.length,
+      },
+    });
+  }
+  return res
+    .status(404)
+    .json({ success: false, message: "Groupchat not found" });
+});
 
 router.post("/", async (req, res) => {
   // Create a new group

@@ -4,5 +4,5 @@ module.exports = {
   auth: "http://localhost:3000/api/auth",
   register: "http://localhost:3000/api/register",
   login: "http://localhost:3000/api/login",
-  createGroup: "http://localhost:3000/api/create-group",
+  groups: "http://localhost:3000/api/groups",
 };

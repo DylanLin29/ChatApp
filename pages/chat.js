@@ -25,7 +25,7 @@ class Chat extends Component {
   }
 
   handleCreateFormDoSubmit = async (name, imagePath) => {
-    const result = await axios.post(links.createGroup, {
+    const result = await axios.post(links.groups, {
       name: name,
       imagePath: imagePath,
       _id: this.state.user._id,

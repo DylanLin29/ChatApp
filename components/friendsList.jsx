@@ -36,6 +36,7 @@ class FriendsList extends Component {
       },
       addButtonClick: false,
       createFormOpen: false,
+      searchInput: "",
     };
   }
 
@@ -61,6 +62,30 @@ class FriendsList extends Component {
       }
     });
   }
+
+  handleSearchChange = ({ currentTarget: input }) => {
+    this.setState({ searchInput: input.value });
+  };
+
+  handleSearchKeyPress = (event) => {
+    if (event.key === "Enter") {
+      this.searchSubmit();
+    }
+  };
+
+  searchSubmit = async () => {
+    console.log("search", this.state.searchInput);
+    try {
+      const result = await axios.get(links.groups, {
+        params: {
+          groupName: this.state.searchInput,
+        },
+      });
+      console.log(result.data.group);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   handleInputChange = ({ currentTarget: input }) => {
     const newMessage = { ...this.state.message };
@@ -130,7 +155,13 @@ class FriendsList extends Component {
         <div className="chat-window">
           <div className="friends-list-container">
             <div className="search-area">
-              <Input placeholder="Search..." ref={this.searchRef} />
+              <Input
+                placeholder="Search..."
+                ref={this.searchRef}
+                onKeyDown={(event) => this.handleSearchKeyPress(event)}
+                onChange={(event) => this.handleSearchChange(event)}
+                value={this.state.searchInput}
+              />
               <FontAwesomeIcon
                 icon={faPlusSquare}
                 size="2x"

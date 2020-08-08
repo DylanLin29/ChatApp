@@ -10,7 +10,7 @@ const register = require("./routes/register");
 const login = require("./routes/login");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
-const createGroup = require("./routes/create-group");
+const groups = require("./routes/groups");
 
 nextApp
   .prepare()
@@ -25,7 +25,7 @@ nextApp
     app.use("/api/login", login);
     app.use("/api/auth", auth);
     app.use("/api/logout", logout);
-    app.use("/api/create-group", createGroup);
+    app.use("/api/groups", groups);
 
     app.get("/register", (req, res) => {
       return nextApp.render(req, res, "/register", req.query);

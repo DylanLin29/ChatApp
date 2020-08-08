@@ -4,5 +4,5 @@ module.exports = {
   auth: "https://dylan-chatapp.herokuapp.com/api/auth",
   register: "https://dylan-chatapp.herokuapp.com/api/register",
   login: "https://dylan-chatapp.herokuapp.com/api/login",
-  createGroup: "https://dylan-chatapp.herokuapp.com/api/create-group",
+  groups: "https://dylan-chatapp.herokuapp.com/api/groups",
 };
