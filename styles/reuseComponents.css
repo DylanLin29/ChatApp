@@ -1,0 +1,57 @@
+.cancel-button,
+.continue-button {
+  background-color: white;
+  width: 4rem;
+  border-radius: 0.2rem;
+  padding: 0.3rem;
+}
+
+.cancel-button {
+  color: crimson;
+  border: crimson 1px solid;
+}
+
+.continue-button {
+  color: cornflowerblue;
+  border: cornflowerblue 1px solid;
+}
+
+.cancel-button:hover {
+  color: white;
+  background-color: crimson;
+}
+
+.continue-button:hover {
+  color: white;
+  background-color: cornflowerblue;
+}
+
+.cancel-button:focus,
+.continue-button:focus {
+  outline: none;
+}
+
+.group-form {
+  position: absolute;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  font-family: "Recursive", sans-serif;
+  box-shadow: 0 0px 12px 1px rgba(136, 133, 133, 0.2);
+  background-color: white;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  align-items: center;
+}
+
+.group-form-open {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.4s;
+}

@@ -6,6 +6,7 @@ import "../styles/friendsList.css";
 import "../styles/navbar.css";
 import "../styles/registerPage.css";
 import "../styles/loginPage.css";
+import "../styles/reuseComponents.css";
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
 }

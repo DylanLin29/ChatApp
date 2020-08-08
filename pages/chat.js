@@ -1,5 +1,5 @@
 import Navbar from "../components/navbar";
-import FriendsList from "../components/friendsList";
+import ChatSection from "../components/chatSection";
 import { Component } from "react";
 import axios from "axios";
 const links = require("../config/links");
@@ -50,7 +50,7 @@ class Chat extends Component {
     return (
       <>
         <Navbar user={user} />
-        <FriendsList
+        <ChatSection
           user={user}
           handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
           handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}

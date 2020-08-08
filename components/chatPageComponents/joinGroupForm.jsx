@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,25 +7,30 @@ const JoinGroupForm = ({
   handleJoinFormSubmit,
   handleJoinFormClose,
 }) => {
-  console.log("joingroupForm", joinGroupFormOpen);
   return (
-    <div
-      className={
-        joinGroupFormOpen
-          ? "join-group-form join-group-form-open"
-          : "join-group-form"
-      }
-    >
-      <img src={group.imagePath} />
-      <h3>{group.name}</h3>
-      <div>
-        <FontAwesomeIcon icon={faUserFriends} /> <span>{group.size}</span>
-      </div>
-      <div className="join-group-form-buttons">
-        <button onClick={handleJoinFormClose}>Cancel</button>
-        <button id={"join-group-form-join"} onClick={handleJoinFormSubmit}>
-          Join
-        </button>
+    <div className="join-group-form">
+      <div
+        className={
+          joinGroupFormOpen ? "group-form group-form-open" : "group-form"
+        }
+      >
+        <img src={group.imagePath} />
+        <h3>{group.name}</h3>
+        <div>
+          <FontAwesomeIcon icon={faUserFriends} /> <span>{group.size}</span>
+        </div>
+        <div className="join-group-form-buttons">
+          <button onClick={handleJoinFormClose} className="cancel-button">
+            Cancel
+          </button>
+          <button
+            id={"join-group-form-join"}
+            onClick={handleJoinFormSubmit}
+            className="continue-button"
+          >
+            Join
+          </button>
+        </div>
       </div>
     </div>
   );

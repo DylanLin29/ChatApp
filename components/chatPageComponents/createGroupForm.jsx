@@ -41,42 +41,44 @@ const CreateGroupForm = ({
   };
 
   return (
-    <div
-      className={
-        createGroupFormOpen
-          ? "create-group-form create-group-form-open"
-          : "create-group-form"
-      }
-    >
-      <h3>Create a Group Chat</h3>
-      <p>Group Name: </p>
-      <input
-        type="text"
-        value={groupName}
-        onChange={(event) => handleGroupNameChange(event)}
-      />
-      <p>Pick a Group Icon:</p>
-      <div className="create-group-form-imgs-wrapper">
-        {images.map((image, index) => {
-          return (
-            <img
-              src={image}
-              key={image}
-              onClick={() => handleImageSelect(image, index)}
-              className={
-                imageSelect === -1 || imageSelect === index
-                  ? "group-image-show"
-                  : "group-image-hide"
-              }
-            />
-          );
-        })}
-      </div>
-      <div>
-        <button onClick={handleCancelClick}>Cancel</button>
-        <button id="create-group-form-create" onClick={handleCreateClick}>
-          Create
-        </button>
+    <div className="create-group-form">
+      <div
+        className={
+          createGroupFormOpen ? "group-form group-form-open" : "group-form"
+        }
+      >
+        <h3>Create a Group Chat</h3>
+        <p>Group Name: </p>
+        <input
+          type="text"
+          value={groupName}
+          onChange={(event) => handleGroupNameChange(event)}
+        />
+        <p>Pick a Group Icon:</p>
+        <div className="create-group-form-imgs-wrapper">
+          {images.map((image, index) => {
+            return (
+              <img
+                src={image}
+                key={image}
+                onClick={() => handleImageSelect(image, index)}
+                className={
+                  imageSelect === -1 || imageSelect === index
+                    ? "group-image-show"
+                    : "group-image-hide"
+                }
+              />
+            );
+          })}
+        </div>
+        <div>
+          <button onClick={handleCancelClick} className="cancel-button">
+            Cancel
+          </button>
+          <button onClick={handleCreateClick} className="continue-button">
+            Create
+          </button>
+        </div>
       </div>
     </div>
   );

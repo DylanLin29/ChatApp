@@ -52,16 +52,10 @@
   flex-wrap: wrap;
 }
 
-/* .characters-list-container div {
-  width: 30rem;
-} */
-
 .characters-list img {
   height: 5rem;
   border-radius: 50%;
   padding: 0 1rem;
-  /* margin-bottom: 0.5rm;
-	margin-top: 0.5rem; */
   margin-top: 1rem;
 }
 
