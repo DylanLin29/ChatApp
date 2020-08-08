@@ -35,6 +35,16 @@ class Chat extends Component {
     this.setState({ user: user });
   };
 
+  handleJoinFormDoSubmit = async (groupName) => {
+    const result = await axios.post(links.joinGroup, {
+      groupName: groupName,
+      userId: this.state.user._id,
+    });
+    const user = { ...this.state.user };
+    user.groups = result.data.groups;
+    this.setState({ user: user });
+  };
+
   render() {
     const { user } = this.state;
     return (
@@ -43,6 +53,7 @@ class Chat extends Component {
         <FriendsList
           user={user}
           handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
+          handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}
         />
       </>
     );

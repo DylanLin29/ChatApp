@@ -4,10 +4,10 @@ const Group = require("../../models/group");
 const GroupInfo = require("../../models/groupInfo");
 const User = require("../../models/user");
 const dbConnect = require("../utils/dbConnect");
-const groupInfo = require("../../models/groupInfo");
 
 dbConnect();
 
+// Return Groups when users search
 router.get("/", async (req, res) => {
   const group = await GroupInfo.findOne({ name: req.query.groupName });
   if (group) {
@@ -26,8 +26,8 @@ router.get("/", async (req, res) => {
     .json({ success: false, message: "Groupchat not found" });
 });
 
+// Create a new group
 router.post("/", async (req, res) => {
-  // Create a new group
   const newGroupInfo = new GroupInfo({
     name: req.body.name,
     imagePath: req.body.imagePath,
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
     });
   });
 
-  // Update the user creates the new group
+  // Update the user who creates the new group
   await User.findOneAndUpdate(
     { _id: req.body._id },
     { $push: { groups: newGroupInfo._id } }
@@ -55,6 +55,21 @@ router.post("/", async (req, res) => {
 
   const user = await User.findOne({ _id: req.body._id }).populate("groups");
 
+  res.status(200).json({ groups: user.groups });
+});
+
+// Users join a group chat
+router.post("/join", async (req, res) => {
+  const groupInfo = await GroupInfo.findOne({ name: req.body.groupName });
+  await Group.findOneAndUpdate(
+    { groupInfo: groupInfo._id },
+    { $push: { userlist: req.body.userId } }
+  );
+  await User.findOneAndUpdate(
+    { _id: req.body.userId },
+    { $push: { groups: groupInfo._id } }
+  );
+  const user = await User.findOne({ _id: req.body.userId }).populate("groups");
   res.status(200).json({ groups: user.groups });
 });
 

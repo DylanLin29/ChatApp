@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const createGroupForm = ({
-  createFormOpen,
+const CreateGroupForm = ({
+  createGroupFormOpen,
   handleCreateFormClose,
   handleCreateFormSubmit,
 }) => {
@@ -43,7 +43,7 @@ const createGroupForm = ({
   return (
     <div
       className={
-        createFormOpen
+        createGroupFormOpen
           ? "create-group-form create-group-form-open"
           : "create-group-form"
       }
@@ -82,4 +82,4 @@ const createGroupForm = ({
   );
 };
 
-export default createGroupForm;
+export default CreateGroupForm;

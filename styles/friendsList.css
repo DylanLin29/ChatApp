@@ -118,7 +118,8 @@ body {
 }
 
 .chat-groups-operations button,
-.create-group-form button {
+.create-group-form button,
+.join-group-form button {
   background-color: white;
   color: crimson;
   width: 4rem;
@@ -128,13 +129,15 @@ body {
 }
 
 .chat-groups-operations button:hover,
-.create-group-form button:hover {
+.create-group-form button:hover,
+.join-group-form button:hover {
   color: white;
   background-color: crimson;
 }
 
 .chat-groups-operations button:focus,
-.create-group-form button:focus {
+.create-group-form button:focus,
+.join-group-form button:focus {
   outline: none;
 }
 
@@ -217,6 +220,8 @@ body {
   letter-spacing: 0.01rem;
   color: rgba(136, 133, 133, 0.8);
 }
+
+/* Create-Group-Form */
 
 .create-group-form {
   position: absolute;
@@ -312,12 +317,57 @@ body {
   margin-right: 0.5rem;
 }
 
-#create-group-form-create {
+#create-group-form-create,
+#join-group-form-join {
   color: cornflowerblue;
   border: 1px cornflowerblue solid;
 }
 
-#create-group-form-create:hover {
+#create-group-form-create:hover,
+#join-group-form-join:hover {
   color: white;
   background-color: cornflowerblue;
+}
+
+/* Join-Group-Form */
+.join-group-form {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4.1rem;
+  margin-left: 0.5rem;
+  width: 20rem;
+  font-family: "Recursive", sans-serif;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 0 0px 12px 1px rgba(136, 133, 133, 0.2);
+  border-radius: 0.5rem;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s;
+}
+
+.join-group-form-open {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.4s;
+}
+
+.join-group-form img {
+  width: 6rem;
+  border-radius: 50%;
+  margin-bottom: 0;
+}
+
+.join-group-form h3 {
+  margin-top: 1rem;
+  padding-top: 0;
+}
+
+.join-group-form button {
+  margin: 0.5rem;
+  margin-top: 1rem;
 }

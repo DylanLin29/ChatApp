@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import Message from "./message";
 import CreateGroupForm from "../components/chatPageComponents/createGroupForm";
+import JoinGroupForm from "../components/chatPageComponents/joinGroupForm";
 import axios from "axios";
 const links = require("../config/links");
 const ENDPOINT = links.connection;
@@ -23,6 +24,11 @@ class FriendsList extends Component {
         name: "",
         imagePath: "",
       },
+      group: {
+        name: "",
+        imagePath: "",
+        size: "",
+      },
       message: {
         id: "",
         imagePath: "",
@@ -35,7 +41,8 @@ class FriendsList extends Component {
         imagePath: "",
       },
       addButtonClick: false,
-      createFormOpen: false,
+      createGroupFormOpen: false,
+      joinGroupFormOpen: false,
       searchInput: "",
     };
   }
@@ -74,14 +81,13 @@ class FriendsList extends Component {
   };
 
   searchSubmit = async () => {
-    console.log("search", this.state.searchInput);
     try {
       const result = await axios.get(links.groups, {
         params: {
           groupName: this.state.searchInput,
         },
       });
-      console.log(result.data.group);
+      this.setState({ group: result.data.group, joinGroupFormOpen: true });
     } catch (err) {
       console.log(err);
     }
@@ -128,7 +134,7 @@ class FriendsList extends Component {
   };
 
   handleAddClick = () => {
-    this.setState({ addButtonClick: true, createFormOpen: false });
+    this.setState({ addButtonClick: true, createGroupFormOpen: false });
   };
 
   handleJoinClick = () => {
@@ -137,19 +143,29 @@ class FriendsList extends Component {
   };
 
   handleCreateClick = () => {
-    this.setState({ createFormOpen: true, addButtonClick: false });
+    this.setState({ createGroupFormOpen: true, addButtonClick: false });
   };
 
   handleCreateFormClose = () => {
-    this.setState({ createFormOpen: false });
+    this.setState({ createGroupFormOpen: false });
   };
 
   handleCreateFormSubmit = async (name, imagePath) => {
     await this.props.handleCreateFormDoSubmit(name, imagePath);
-    this.setState({ createFormOpen: false });
+    this.setState({ createGroupFormOpen: false });
+  };
+
+  handleJoinFormClose = () => {
+    this.setState({ joinGroupFormOpen: false });
+  };
+
+  handleJoinFormSubmit = () => {
+    this.props.handleJoinFormDoSubmit(this.state.group.name);
+    this.setState({ joinGroupFormOpen: false });
   };
 
   render() {
+    console.log(this.state.joinGroupFormOpen);
     return (
       <div>
         <div className="chat-window">
@@ -188,9 +204,15 @@ class FriendsList extends Component {
               <span>{this.state.currentChat.name}</span>
             </div>
             <CreateGroupForm
-              createFormOpen={this.state.createFormOpen}
+              createGroupFormOpen={this.state.createGroupFormOpen}
               handleCreateFormClose={this.handleCreateFormClose}
               handleCreateFormSubmit={this.handleCreateFormSubmit}
+            />
+            <JoinGroupForm
+              joinGroupFormOpen={this.state.joinGroupFormOpen}
+              group={this.state.group}
+              handleJoinFormSubmit={this.handleJoinFormSubmit}
+              handleJoinFormClose={this.handleJoinFormClose}
             />
             {this.state.addButtonClick && (
               <div className="chat-groups-operations">
