@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const express = require("express");
 const router = express.Router();
 const Group = require("../../models/group");
@@ -71,6 +72,19 @@ router.post("/join", async (req, res) => {
   );
   const user = await User.findOne({ _id: req.body.userId }).populate("groups");
   res.status(200).json({ groups: user.groups });
+});
+
+// Users can retrieve the group members
+router.get("/members", async (req, res) => {
+  const group = await GroupInfo.findOne({ name: req.query.groupName });
+  const completeGroup = await Group.findOne({ groupInfo: group._id }).populate(
+    "userlist"
+  );
+  const userList = _.map(
+    completeGroup.userlist,
+    _.partialRight(_.pick, ["name", "imagePath"])
+  );
+  res.status(200).json({ success: true, userList: userList });
 });
 
 module.exports = router;

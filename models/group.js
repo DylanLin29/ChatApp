@@ -5,7 +5,7 @@ const groupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "GroupInfo",
   },
-  userlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  userlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model.Group || mongoose.model("Group", groupSchema);

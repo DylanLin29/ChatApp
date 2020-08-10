@@ -50,8 +50,11 @@ nextApp
     io.on("connection", (socket) => {
       console.log(socket.id);
 
-      socket.on("SEND_MESSAGE", function (data) {
-        io.emit("RECEIVE_MESSAGE", data);
+      socket.on("chatRoom", (room) => {
+        socket.join(room);
+        socket.on("SEND_MESSAGE", (message) => {
+          io.to(room).emit("RECEIVE_MESSAGE", message);
+        });
       });
 
       socket.on("TYPING", (data) => {

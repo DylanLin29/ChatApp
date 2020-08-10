@@ -80,6 +80,11 @@ body {
   width: 100%;
 }
 
+.chat-window-current-title .fa-ellipsis-h {
+  position: absolute;
+  right: 1rem;
+}
+
 .chat-groups-operations {
   display: flex;
   flex-direction: column;

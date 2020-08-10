@@ -8,6 +8,7 @@ import SearchArea from "./chatPageComponents/searchArea";
 import FriendsList from "./chatPageComponents/friendsList";
 import MessageSection from "./chatPageComponents/messageSection";
 import ChatInputArea from "./chatPageComponents/chatInputArea";
+import ChatHeader from "./chatPageComponents/chatHeader";
 import axios from "axios";
 const links = require("../config/links");
 const ENDPOINT = links.connection;
@@ -35,10 +36,12 @@ class ChatSection extends Component {
       currentChat: {
         name: "",
         imagePath: "",
+        members: [],
       },
       addButtonClick: false,
       createGroupFormOpen: false,
       joinGroupFormOpen: false,
+      membersListOpen: false,
     };
   }
 
@@ -73,7 +76,6 @@ class ChatSection extends Component {
         },
       });
       this.setState({ group: result.data.group, joinGroupFormOpen: true });
-      console.log("Result", result);
     } catch (err) {
       console.log(err);
     }
@@ -98,10 +100,18 @@ class ChatSection extends Component {
     }
   };
 
-  handleOpenChat = (name, imagePath) => {
-    this.setState({
-      currentChat: { name: name, imagePath: imagePath },
+  handleOpenChat = async (name, imagePath) => {
+    const result = await axios.get(links.groupMembers, {
+      params: { groupName: name },
     });
+    this.setState({
+      currentChat: {
+        name: name,
+        imagePath: imagePath,
+        members: result.data.userList,
+      },
+    });
+    this.socket.emit("chatRoom", name);
   };
 
   handleAddClick = () => {
@@ -135,6 +145,11 @@ class ChatSection extends Component {
     this.setState({ joinGroupFormOpen: false });
   };
 
+  handleTitleInfoClick = () => {
+    const membersListStatus = !this.state.membersListOpen;
+    this.setState({ membersListOpen: membersListStatus });
+  };
+
   render() {
     return (
       <div>
@@ -151,10 +166,14 @@ class ChatSection extends Component {
             />
           </div>
           <div className="content">
-            <div className="chat-window-current-title">
-              <img src={this.state.currentChat.imagePath} />
-              <span>{this.state.currentChat.name}</span>
-            </div>
+            <ChatHeader
+              name={this.state.currentChat.name}
+              imagePath={this.state.currentChat.imagePath}
+              handleTitleInfoClick={this.handleTitleInfoClick}
+            />
+            {this.state.membersListOpen && (
+              <FriendsList groups={this.state.currentChat.members} />
+            )}
             <CreateGroupForm
               createGroupFormOpen={this.state.createGroupFormOpen}
               handleCreateFormClose={this.handleCreateFormClose}
