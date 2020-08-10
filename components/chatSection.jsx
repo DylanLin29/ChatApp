@@ -49,7 +49,7 @@ class ChatSection extends Component {
     this.socket = io(ENDPOINT);
 
     // listen to the server
-    this.socket.on("RECEIVE_MESSAGE", (data) => {
+    this.socket.on("MESSAGE", (data) => {
       let updateResponses = this.state.response;
       updateResponses.push(data);
       this.setState({ response: updateResponses });
@@ -87,13 +87,19 @@ class ChatSection extends Component {
 
   handleChatInputEnter = (event, message) => {
     if (event.key !== "Enter") {
-      this.socket.emit("TYPING", this.props.user.name);
+      this.socket.emit("TYPING", {
+        name: this.props.user.name,
+        room: this.state.currentChat.name,
+      });
       clearTimeout(timeout);
       timeout = setTimeout(this.handleNoTyping, 5000);
     } else {
       const removeSpaces = message.content.replace(/\s/g, "");
       if (event.key === "Enter" && removeSpaces) {
-        this.socket.emit("SEND_MESSAGE", message);
+        this.socket.emit("MESSAGE", {
+          message: message,
+          room: this.state.currentChat.name,
+        });
         clearTimeout(timeout);
         this.socket.emit("NOT_TYPING", this.props.user.name);
       }
@@ -104,6 +110,17 @@ class ChatSection extends Component {
     const result = await axios.get(links.groupMembers, {
       params: { groupName: name },
     });
+    if (
+      this.state.currentChat.name !== "" &&
+      name !== this.state.currentChat.name
+    ) {
+      this.setState({ response: [] }, () => {
+        this.socket.emit("leaveRoom", this.state.currentChat.name);
+      });
+    }
+    if (this.state.currentChat.name !== name) {
+      this.socket.emit("joinRoom", name);
+    }
     this.setState({
       currentChat: {
         name: name,
@@ -111,7 +128,6 @@ class ChatSection extends Component {
         members: result.data.userList,
       },
     });
-    this.socket.emit("chatRoom", name);
   };
 
   handleAddClick = () => {

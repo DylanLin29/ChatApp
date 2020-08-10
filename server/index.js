@@ -50,15 +50,16 @@ nextApp
     io.on("connection", (socket) => {
       console.log(socket.id);
 
-      socket.on("chatRoom", (room) => {
+      socket.on("joinRoom", (room) => {
         socket.join(room);
-        socket.on("SEND_MESSAGE", (message) => {
-          io.to(room).emit("RECEIVE_MESSAGE", message);
-        });
       });
 
-      socket.on("TYPING", (data) => {
-        socket.broadcast.emit("TYPING", data);
+      socket.on("MESSAGE", ({ message, room }) => {
+        io.to(room).emit("MESSAGE", message);
+      });
+
+      socket.on("TYPING", ({ name, room }) => {
+        socket.to(room).broadcast.emit("TYPING", name);
       });
       socket.on("NOT_TYPING", (data) => {
         socket.broadcast.emit("NOT_TYPING", data);
@@ -66,6 +67,12 @@ nextApp
 
       socket.on("disconnect", () => {
         io.emit("DISCONNECT", "some one just left");
+      });
+
+      socket.on("leaveRoom", (room) => {
+        if (room) {
+          socket.leave(room);
+        }
       });
     });
   })
