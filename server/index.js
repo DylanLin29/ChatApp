@@ -54,6 +54,12 @@ nextApp
         socket.join(room);
       });
 
+      socket.on("leaveRoom", (room) => {
+        if (room) {
+          socket.leave(room);
+        }
+      });
+
       socket.on("MESSAGE", ({ message, room }) => {
         io.to(room).emit("MESSAGE", message);
       });
@@ -67,12 +73,6 @@ nextApp
 
       socket.on("disconnect", () => {
         io.emit("DISCONNECT", "some one just left");
-      });
-
-      socket.on("leaveRoom", (room) => {
-        if (room) {
-          socket.leave(room);
-        }
       });
     });
   })

@@ -87,4 +87,22 @@ router.get("/members", async (req, res) => {
   res.status(200).json({ success: true, userList: userList });
 });
 
+// Users can leave the group chat
+router.post("/leave", async (req, res) => {
+  const groupInfo = await GroupInfo.findOne({ name: req.body.groupName });
+  const user = await User.findOne({ name: req.body.userName });
+  await User.updateOne(
+    { name: req.body.userName },
+    { $pullAll: { groups: [groupInfo._id] } }
+  );
+  await Group.updateOne(
+    { groupInfo: groupInfo._id },
+    { $pullAll: { userlist: [user._id] } }
+  );
+  const updateUser = await User.findOne({ name: req.body.userName }).populate(
+    "groups"
+  );
+  res.status(200).json({ success: true, groups: updateUser.groups });
+});
+
 module.exports = router;

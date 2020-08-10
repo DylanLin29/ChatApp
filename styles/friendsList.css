@@ -27,6 +27,41 @@ body {
   overflow: auto !important;
 }
 
+.members-list {
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: -15rem;
+  height: 96.3vh;
+  background-color: white;
+  border-left: solid 1px rgba(136, 133, 133, 0.3);
+  float: left;
+  visibility: hidden;
+  transition: all 0.4s;
+  z-index: 1;
+}
+
+.members-list-open {
+  visibility: visible;
+  transition: all 0.4s;
+  transform: translate(-15rem);
+}
+
+.group-leave {
+  text-align: center;
+  font-family: "Catamaran", sans-serif;
+  font-size: 1.2rem;
+  color: white;
+  background-color: crimson;
+  padding: 0.4rem 0.5rem;
+  width: 6rem;
+  margin: 3rem auto;
+  border-radius: 0.3rem;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
 .search-area {
   display: flex;
   justify-content: center;
@@ -47,21 +82,27 @@ body {
   cursor: pointer;
 }
 
-.friend-info {
+.friend-info,
+.member-info {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0.5rem;
+}
+
+.friend-info {
   border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
 }
 
-.friend-info img {
+.friend-info img,
+.member-info img {
   height: 2.5rem;
   margin-right: 0.8rem;
   border-radius: 0.4rem;
 }
 
-.friend-info span {
+.friend-info span,
+.member-info span {
   cursor: default;
 }
 

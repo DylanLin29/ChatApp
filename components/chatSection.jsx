@@ -6,6 +6,7 @@ import CreateGroupForm from "./chatPageComponents/createGroupForm";
 import JoinGroupForm from "./chatPageComponents/joinGroupForm";
 import SearchArea from "./chatPageComponents/searchArea";
 import FriendsList from "./chatPageComponents/friendsList";
+import MembersList from "./chatPageComponents/membersList";
 import MessageSection from "./chatPageComponents/messageSection";
 import ChatInputArea from "./chatPageComponents/chatInputArea";
 import ChatHeader from "./chatPageComponents/chatHeader";
@@ -25,6 +26,8 @@ class ChatSection extends Component {
       user: {
         name: "",
         imagePath: "",
+        groups: [],
+        _id: "",
       },
       group: {
         name: "",
@@ -45,7 +48,13 @@ class ChatSection extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // get user info
+    const userInfo = await axios.get(links.auth, {
+      withCredentials: true,
+    });
+    this.setState({ user: userInfo.data });
+
     this.socket = io(ENDPOINT);
 
     // listen to the server
@@ -107,7 +116,7 @@ class ChatSection extends Component {
   };
 
   handleOpenChat = async (name, imagePath) => {
-    const result = await axios.get(links.groupMembers, {
+    const result = await axios.get(`${links.groups}/members`, {
       params: { groupName: name },
     });
     if (
@@ -166,7 +175,23 @@ class ChatSection extends Component {
     this.setState({ membersListOpen: membersListStatus });
   };
 
+  handleLeaveClick = async () => {
+    const currentChat = { ...this.state.currentChat };
+    const result = await axios.post(`${links.groups}/leave`, {
+      groupName: currentChat.name,
+      userName: this.props.user.name,
+    });
+    currentChat.name = "";
+    currentChat.imagePath = "";
+    currentChat.members = this.state.currentChat.members.filter(
+      (member) => member.name !== this.props.user.name
+    );
+    this.setState({ currentChat, membersListOpen: false });
+    this.setState({ user: { groups: result.data.groups } });
+  };
+
   render() {
+    console.log(this.state.user.groups);
     return (
       <div>
         <div className="chat-window">
@@ -177,7 +202,7 @@ class ChatSection extends Component {
               searchSubmit={this.searchSubmit}
             />
             <FriendsList
-              groups={this.props.user.groups}
+              groups={this.state.user.groups}
               handleOpenChat={this.handleOpenChat}
             />
           </div>
@@ -187,39 +212,43 @@ class ChatSection extends Component {
               imagePath={this.state.currentChat.imagePath}
               handleTitleInfoClick={this.handleTitleInfoClick}
             />
-            {this.state.membersListOpen && (
-              <FriendsList groups={this.state.currentChat.members} />
-            )}
-            <CreateGroupForm
-              createGroupFormOpen={this.state.createGroupFormOpen}
-              handleCreateFormClose={this.handleCreateFormClose}
-              handleCreateFormSubmit={this.handleCreateFormSubmit}
-            />
-            <JoinGroupForm
-              joinGroupFormOpen={this.state.joinGroupFormOpen}
-              group={this.state.group}
-              handleJoinFormSubmit={this.handleJoinFormSubmit}
-              handleJoinFormClose={this.handleJoinFormClose}
-            />
-            <GroupChatOperations
-              addButtonClick={this.state.addButtonClick}
-              handleJoinClick={this.handleJoinClick}
-              handleCreateClick={this.handleCreateClick}
-              handleCancelClick={() => {
-                this.setState({ addButtonClick: false });
-              }}
-            />
-            <MessageSection
-              messagesRef={this.messagesRef}
-              response={this.state.response}
-              username={this.props.user.name}
-              userImagePath={this.props.user.imagePath}
-            />
-            <ChatInputArea
-              handleChatInputEnter={this.handleChatInputEnter}
-              user={this.props.user}
-              typingUser={this.state.typingUser}
-            />
+            <div className="chat-section-below-header">
+              <MembersList
+                groups={this.state.currentChat.members}
+                membersListOpen={this.state.membersListOpen}
+                handleLeaveClick={this.handleLeaveClick}
+              />
+              <CreateGroupForm
+                createGroupFormOpen={this.state.createGroupFormOpen}
+                handleCreateFormClose={this.handleCreateFormClose}
+                handleCreateFormSubmit={this.handleCreateFormSubmit}
+              />
+              <JoinGroupForm
+                joinGroupFormOpen={this.state.joinGroupFormOpen}
+                group={this.state.group}
+                handleJoinFormSubmit={this.handleJoinFormSubmit}
+                handleJoinFormClose={this.handleJoinFormClose}
+              />
+              <GroupChatOperations
+                addButtonClick={this.state.addButtonClick}
+                handleJoinClick={this.handleJoinClick}
+                handleCreateClick={this.handleCreateClick}
+                handleCancelClick={() => {
+                  this.setState({ addButtonClick: false });
+                }}
+              />
+              <MessageSection
+                messagesRef={this.messagesRef}
+                response={this.state.response}
+                username={this.props.user.name}
+                userImagePath={this.props.user.imagePath}
+              />
+              <ChatInputArea
+                handleChatInputEnter={this.handleChatInputEnter}
+                user={this.props.user}
+                typingUser={this.state.typingUser}
+              />
+            </div>
           </div>
         </div>
       </div>

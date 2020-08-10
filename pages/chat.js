@@ -36,7 +36,7 @@ class Chat extends Component {
   };
 
   handleJoinFormDoSubmit = async (groupName) => {
-    const result = await axios.post(links.joinGroup, {
+    const result = await axios.post(`${links.groups}/join`, {
       groupName: groupName,
       userId: this.state.user._id,
     });
