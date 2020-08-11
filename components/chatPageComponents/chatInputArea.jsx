@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-const ChatInputArea = ({ handleChatInputEnter, user, typingUser }) => {
+const ChatInputArea = ({
+  handleChatInputEnter,
+  user,
+  typingUser,
+  groupName,
+}) => {
   const [content, setContent] = useState("");
 
   const handleInputChange = ({ currentTarget: input }) => {
@@ -26,7 +31,7 @@ const ChatInputArea = ({ handleChatInputEnter, user, typingUser }) => {
     <div className="chat-input">
       <textarea
         type="text"
-        placeholder="Message to Mattew"
+        placeholder={`Send a Message in ${groupName}`}
         onKeyDown={(event) => handleInputEnter(event)}
         onChange={(event) => handleInputChange(event)}
         value={content}

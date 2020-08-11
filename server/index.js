@@ -11,6 +11,7 @@ const login = require("./routes/login");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
 const groups = require("./routes/groups");
+const group = require("../models/group");
 
 nextApp
   .prepare()
@@ -58,6 +59,22 @@ nextApp
         if (room) {
           socket.leave(room);
         }
+      });
+
+      socket.on("JOIN_GROUPCHAT", ({ userName, groupName }) => {
+        io.to(groupName).emit("GROUP_NOTIFICATION", {
+          id: undefined,
+          content: `${userName} just joined ${groupName}`,
+          imagePath: "",
+        });
+      });
+
+      socket.on("LEAVE_GROUPCHAT", ({ userName, groupName }) => {
+        io.to(groupName).emit("GROUP_NOTIFICATION", {
+          id: undefined,
+          content: `${userName} has left ${groupName}`,
+          imagePath: "",
+        });
       });
 
       socket.on("MESSAGE", ({ message, room }) => {

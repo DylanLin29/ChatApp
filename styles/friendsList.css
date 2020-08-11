@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Recursive:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Recursive:wght@600&family=Arimo&display=swap");
+
 body {
   overflow: hidden;
 }
@@ -134,9 +135,10 @@ body {
   border-radius: 0.3rem;
   width: 12rem;
   margin-left: 0.5rem;
-  margin-top: 4.1rem;
+  margin-top: 0.5rem;
   position: absolute;
   align-items: center;
+  z-index: 1;
 }
 
 .chat-groups-operations span {
@@ -172,6 +174,14 @@ body {
   padding: 0.5rem;
   height: 60vh;
   overflow: auto !important;
+}
+
+#group-notification {
+  font-family: "Arimo", sans-serif;
+  color: gray;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .chat-message {
@@ -250,7 +260,7 @@ body {
 }
 
 .create-group-form h3 {
-  color: skyblue;
+  color: rgb(80, 183, 224);
 }
 
 .create-group-form p {
@@ -300,7 +310,7 @@ body {
 }
 
 .create-group-form img:nth-of-type(3) {
-  border: 1px solid #a5dee5;
+  border: 1px solid #daa5e5;
 }
 
 .create-group-form img:nth-of-type(4) {

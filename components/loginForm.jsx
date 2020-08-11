@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   return (
     <div className="login-form-wrapper">
-      <Form title="Login" handleFormContinueClick={handleFormContinueClick} />
+      <Form title="LOGIN" handleFormContinueClick={handleFormContinueClick} />
     </div>
   );
 };

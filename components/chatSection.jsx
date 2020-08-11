@@ -66,6 +66,12 @@ class ChatSection extends Component {
       this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
     });
 
+    this.socket.on("GROUP_NOTIFICATION", (message) => {
+      let response = this.state.response;
+      response.push(message);
+      this.setState({ response });
+    });
+
     this.socket.on("TYPING", (data) => {
       this.setState({ typingUser: data });
     });
@@ -167,7 +173,13 @@ class ChatSection extends Component {
 
   handleJoinFormSubmit = () => {
     this.props.handleJoinFormDoSubmit(this.state.group.name);
-    this.setState({ joinGroupFormOpen: false });
+    const user = { ...this.state.user };
+    user.groups.push(this.state.group);
+    this.socket.emit("JOIN_GROUPCHAT", {
+      userName: this.props.user.name,
+      groupName: this.state.group.name,
+    });
+    this.setState({ joinGroupFormOpen: false, user });
   };
 
   handleTitleInfoClick = () => {
@@ -177,9 +189,15 @@ class ChatSection extends Component {
 
   handleLeaveClick = async () => {
     const currentChat = { ...this.state.currentChat };
+    this.socket.emit("leaveRoom", this.state.currentChat.name);
+    this.setState({ response: [] });
     const result = await axios.post(`${links.groups}/leave`, {
       groupName: currentChat.name,
       userName: this.props.user.name,
+    });
+    this.socket.emit("LEAVE_GROUPCHAT", {
+      userName: this.props.user.name,
+      groupName: this.state.group.name,
     });
     currentChat.name = "";
     currentChat.imagePath = "";
@@ -191,7 +209,6 @@ class ChatSection extends Component {
   };
 
   render() {
-    console.log(this.state.user.groups);
     return (
       <div>
         <div className="chat-window">
@@ -243,11 +260,14 @@ class ChatSection extends Component {
                 username={this.props.user.name}
                 userImagePath={this.props.user.imagePath}
               />
-              <ChatInputArea
-                handleChatInputEnter={this.handleChatInputEnter}
-                user={this.props.user}
-                typingUser={this.state.typingUser}
-              />
+              {this.state.currentChat.name && (
+                <ChatInputArea
+                  handleChatInputEnter={this.handleChatInputEnter}
+                  user={this.props.user}
+                  typingUser={this.state.typingUser}
+                  groupName={this.state.currentChat.name}
+                />
+              )}
             </div>
           </div>
         </div>

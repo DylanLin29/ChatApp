@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "GroupInfo" }],
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "FriendRequest" }],
 });
 
 module.exports = mongoose.model.User || mongoose.model("User", userSchema);
