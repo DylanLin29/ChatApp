@@ -53,6 +53,7 @@ class ChatSection extends Component {
     const userInfo = await axios.get(links.auth, {
       withCredentials: true,
     });
+
     this.setState({ user: userInfo.data });
 
     this.socket = io(ENDPOINT);
@@ -100,7 +101,7 @@ class ChatSection extends Component {
     this.socket.emit("NOT_TYPING", this.props.user.name);
   };
 
-  handleChatInputEnter = (event, message) => {
+  handleChatInputEnter = async (event, message) => {
     if (event.key !== "Enter") {
       this.socket.emit("TYPING", {
         name: this.props.user.name,
@@ -116,6 +117,13 @@ class ChatSection extends Component {
           room: this.state.currentChat.name,
         });
         clearTimeout(timeout);
+        // save message to database
+        await axios.post(links.messages, {
+          username: message.id,
+          imagePath: message.imagePath,
+          content: message.content,
+          groupName: this.state.currentChat.name,
+        });
         this.socket.emit("NOT_TYPING", this.props.user.name);
       }
     }
@@ -129,10 +137,11 @@ class ChatSection extends Component {
       this.state.currentChat.name !== "" &&
       name !== this.state.currentChat.name
     ) {
-      this.setState({ response: [] }, () => {
-        this.socket.emit("leaveRoom", this.state.currentChat.name);
-      });
+      this.socket.emit("leaveRoom", this.state.currentChat.name);
     }
+    const responseResult = await axios.get(links.messages, {
+      params: { groupName: name },
+    });
     if (this.state.currentChat.name !== name) {
       this.socket.emit("joinRoom", name);
     }
@@ -142,6 +151,7 @@ class ChatSection extends Component {
         imagePath: imagePath,
         members: result.data.userList,
       },
+      response: responseResult.data.response,
     });
   };
 

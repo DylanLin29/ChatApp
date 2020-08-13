@@ -11,7 +11,7 @@ const login = require("./routes/login");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
 const groups = require("./routes/groups");
-const group = require("../models/group");
+const messages = require("./routes/messages");
 
 nextApp
   .prepare()
@@ -27,6 +27,7 @@ nextApp
     app.use("/api/auth", auth);
     app.use("/api/logout", logout);
     app.use("/api/groups", groups);
+    app.use("/api/messages", messages);
 
     app.get("/register", (req, res) => {
       return nextApp.render(req, res, "/register", req.query);
