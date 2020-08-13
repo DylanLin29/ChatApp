@@ -16,6 +16,7 @@
 }
 
 .message-receive {
+  margin-top: 1.5rem;
   background-color: var(--clr-message-receive);
   color: white;
 }
@@ -37,4 +38,12 @@
 .message-receive::after {
   border-right: 0.5rem solid var(--clr-message-receive);
   left: -0.5rem;
+}
+
+.message-name {
+  color: rgba(136, 133, 133, 0.7);
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  font-size: 0.9rem;
 }

@@ -19,6 +19,7 @@ body {
   border-right: 1px solid rgba(136, 133, 133, 0.5);
   width: 18rem;
   height: 96.3vh;
+  background-color: rgba(136, 133, 133, 0.03);
 }
 
 .friends-list-container::-webkit-scrollbar {
@@ -128,6 +129,7 @@ body {
   border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
   align-items: center;
   width: 100%;
+  background-color: rgba(136, 133, 133, 0.03);
 }
 
 .chat-window-current-title .fa-ellipsis-h {
@@ -238,14 +240,22 @@ body {
 
 .chat-input textarea {
   border: 1.5px solid rgba(136, 133, 133, 0.5);
-  border-radius: 0.3rem;
-  width: 98%;
+  border-left: none;
+  border-right: none;
+  /* border-radius: 0.3rem; */
+  width: 100%;
   font-size: 1rem;
   padding: 0.5rem;
+  padding-left: 1rem;
   height: 20vh;
   letter-spacing: 0.03rem;
   margin-top: 0;
   resize: none;
+}
+
+.chat-input textarea::placeholder {
+  font-family: "Arimo", sans-serif;
+  color: rgba(136, 133, 133, 0.3);
 }
 
 .chat-input textarea:focus {
@@ -295,11 +305,15 @@ body {
   color: #aeb1be;
   font-family: "Arimo", sans-serif;
   letter-spacing: 0.03rem;
-  margin-bottom: 1rem;
   font-size: 1rem;
   padding: 0.3rem;
   border: none;
   width: 17rem !important;
+  margin-bottom: 1rem;
+}
+
+.create-group-form-input-error input {
+  margin-bottom: 0;
 }
 
 .create-group-form input::placeholder {
@@ -340,6 +354,11 @@ body {
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
   background-color: #222632;
+}
+
+.create-group-form div.pointing.ui.label.red {
+  margin-bottom: 1rem;
+  background-color: var(--form-background-color) !important;
 }
 
 #create-group-form-create,

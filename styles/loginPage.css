@@ -9,6 +9,16 @@
   justify-content: center;
 }
 
+.login-form-wrapper .register-form input:nth-of-type(2) {
+  font: small-caption;
+  letter-spacing: 0.03rem;
+}
+
+.login-form-wrapper .register-form input:nth-of-type(2)::placeholder {
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
 .login-form-wrapper .register-form h2 {
   color: #b2ebf2;
 }

@@ -22,7 +22,11 @@ const MessageSection = ({ messagesRef, response, username, userImagePath }) => {
           ) : (
             <div className="chat-message" key={`chat-message-${index}`}>
               <img src={imagePath} />
-              <Message messageType="message-receive" message={content} />
+              <Message
+                messageType="message-receive"
+                message={content}
+                name={id}
+              />
             </div>
           );
         }

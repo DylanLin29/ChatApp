@@ -43,6 +43,7 @@ class ChatSection extends Component {
       },
       addButtonClick: false,
       createGroupFormOpen: false,
+      createGroupErrorMessage: "",
       joinGroupFormOpen: false,
       searchNotFound: false,
       membersListOpen: false,
@@ -177,12 +178,22 @@ class ChatSection extends Component {
   };
 
   handleCreateFormClose = () => {
-    this.setState({ createGroupFormOpen: false });
+    this.setState({ createGroupFormOpen: false, createGroupErrorMessage: "" });
   };
 
   handleCreateFormSubmit = async (name, imagePath) => {
-    await this.props.handleCreateFormDoSubmit(name, imagePath);
-    this.setState({ createGroupFormOpen: false });
+    try {
+      const result = await axios.post(links.groups, {
+        name: name,
+        imagePath: imagePath,
+        _id: this.state.user._id,
+      });
+      const user = { ...this.state.user };
+      user.groups = result.data.groups;
+      this.setState({ createGroupFormOpen: false, user });
+    } catch (err) {
+      this.setState({ createGroupErrorMessage: "Group Chat Already Exists" });
+    }
   };
 
   handleJoinFormClose = () => {
@@ -235,6 +246,10 @@ class ChatSection extends Component {
     this.setState({ searchNotFound: false });
   };
 
+  handleResetError = () => {
+    this.setState({ createGroupErrorMessage: "" });
+  };
+
   render() {
     return (
       <div>
@@ -268,6 +283,8 @@ class ChatSection extends Component {
                 createGroupFormOpen={this.state.createGroupFormOpen}
                 handleCreateFormClose={this.handleCreateFormClose}
                 handleCreateFormSubmit={this.handleCreateFormSubmit}
+                createGroupErrorMessage={this.state.createGroupErrorMessage}
+                handleResetError={this.handleResetError}
               />
               <JoinGroupForm
                 joinGroupFormOpen={this.state.joinGroupFormOpen}

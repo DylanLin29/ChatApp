@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { Label } from "semantic-ui-react";
 
 const CreateGroupForm = ({
   createGroupFormOpen,
   handleCreateFormClose,
   handleCreateFormSubmit,
+  createGroupErrorMessage,
+  handleResetError,
 }) => {
   const [groupName, setGroupName] = useState("");
   const [imagePath, setImagePath] = useState("");
@@ -23,6 +26,7 @@ const CreateGroupForm = ({
 
   const handleGroupNameChange = ({ currentTarget: input }) => {
     setGroupName(input.value);
+    handleResetError();
   };
 
   const handleImageSelect = (image, index) => {
@@ -49,14 +53,28 @@ const CreateGroupForm = ({
       >
         <div className="create-group-form-content-wrapper">
           <h3>Create a Group Chat</h3>
-          <div className="create-group-form-input">
+          <div
+            className={
+              createGroupErrorMessage === ""
+                ? "create-group-form-input"
+                : "create-group-form-input create-group-form-input-error"
+            }
+          >
             <p>Group Name: </p>
             <input
               type="text"
               value={groupName}
               onChange={(event) => handleGroupNameChange(event)}
             />
+            {createGroupErrorMessage !== "" && (
+              <p>
+                <Label pointing basic color="red">
+                  {createGroupErrorMessage}
+                </Label>
+              </p>
+            )}
           </div>
+
           <p>Pick a Group Icon:</p>
           <div className="create-group-form-imgs-wrapper">
             {images.map((image, index) => {
@@ -79,7 +97,11 @@ const CreateGroupForm = ({
           <button onClick={handleCancelClick} className="cancel-button">
             Cancel
           </button>
-          <button onClick={handleCreateClick} className="continue-button">
+          <button
+            onClick={handleCreateClick}
+            className="continue-button"
+            disabled={false}
+          >
             Create
           </button>
         </div>

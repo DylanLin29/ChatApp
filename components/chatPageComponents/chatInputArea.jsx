@@ -31,7 +31,8 @@ const ChatInputArea = ({
     <div className="chat-input">
       <textarea
         type="text"
-        placeholder={`Send a Message in ${groupName}`}
+        // placeholder={`Send a Message in ${groupName}`}
+        placeholder={"PRESS ENTER TO SEND"}
         onKeyDown={(event) => handleInputEnter(event)}
         onChange={(event) => handleInputChange(event)}
         value={content}

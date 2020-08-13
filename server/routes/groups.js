@@ -34,30 +34,25 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     imagePath: req.body.imagePath,
   });
-  newGroupInfo.save((err) => {
-    if (err) {
-      console.log(err);
-    }
-    const newGroup = new Group({
+  try {
+    await newGroupInfo.save();
+    const newGroup = newGroup({
       groupInfo: newGroupInfo._id,
       userlist: [req.body._id],
     });
-    newGroup.save((err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
+    await newGroup.save();
 
-  // Update the user who creates the new group
-  await User.findOneAndUpdate(
-    { _id: req.body._id },
-    { $push: { groups: newGroupInfo._id } }
-  );
-
-  const user = await User.findOne({ _id: req.body._id }).populate("groups");
-
-  res.status(200).json({ groups: user.groups });
+    // Update the user who creates the new group
+    await User.findOneAndUpdate(
+      { _id: req.body._id },
+      { $push: { groups: newGroupInfo._id } }
+    );
+    const user = await User.findOne({ _id: req.body._id }).populate("groups");
+    res.status(200).json({ groups: user.groups });
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(409).json({ success: false });
+  }
 });
 
 // Users join a group chat

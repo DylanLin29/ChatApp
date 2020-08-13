@@ -1,5 +1,15 @@
-const Message = ({ messageType, message }) => {
-  return <div className={messageType}>{message}</div>;
+const Message = ({ messageType, message, name }) => {
+  return (
+    <div>
+      <div className={messageType}>
+        {" "}
+        {messageType === "message-receive" && (
+          <span className="message-name">{name}</span>
+        )}
+        {message}
+      </div>
+    </div>
+  );
 };
 
 export default Message;
