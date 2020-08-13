@@ -3,11 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-const SearchArea = ({ searchRef, handleAddClick, searchSubmit }) => {
+const SearchArea = ({
+  searchRef,
+  handleAddClick,
+  searchSubmit,
+  searchNotFound,
+  handleSearchNotFoundChange,
+}) => {
   const [searchInput, setSearchInput] = useState("");
 
   const handleInputChange = ({ currentTarget: input }) => {
     setSearchInput(input.value);
+    handleSearchNotFoundChange();
   };
 
   const handleKeyPress = (event) => {
@@ -17,7 +24,11 @@ const SearchArea = ({ searchRef, handleAddClick, searchSubmit }) => {
   };
 
   return (
-    <div className="search-area">
+    <div
+      className={
+        searchNotFound ? "search-area search-not-found" : "search-area"
+      }
+    >
       <Input
         placeholder="Search..."
         ref={searchRef}

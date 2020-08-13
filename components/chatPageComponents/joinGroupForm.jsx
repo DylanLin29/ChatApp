@@ -6,6 +6,8 @@ const JoinGroupForm = ({
   group,
   handleJoinFormSubmit,
   handleJoinFormClose,
+  handleJoinFormOpen,
+  userJoined,
 }) => {
   return (
     <div className="join-group-form">
@@ -19,18 +21,33 @@ const JoinGroupForm = ({
         <div>
           <FontAwesomeIcon icon={faUserFriends} /> <span>{group.size}</span>
         </div>
-        <div className="join-group-form-buttons">
-          <button onClick={handleJoinFormClose} className="cancel-button">
-            Cancel
-          </button>
-          <button
-            id={"join-group-form-join"}
-            onClick={handleJoinFormSubmit}
-            className="continue-button"
-          >
-            Join
-          </button>
-        </div>
+        {userJoined ? (
+          <div className="join-group-form-buttons">
+            <button onClick={handleJoinFormClose} className="cancel-button">
+              Close
+            </button>
+            <button
+              id={"join-group-form-join"}
+              onClick={() => handleJoinFormOpen(group.name, group.imagePath)}
+              className="continue-button"
+            >
+              Open
+            </button>
+          </div>
+        ) : (
+          <div className="join-group-form-buttons">
+            <button onClick={handleJoinFormClose} className="cancel-button">
+              Cancel
+            </button>
+            <button
+              id={"join-group-form-join"}
+              onClick={handleJoinFormSubmit}
+              className="continue-button"
+            >
+              Join
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

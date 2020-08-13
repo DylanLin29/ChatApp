@@ -44,7 +44,9 @@ class ChatSection extends Component {
       addButtonClick: false,
       createGroupFormOpen: false,
       joinGroupFormOpen: false,
+      searchNotFound: false,
       membersListOpen: false,
+      userJoined: false,
     };
   }
 
@@ -60,9 +62,9 @@ class ChatSection extends Component {
 
     // listen to the server
     this.socket.on("MESSAGE", (data) => {
-      let updateResponses = this.state.response;
-      updateResponses.push(data);
-      this.setState({ response: updateResponses });
+      let response = this.state.response;
+      response.push(data);
+      this.setState({ response });
       // set the messages always view at the bottom
       this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
     });
@@ -71,14 +73,15 @@ class ChatSection extends Component {
       let response = this.state.response;
       response.push(message);
       this.setState({ response });
+      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
     });
 
-    this.socket.on("TYPING", (data) => {
-      this.setState({ typingUser: data });
+    this.socket.on("TYPING", (typingUser) => {
+      this.setState({ typingUser });
     });
 
-    this.socket.on("NOT_TYPING", (data) => {
-      if (this.state.typingUser === data) {
+    this.socket.on("NOT_TYPING", (typingUser) => {
+      if (this.state.typingUser === typingUser) {
         this.setState({ typingUser: "" });
       }
     });
@@ -89,11 +92,16 @@ class ChatSection extends Component {
       const result = await axios.get(links.groups, {
         params: {
           groupName: groupName,
+          userId: this.state.user._id,
         },
       });
-      this.setState({ group: result.data.group, joinGroupFormOpen: true });
+      this.setState({
+        group: result.data.group,
+        joinGroupFormOpen: true,
+        userJoined: result.data.joined,
+      });
     } catch (err) {
-      console.log(err);
+      this.setState({ searchNotFound: true });
     }
   };
 
@@ -181,6 +189,11 @@ class ChatSection extends Component {
     this.setState({ joinGroupFormOpen: false });
   };
 
+  handleJoinFormOpen = (groupName, groupImagePath) => {
+    this.setState({ joinGroupFormOpen: false });
+    this.handleOpenChat(groupName, groupImagePath);
+  };
+
   handleJoinFormSubmit = () => {
     this.props.handleJoinFormDoSubmit(this.state.group.name);
     const user = { ...this.state.user };
@@ -218,6 +231,10 @@ class ChatSection extends Component {
     this.setState({ user: { groups: result.data.groups } });
   };
 
+  handleSearchNotFoundChange = () => {
+    this.setState({ searchNotFound: false });
+  };
+
   render() {
     return (
       <div>
@@ -227,6 +244,8 @@ class ChatSection extends Component {
               searchRef={this.searchRef}
               handleAddClick={this.handleAddClick}
               searchSubmit={this.searchSubmit}
+              searchNotFound={this.state.searchNotFound}
+              handleSearchNotFoundChange={this.handleSearchNotFoundChange}
             />
             <FriendsList
               groups={this.state.user.groups}
@@ -255,6 +274,8 @@ class ChatSection extends Component {
                 group={this.state.group}
                 handleJoinFormSubmit={this.handleJoinFormSubmit}
                 handleJoinFormClose={this.handleJoinFormClose}
+                handleJoinFormOpen={this.handleJoinFormOpen}
+                userJoined={this.state.userJoined}
               />
               <GroupChatOperations
                 addButtonClick={this.state.addButtonClick}

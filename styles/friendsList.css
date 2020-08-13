@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Recursive:wght@600&family=Arimo&display=swap");
+:root {
+  --form-background-color: #222632;
+  --form-text-color: #aeb1be;
+}
 
 body {
   overflow: hidden;
@@ -79,8 +83,12 @@ body {
 
 .search-area .fa-plus-square {
   margin-left: 0.5rem;
-  color: rgba(136, 133, 133, 0.3);
+  color: rgba(136, 133, 133, 0.25);
   cursor: pointer;
+}
+
+.search-not-found input {
+  border: 1px solid rgb(235, 44, 82) !important;
 }
 
 .friend-info,
@@ -130,7 +138,7 @@ body {
 .chat-groups-operations {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--form-background-color);
   box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   width: 12rem;
@@ -139,6 +147,7 @@ body {
   position: absolute;
   align-items: center;
   z-index: 1;
+  color: var(--form-text-color);
 }
 
 .chat-groups-operations span {
@@ -150,8 +159,8 @@ body {
 }
 
 .chat-groups-operations span:hover {
-  background-color: skyblue;
-  color: white;
+  background-color: var(--form-text-color);
+  color: var(--form-background-color);
 }
 
 .chat-groups-operations span:nth-child(1):hover {
@@ -166,6 +175,7 @@ body {
 
 .chat-groups-operations button {
   margin: 0.5rem;
+  background-color: var(--form-background-color);
 }
 
 .chat-message-wrapper {
@@ -256,28 +266,46 @@ body {
 
 .create-group-form .group-form {
   letter-spacing: 0.02rem;
-  align-items: flex-start;
+  align-items: center;
+  background-color: var(--form-background-color);
+  box-shadow: 0 4px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .create-group-form h3 {
-  color: rgb(80, 183, 224);
+  color: var(--form-text-color);
 }
 
 .create-group-form p {
   text-align: left;
-  color: rgba(136, 133, 133, 0.4);
-  margin-bottom: 0.1rem;
+  color: #aeb1be;
+  margin-bottom: 0.2rem;
+}
+
+.create-group-form p:nth-of-type(1) {
+  text-align: left !important;
 }
 
 .create-group-form p:nth-of-type(2) {
-  margin-bottom: 0rem;
+  margin-bottom: 0.3rem;
 }
 
 .create-group-form input {
   border: 1.2px rgba(136, 133, 133, 0.4) solid;
+  background-color: #323749;
+  color: #aeb1be;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: 0.03rem;
   margin-bottom: 1rem;
   font-size: 1rem;
   padding: 0.3rem;
+  border: none;
+  width: 17rem !important;
+}
+
+.create-group-form input::placeholder {
+  font-family: "Arimo", sans-serif;
+  color: #aeb1be;
+  letter-spacing: 0.03rem;
 }
 
 .create-group-form input:focus {
@@ -288,6 +316,7 @@ body {
   display: flex;
   justify-content: center;
   width: 18rem;
+  flex-wrap: wrap;
 }
 
 .create-group-form img {
@@ -301,22 +330,6 @@ body {
   cursor: pointer;
 }
 
-.create-group-form img:nth-of-type(1) {
-  border: 1px solid #b9bbdf;
-}
-
-.create-group-form img:nth-of-type(2) {
-  border: 1px solid #30e3ca;
-}
-
-.create-group-form img:nth-of-type(3) {
-  border: 1px solid #daa5e5;
-}
-
-.create-group-form img:nth-of-type(4) {
-  border: 1px solid #fce38a;
-}
-
 .group-image-hide {
   opacity: 0;
   transition: 0.4s;
@@ -326,6 +339,7 @@ body {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
+  background-color: #222632;
 }
 
 #create-group-form-create,
@@ -342,6 +356,11 @@ body {
 
 /* Join-Group-Form */
 
+.join-group-form .group-form {
+  background-color: var(--form-background-color);
+  box-shadow: 0 3.5px 3px 3px rgba(136, 133, 133, 0.25);
+}
+
 .join-group-form img {
   width: 5rem;
   border-radius: 50%;
@@ -351,9 +370,19 @@ body {
 .join-group-form h3 {
   margin-top: 1rem;
   padding-top: 0;
+  color: var(--form-text-color);
 }
 
 .join-group-form button {
   margin: 0.5rem;
   margin-top: 1rem;
+  background-color: var(--form-background-color);
+}
+
+.join-group-form .fa-user-friends {
+  color: var(--form-text-color);
+}
+
+.join-group-form span {
+  color: var(--form-text-color);
 }

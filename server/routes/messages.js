@@ -7,33 +7,37 @@ const dbConnect = require("../utils/dbConnect");
 
 dbConnect();
 
+// Return all the messages of a group chat
 router.get("/", async (req, res) => {
-  const groupInfo = await GroupInfo.findOne({ name: req.query.groupName });
-  if (groupInfo) {
+  try {
+    const groupInfo = await GroupInfo.findOne({ name: req.query.groupName });
     const group = await Group.findOne({ groupInfo: groupInfo._id }).populate(
       "messages"
     );
     res.status(200).json({ success: true, response: group.messages });
+  } catch (err) {
+    console.log(err);
   }
 });
 
+// save message of a group chat
 router.post("/", async (req, res) => {
-  const newMessage = new Message({
-    id: req.body.username,
-    imagePath: req.body.imagePath,
-    content: req.body.content,
-  });
-  const groupInfo = await GroupInfo.findOne({ name: req.body.groupName });
-  newMessage.save(async (err) => {
-    if (err) {
-      console.log(err);
-    }
+  try {
+    const newMessage = new Message({
+      id: req.body.username,
+      imagePath: req.body.imagePath,
+      content: req.body.content,
+    });
+    const groupInfo = await GroupInfo.findOne({ name: req.body.groupName });
+    await newMessage.save();
     await Group.findOneAndUpdate(
       { groupInfo: groupInfo._id },
       { $push: { messages: newMessage._id } }
     );
     res.status(200).json({ success: true });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

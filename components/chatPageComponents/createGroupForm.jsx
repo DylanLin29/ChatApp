@@ -47,29 +47,33 @@ const CreateGroupForm = ({
           createGroupFormOpen ? "group-form group-form-open" : "group-form"
         }
       >
-        <h3>Create a Group Chat</h3>
-        <p>Group Name: </p>
-        <input
-          type="text"
-          value={groupName}
-          onChange={(event) => handleGroupNameChange(event)}
-        />
-        <p>Pick a Group Icon:</p>
-        <div className="create-group-form-imgs-wrapper">
-          {images.map((image, index) => {
-            return (
-              <img
-                src={image}
-                key={image}
-                onClick={() => handleImageSelect(image, index)}
-                className={
-                  imageSelect === -1 || imageSelect === index
-                    ? "group-image-show"
-                    : "group-image-hide"
-                }
-              />
-            );
-          })}
+        <div className="create-group-form-content-wrapper">
+          <h3>Create a Group Chat</h3>
+          <div className="create-group-form-input">
+            <p>Group Name: </p>
+            <input
+              type="text"
+              value={groupName}
+              onChange={(event) => handleGroupNameChange(event)}
+            />
+          </div>
+          <p>Pick a Group Icon:</p>
+          <div className="create-group-form-imgs-wrapper">
+            {images.map((image, index) => {
+              return (
+                <img
+                  src={image}
+                  key={`create-group-imgs-${index}`}
+                  onClick={() => handleImageSelect(image, index)}
+                  className={
+                    imageSelect === -1 || imageSelect === index
+                      ? "group-image-show"
+                      : "group-image-hide"
+                  }
+                />
+              );
+            })}
+          </div>
         </div>
         <div>
           <button onClick={handleCancelClick} className="cancel-button">
