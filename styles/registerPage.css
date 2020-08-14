@@ -34,24 +34,39 @@
   box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
   margin-top: 3rem;
+  font-family: "Recursive", sans-serif;
 }
 
 .register-form h2 {
   color: #f8c27c;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02rem;
 }
 
 .register-form input {
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0.5rem;
-  margin-top: 1rem;
+  margin-bottom: 1.3rem;
   width: 25rem;
   font-family: "Catamaran", sans-serif;
   letter-spacing: 0.02rem;
   border-radius: 0.2rem;
+  color: #222632;
+  letter-spacing: 0.03rem;
 }
 
 .register-form input:focus {
   outline: none;
+}
+
+.register-form input:nth-of-type(2) {
+  font: small-caption !important;
+  letter-spacing: 0.03rem;
+}
+
+.register-form input:nth-of-type(2)::placeholder {
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 .register-form-buttons {
@@ -60,6 +75,45 @@
   align-items: flex-start;
 }
 
+.register-form-buttons div {
+  font-size: 1.2rem;
+}
+
 .choose-characters {
   opacity: 1;
+}
+
+.register-form p {
+  margin-bottom: 0.2rem;
+  color: #aeb1beec;
+}
+
+.input-with-error {
+  margin-bottom: 0;
+}
+
+.register-form .label {
+  margin-top: 0rem !important;
+  margin-bottom: 1.2rem;
+  text-align: left !important;
+}
+
+.continue-disabled:hover {
+  cursor: default;
+}
+
+.continue-disabled {
+  background-color: #2485cf78;
+}
+
+.register-form .error-message {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  color: crimson;
+}
+
+.register-form .switch-form {
+  width: 25rem;
+  padding-top: 0.3rem;
+  color: #aeb1becc;
 }

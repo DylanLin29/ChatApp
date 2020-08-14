@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import Router from "next/router";
 import axios from "axios";
+import Link from "next/link";
 const links = require("../config/links");
 
 const Navbar = ({ user }) => {
@@ -31,12 +32,16 @@ const Navbar = ({ user }) => {
   return (
     <nav className="navbar navbar-expand">
       <div className="navbar-brand">
-        <FontAwesomeIcon icon={faComments} size="lg" />
-        <span>CHAT</span>
+        <Link href="/">
+          <FontAwesomeIcon icon={faComments} size="lg" />
+        </Link>
+        <Link href="/">
+          <span>CHAT</span>
+        </Link>
       </div>
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        {user && (
+        {user ? (
           <ul className="navbar-nav ml-auto">
             {/* <li>
               <FontAwesomeIcon
@@ -48,6 +53,19 @@ const Navbar = ({ user }) => {
             <li onClick={handleProflieClick}>
               <img src={user.imagePath} />
               <FontAwesomeIcon icon={faAngleDown} />
+            </li>
+          </ul>
+        ) : (
+          <ul className="navbar-nav ml-auto">
+            <li>
+              <Link href="/login">
+                <button id="login-button">LOGIN</button>
+              </Link>
+            </li>
+            <li>
+              <Link href="/register">
+                <button id="register-button">REGISTER</button>
+              </Link>
             </li>
           </ul>
         )}

@@ -6,6 +6,14 @@
   color: white;
 }
 
+.fa-comments:hover {
+  cursor: pointer;
+}
+
+.navbar span {
+  cursor: pointer;
+}
+
 .navbar-nav {
   display: flex;
   flex-direction: row;
@@ -97,4 +105,39 @@
   margin-left: 0;
   padding-left: 0;
   margin-top: 1rem;
+}
+
+.navbar-nav button {
+  background-color: #242a2e;
+  padding: 0.5rem 0.5rem;
+  margin-right: 1rem;
+  border-radius: 0.4rem;
+}
+
+.navbar button:focus {
+  outline: none;
+}
+
+#login-button {
+  border: 1px #79d6e2 solid;
+  color: #79d6e2;
+}
+
+#login-button:hover {
+  background-color: #79d6e2;
+  color: white;
+}
+
+#register-button {
+  border: 1px solid #f8c27c;
+  color: #f8c27c;
+}
+
+#register-button:hover {
+  background-color: #f8c27c;
+  color: white;
+}
+
+.navbar-nav .continue-button:nth-child(1) {
+  margin-right: 1rem !important;
 }

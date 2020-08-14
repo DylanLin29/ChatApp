@@ -52,7 +52,7 @@ const CreateGroupForm = ({
         }
       >
         <div className="create-group-form-content-wrapper">
-          <h3>Create a Group Chat</h3>
+          <h4>Create a Group Chat</h4>
           <div
             className={
               createGroupErrorMessage === ""

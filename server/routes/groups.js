@@ -30,13 +30,14 @@ router.get("/", async (req, res) => {
 
 // Create a new group
 router.post("/", async (req, res) => {
-  const newGroupInfo = new GroupInfo({
-    name: req.body.name,
-    imagePath: req.body.imagePath,
-  });
   try {
+    const newGroupInfo = new GroupInfo({
+      name: req.body.name,
+      imagePath: req.body.imagePath,
+    });
+
     await newGroupInfo.save();
-    const newGroup = newGroup({
+    const newGroup = new Group({
       groupInfo: newGroupInfo._id,
       userlist: [req.body._id],
     });
@@ -48,9 +49,9 @@ router.post("/", async (req, res) => {
       { $push: { groups: newGroupInfo._id } }
     );
     const user = await User.findOne({ _id: req.body._id }).populate("groups");
-    res.status(200).json({ groups: user.groups });
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, groups: user.groups });
   } catch (err) {
+    console.log(err);
     return res.status(409).json({ success: false });
   }
 });

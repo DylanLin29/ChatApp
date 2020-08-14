@@ -5,23 +5,27 @@ import axios from "axios";
 import links from "../config/links";
 
 const LoginForm = () => {
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFormContinueClick = async (username, password) => {
     try {
-      const result = await axios.post(links.login, {
+      await axios.post(links.login, {
         name: username,
         password: password,
       });
       Router.push("/chat");
     } catch (err) {
-      console.log(err);
+      setErrorMessage("Username or Password is incorrect");
     }
   };
 
   return (
     <div className="login-form-wrapper">
-      <Form title="LOGIN" handleFormContinueClick={handleFormContinueClick} />
+      <Form
+        title="LOGIN"
+        handleFormContinueClick={handleFormContinueClick}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 };
