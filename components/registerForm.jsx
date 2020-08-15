@@ -6,12 +6,12 @@ import { useState } from "react";
 const RegisterForm = ({ handleFormContinueClick, charactersDisplay }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleRegisterContinueClick = async (username, password) => {
-    try {
-      await axios.get(links.register, {
-        params: { name: username },
-      });
+    const result = await axios.get(links.users, {
+      params: { name: username },
+    });
+    if (result.data.success) {
       handleFormContinueClick(username, password);
-    } catch (err) {
+    } else {
       setErrorMessage("This given username already exists");
     }
   };

@@ -32,14 +32,11 @@
 }
 
 .group-form {
-  position: absolute;
-  margin-top: 0.5rem;
-  margin-left: 0.5rem;
   display: flex;
   flex-direction: column;
   font-family: "Recursive", sans-serif;
   box-shadow: 0 0px 12px 1px rgba(136, 133, 133, 0.2);
-  background-color: white;
+  background-color: #222632;
   visibility: hidden;
   opacity: 0;
   transform: scale(0.8);
@@ -47,7 +44,7 @@
   border-radius: 0.5rem;
   padding: 1rem 2rem;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
 }
 
 .group-form-open {
@@ -55,4 +52,5 @@
   opacity: 1;
   transform: scale(1);
   transition: all 0.4s;
+  z-index: 2;
 }

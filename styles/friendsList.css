@@ -138,23 +138,26 @@ body {
 }
 
 .chat-groups-operations {
+  position: absolute;
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   background-color: var(--form-background-color);
   box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
-  width: 12rem;
+  width: 14rem;
   margin-left: 0.5rem;
   margin-top: 0.5rem;
   position: absolute;
   align-items: center;
   z-index: 1;
   color: var(--form-text-color);
+  padding-bottom: 0.3rem;
 }
 
 .chat-groups-operations span {
   cursor: pointer;
-  width: 12rem;
+  width: 14rem;
   text-align: center;
   padding-bottom: 0.7rem;
   padding-top: 0.7rem;
@@ -185,7 +188,22 @@ body {
   flex-direction: column;
   padding: 0.5rem;
   height: 60vh;
-  overflow: auto !important;
+  overflow-y: auto !important;
+}
+
+.chat-message-wrapper::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+}
+
+.chat-message-wrapper::-webkit-scrollbar-track {
+  background-color: rgba(57, 57, 57, 0.6);
+  border-radius: 8px;
+}
+
+.chat-message-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgba(156, 156, 156, 0.6);
 }
 
 #group-notification {
@@ -275,6 +293,9 @@ body {
 /* Create-Group-Form */
 
 .create-group-form .group-form {
+  position: absolute;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
   letter-spacing: 0.02rem;
   align-items: center;
   background-color: var(--form-background-color);
@@ -379,7 +400,7 @@ body {
 /* Join-Group-Form */
 
 .join-group-form .group-form {
-  background-color: var(--form-background-color);
+  margin-left: 0.5rem;
   box-shadow: 0 3.5px 3px 3px rgba(136, 133, 133, 0.25);
 }
 
@@ -407,4 +428,21 @@ body {
 
 .join-group-form span {
   color: var(--form-text-color);
+}
+
+/* Search Result */
+.search-result-wrapper {
+  position: absolute;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
+.move-profile-left {
+  margin-left: -14.5rem;
+}
+
+.profile-form h3 {
+  text-align: center;
 }

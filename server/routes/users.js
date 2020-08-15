@@ -6,15 +6,22 @@ const User = require("../../models/user");
 
 dbConnect();
 
-// check if the created username is unique
+// search user in the database
 router.get("/", async (req, res) => {
   const newUser = await User.findOne({ name: req.query.name });
   if (newUser) {
-    return res.status(409).json({ success: false });
+    return res.status(200).json({
+      success: false,
+      user: {
+        name: newUser.name,
+        imagePath: newUser.imagePath,
+      },
+    });
   }
   res.status(200).json({ success: true });
 });
 
+// create a user
 router.post("/", async (req, res) => {
   const newUser = await User.create(req.body);
   await newUser.save();

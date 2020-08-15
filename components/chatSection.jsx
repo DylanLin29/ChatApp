@@ -10,6 +10,7 @@ import MembersList from "./chatPageComponents/membersList";
 import MessageSection from "./chatPageComponents/messageSection";
 import ChatInputArea from "./chatPageComponents/chatInputArea";
 import ChatHeader from "./chatPageComponents/chatHeader";
+import SearchResult from "./chatPageComponents/searchResult";
 import axios from "axios";
 const links = require("../config/links");
 const ENDPOINT = links.connection;
@@ -34,6 +35,10 @@ class ChatSection extends Component {
         imagePath: "",
         size: "",
       },
+      searchUser: {
+        name: "",
+        imagePath: "",
+      },
       response: [],
       typingUser: "",
       currentChat: {
@@ -45,6 +50,7 @@ class ChatSection extends Component {
       createGroupFormOpen: false,
       createGroupErrorMessage: "",
       joinGroupFormOpen: false,
+      profileOpen: false,
       searchNotFound: false,
       membersListOpen: false,
       userJoined: false,
@@ -86,22 +92,38 @@ class ChatSection extends Component {
         this.setState({ typingUser: "" });
       }
     });
+
+    this.socket.on("MEMBERS_LIST", (membersData) => {
+      const currentChat = { ...this.state.currentChat };
+      currentChat.members = membersData.members;
+      this.setState({ currentChat });
+    });
   }
 
   searchSubmit = async (groupName) => {
-    try {
-      const result = await axios.get(links.groups, {
-        params: {
-          groupName: groupName,
-          userId: this.state.user._id,
-        },
-      });
+    const groupResult = await axios.get(links.groups, {
+      params: {
+        groupName: groupName,
+        userId: this.state.user._id,
+      },
+    });
+    if (groupResult.data.success) {
       this.setState({
-        group: result.data.group,
+        group: groupResult.data.group,
         joinGroupFormOpen: true,
-        userJoined: result.data.joined,
+        userJoined: groupResult.data.joined,
       });
-    } catch (err) {
+    }
+    const userResult = await axios.get(links.users, {
+      params: {
+        name: groupName,
+      },
+    });
+    if (userResult.data.user) {
+      this.setState({ profileOpen: true, searchUser: userResult.data.user });
+    }
+
+    if (!userResult.data.user && !groupResult.data.success) {
       this.setState({ searchNotFound: true });
     }
   };
@@ -197,7 +219,9 @@ class ChatSection extends Component {
   };
 
   handleJoinFormClose = () => {
-    this.setState({ joinGroupFormOpen: false });
+    this.setState({
+      joinGroupFormOpen: false,
+    });
   };
 
   handleJoinFormOpen = (groupName, groupImagePath) => {
@@ -214,6 +238,12 @@ class ChatSection extends Component {
       groupName: this.state.group.name,
     });
     this.setState({ joinGroupFormOpen: false, user });
+  };
+
+  handleProfileClose = () => {
+    this.setState({
+      profileOpen: false,
+    });
   };
 
   handleTitleInfoClick = () => {
@@ -286,14 +316,6 @@ class ChatSection extends Component {
                 createGroupErrorMessage={this.state.createGroupErrorMessage}
                 handleResetError={this.handleResetError}
               />
-              <JoinGroupForm
-                joinGroupFormOpen={this.state.joinGroupFormOpen}
-                group={this.state.group}
-                handleJoinFormSubmit={this.handleJoinFormSubmit}
-                handleJoinFormClose={this.handleJoinFormClose}
-                handleJoinFormOpen={this.handleJoinFormOpen}
-                userJoined={this.state.userJoined}
-              />
               <GroupChatOperations
                 addButtonClick={this.state.addButtonClick}
                 handleJoinClick={this.handleJoinClick}
@@ -301,6 +323,17 @@ class ChatSection extends Component {
                 handleCancelClick={() => {
                   this.setState({ addButtonClick: false });
                 }}
+              />
+              <SearchResult
+                joinGroupFormOpen={this.state.joinGroupFormOpen}
+                group={this.state.group}
+                handleJoinFormSubmit={this.handleJoinFormSubmit}
+                handleJoinFormClose={this.handleJoinFormClose}
+                handleJoinFormOpen={this.handleJoinFormOpen}
+                handleProfileClose={this.handleProfileClose}
+                userJoined={this.state.userJoined}
+                user={this.state.searchUser}
+                profileOpen={this.state.profileOpen}
               />
               <MessageSection
                 messagesRef={this.messagesRef}

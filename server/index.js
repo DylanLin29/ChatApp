@@ -6,12 +6,15 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 
-const register = require("./routes/register");
+const users = require("./routes/users");
 const login = require("./routes/login");
 const auth = require("./routes/auth");
 const logout = require("./routes/logout");
 const groups = require("./routes/groups");
 const messages = require("./routes/messages");
+
+const axios = require("axios");
+const links = require("../config/links");
 
 nextApp
   .prepare()
@@ -22,7 +25,7 @@ nextApp
     app.use(cookieParser());
 
     // Routes
-    app.use("/api/register", register);
+    app.use("/api/users", users);
     app.use("/api/login", login);
     app.use("/api/auth", auth);
     app.use("/api/logout", logout);
@@ -62,19 +65,35 @@ nextApp
         }
       });
 
-      socket.on("JOIN_GROUPCHAT", ({ userName, groupName }) => {
+      // Send group notification when users join the groupchat
+      // update the members list
+      socket.on("JOIN_GROUPCHAT", async ({ userName, groupName }) => {
+        const membersData = await axios.get(`${links.groups}/members`, {
+          params: { groupName: groupName },
+        });
         io.to(groupName).emit("GROUP_NOTIFICATION", {
           id: undefined,
           content: `${userName} just joined ${groupName}`,
           imagePath: "",
         });
+        io.to(groupName).emit("MEMBERS_LIST", {
+          members: membersData.data.userList,
+        });
       });
 
-      socket.on("LEAVE_GROUPCHAT", ({ userName, groupName }) => {
+      // Send group notificatino when users leave the groupchat
+      // update the members list
+      socket.on("LEAVE_GROUPCHAT", async ({ userName, groupName }) => {
+        const membersData = await axios.get(`${links.groups}/members`, {
+          params: { groupName: groupName },
+        });
         io.to(groupName).emit("GROUP_NOTIFICATION", {
           id: undefined,
           content: `${userName} has left ${groupName}`,
           imagePath: "",
+        });
+        io.to(groupName).emit("MEMBERS_LIST", {
+          members: membersData.data.userList,
         });
       });
 

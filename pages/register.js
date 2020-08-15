@@ -20,7 +20,7 @@ class Register extends Component {
     const user = { ...this.state.user };
     user.imagePath = imagePath;
     this.setState({ user }, async () => {
-      await axios.post(links.register, this.state.user);
+      await axios.post(links.users, this.state.user);
     });
     Router.push("/chat");
   };
