@@ -1,6 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
-const ProfileForm = ({ user, profileOpen, handleProfileClose, groupFound }) => {
+import links from "../../config/links";
+import axios from "axios";
+const ProfileForm = ({
+  searchUser,
+  profileOpen,
+  handleProfileClose,
+  groupFound,
+  userName,
+}) => {
+  const handleAddClick = () => {
+    axios.post(`${links.users}/friendRequest`, {
+      friendName: searchUser.name,
+      userName: userName,
+    });
+    handleProfileClose();
+  };
   return (
     <div
       className={
@@ -10,8 +25,8 @@ const ProfileForm = ({ user, profileOpen, handleProfileClose, groupFound }) => {
       <div
         className={profileOpen ? "group-form group-form-open" : "group-form"}
       >
-        <img src={user.imagePath} />
-        <h3>{user.name}</h3>
+        <img src={searchUser.imagePath} />
+        <h3>{searchUser.name}</h3>
         <div>
           <FontAwesomeIcon icon={faUserFriends} style={{ opacity: 0 }} />
         </div>
@@ -19,7 +34,9 @@ const ProfileForm = ({ user, profileOpen, handleProfileClose, groupFound }) => {
           <button className="cancel-button" onClick={handleProfileClose}>
             Close
           </button>
-          <button className="continue-button">Add</button>
+          <button className="continue-button" onClick={handleAddClick}>
+            Add
+          </button>
         </div>
       </div>
     </div>

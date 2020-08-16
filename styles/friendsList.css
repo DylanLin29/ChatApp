@@ -191,21 +191,6 @@ body {
   overflow-y: auto !important;
 }
 
-.chat-message-wrapper::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 8px;
-}
-
-.chat-message-wrapper::-webkit-scrollbar-track {
-  background-color: rgba(57, 57, 57, 0.6);
-  border-radius: 8px;
-}
-
-.chat-message-wrapper::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background-color: rgba(156, 156, 156, 0.6);
-}
-
 #group-notification {
   font-family: "Arimo", sans-serif;
   color: gray;

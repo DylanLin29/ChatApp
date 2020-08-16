@@ -3,7 +3,6 @@ import io from "socket.io-client";
 import _ from "lodash";
 import GroupChatOperations from "./chatPageComponents/groupChatOperations";
 import CreateGroupForm from "./chatPageComponents/createGroupForm";
-import JoinGroupForm from "./chatPageComponents/joinGroupForm";
 import SearchArea from "./chatPageComponents/searchArea";
 import FriendsList from "./chatPageComponents/friendsList";
 import MembersList from "./chatPageComponents/membersList";
@@ -257,16 +256,16 @@ class ChatSection extends Component {
     this.setState({ response: [] });
     const result = await axios.post(`${links.groups}/leave`, {
       groupName: currentChat.name,
-      userName: this.props.user.name,
+      userName: this.state.user.name,
     });
     this.socket.emit("LEAVE_GROUPCHAT", {
-      userName: this.props.user.name,
+      userName: this.state.user.name,
       groupName: this.state.group.name,
     });
     currentChat.name = "";
     currentChat.imagePath = "";
     currentChat.members = this.state.currentChat.members.filter(
-      (member) => member.name !== this.props.user.name
+      (member) => member.name !== this.state.user.name
     );
     this.setState({ currentChat, membersListOpen: false });
     this.setState({ user: { groups: result.data.groups } });
@@ -332,19 +331,20 @@ class ChatSection extends Component {
                 handleJoinFormOpen={this.handleJoinFormOpen}
                 handleProfileClose={this.handleProfileClose}
                 userJoined={this.state.userJoined}
-                user={this.state.searchUser}
+                searchUser={this.state.searchUser}
+                userName={this.state.user.name}
                 profileOpen={this.state.profileOpen}
               />
               <MessageSection
                 messagesRef={this.messagesRef}
                 response={this.state.response}
-                username={this.props.user.name}
-                userImagePath={this.props.user.imagePath}
+                username={this.state.user.name}
+                userImagePath={this.state.user.imagePath}
               />
               {this.state.currentChat.name && (
                 <ChatInputArea
                   handleChatInputEnter={this.handleChatInputEnter}
-                  user={this.props.user}
+                  user={this.state.user}
                   typingUser={this.state.typingUser}
                   groupName={this.state.currentChat.name}
                 />

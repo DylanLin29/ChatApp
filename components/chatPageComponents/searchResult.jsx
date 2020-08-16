@@ -7,8 +7,8 @@ const searchResult = ({
   handleJoinFormClose,
   handleJoinFormOpen,
   userJoined,
-  user,
-  handleProfileOpen,
+  searchUser,
+  userName,
   handleProfileClose,
   profileOpen,
 }) => {
@@ -23,11 +23,11 @@ const searchResult = ({
         userJoined={userJoined}
       />
       <ProfileForm
-        user={user}
-        handleProfileOpen={handleProfileOpen}
+        searchUser={searchUser}
         profileOpen={profileOpen}
         handleProfileClose={handleProfileClose}
         groupFound={joinGroupFormOpen}
+        userName={userName}
       />
     </div>
   );

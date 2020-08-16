@@ -44,7 +44,8 @@
   border-radius: 0.5rem;
   padding: 1rem 2rem;
   align-items: center;
-  z-index: 2;
+  position: relative;
+  z-index: 1;
 }
 
 .group-form-open {
@@ -52,5 +53,5 @@
   opacity: 1;
   transform: scale(1);
   transition: all 0.4s;
-  z-index: 2;
+  z-index: 1;
 }

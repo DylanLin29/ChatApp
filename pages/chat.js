@@ -13,7 +13,9 @@ class Chat extends Component {
         imagePath: "",
         _id: "",
         groups: [],
+        friends: [],
       },
+      requests: [],
     };
   }
 
@@ -21,7 +23,22 @@ class Chat extends Component {
     const userInfo = await axios.get(links.auth, {
       withCredentials: true,
     });
-    this.setState({ user: userInfo.data });
+    if (userInfo.data) {
+      const friendRequestResult = await axios.get(
+        `${links.users}/friendRequest`,
+        {
+          params: {
+            userName: userInfo.data.name,
+          },
+        }
+      );
+      this.setState({
+        user: userInfo.data,
+        requests: friendRequestResult.data.requests,
+      });
+    } else {
+      this.setState({ user: userInfo.data });
+    }
   }
 
   handleCreateFormDoSubmit = async (name, imagePath) => {
@@ -45,11 +62,40 @@ class Chat extends Component {
     this.setState({ user: user });
   };
 
+  handleFriendRequestDecline = async (requestSenderName) => {
+    const requestsInfo = await axios.post(
+      `${links.users}/friendRequest/decline`,
+      {
+        userName: this.state.user.name,
+        friendRequestName: requestSenderName,
+      }
+    );
+    this.setState({ requests: requestsInfo.data.requests });
+  };
+
+  handleFriendRequestAccept = async (requestSenderName) => {
+    const friendsInfo = await axios.post(
+      `${links.users}/friendRequest/accept`,
+      {
+        userName: this.state.user.name,
+        friendRequestName: requestSenderName,
+      }
+    );
+    const user = { ...this.state.user };
+    user.friends = friendsInfo.data.friendsList;
+    this.setState({ user, requests: friendsInfo.data.requests });
+  };
+
   render() {
-    const { user } = this.state;
+    const { user, requests } = this.state;
     return (
       <>
-        <Navbar user={user} />
+        <Navbar
+          user={user}
+          requests={requests}
+          handleFriendRequestDecline={this.handleFriendRequestDecline}
+          handleFriendRequestAccept={this.handleFriendRequestAccept}
+        />
         <ChatSection
           user={user}
           handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
