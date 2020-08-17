@@ -27,6 +27,7 @@ class Navbar extends Component {
   };
 
   handleLogout = async () => {
+    this.props.socket.emit("LOGOUT", this.props.user.name);
     await axios.get(links.logout);
     Router.push("/");
   };
@@ -48,11 +49,15 @@ class Navbar extends Component {
           {this.props.user ? (
             <ul className="navbar-nav ml-auto">
               <li>
-                <FontAwesomeIcon
-                  icon={faBell}
-                  size="lg"
-                  onClick={this.handleNotificationClick}
-                />
+                <div
+                  className={this.props.requests.length !== 0 ? "red-bell" : ""}
+                >
+                  <FontAwesomeIcon
+                    icon={faBell}
+                    size="lg"
+                    onClick={this.handleNotificationClick}
+                  />
+                </div>
               </li>
               <li onClick={this.handleProflieClick}>
                 <img src={this.props.user.imagePath} />

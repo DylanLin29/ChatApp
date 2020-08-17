@@ -8,8 +8,13 @@ const ProfileForm = ({
   handleProfileClose,
   groupFound,
   userName,
+  socket,
 }) => {
   const handleAddClick = () => {
+    socket.emit("FRIEND_REQUEST", {
+      userName: userName,
+      friendName: searchUser.name,
+    });
     axios.post(`${links.users}/friendRequest`, {
       friendName: searchUser.name,
       userName: userName,

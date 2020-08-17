@@ -40,6 +40,10 @@
   color: #aeb1be;
 }
 
+.red-bell .fa-bell {
+  color: rgb(240, 74, 107);
+}
+
 .navbar-brand span {
   font-family: "Josefin Sans", sans-serif;
   color: white;

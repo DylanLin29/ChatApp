@@ -51,9 +51,15 @@ nextApp
 
     const socket = require("socket.io");
     const io = socket(server);
+    const usersList = {};
 
     io.on("connection", (socket) => {
       console.log(socket.id);
+
+      socket.on("setUserName", (userName) => {
+        usersList[userName] = socket;
+        console.log(usersList);
+      });
 
       socket.on("joinRoom", (room) => {
         socket.join(room);
@@ -108,8 +114,20 @@ nextApp
         socket.broadcast.emit("NOT_TYPING", data);
       });
 
-      socket.on("disconnect", () => {
-        io.emit("DISCONNECT", "some one just left");
+      socket.on("FRIEND_REQUEST", ({ userName, friendName }) => {
+        if (usersList[friendName]) {
+          usersList[friendName].emit("FRIEND_REQUEST", userName);
+        }
+      });
+
+      socket.on("ADD_FRIEND", ({ userName, friendName }) => {
+        if (usersList[friendName]) {
+          usersList[friendName].emit("ADD_FRIEND", userName);
+        }
+      });
+
+      socket.on("LOGOUT", (userName) => {
+        delete usersList[userName];
       });
     });
   })

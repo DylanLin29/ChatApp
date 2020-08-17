@@ -11,6 +11,7 @@ const searchResult = ({
   userName,
   handleProfileClose,
   profileOpen,
+  socket,
 }) => {
   return (
     <div className="search-result-wrapper">
@@ -28,6 +29,7 @@ const searchResult = ({
         handleProfileClose={handleProfileClose}
         groupFound={joinGroupFormOpen}
         userName={userName}
+        socket={socket}
       />
     </div>
   );

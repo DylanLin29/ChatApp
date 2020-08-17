@@ -2,7 +2,9 @@ import Navbar from "../components/navbar";
 import ChatSection from "../components/chatSection";
 import { Component } from "react";
 import axios from "axios";
+import io from "socket.io-client";
 const links = require("../config/links");
+const socket = io(links.connection);
 
 class Chat extends Component {
   constructor(props) {
@@ -23,6 +25,11 @@ class Chat extends Component {
     const userInfo = await axios.get(links.auth, {
       withCredentials: true,
     });
+
+    if (userInfo.data.name) {
+      socket.emit("setUserName", userInfo.data.name);
+    }
+
     if (userInfo.data) {
       const friendRequestResult = await axios.get(
         `${links.users}/friendRequest`,
@@ -39,6 +46,23 @@ class Chat extends Component {
     } else {
       this.setState({ user: userInfo.data });
     }
+
+    socket.on("FRIEND_REQUEST", (requestSenderName) => {
+      let requests = this.state.requests;
+      requests.push(requestSenderName);
+      this.setState({ requests });
+    });
+
+    socket.on("ADD_FRIEND", async (friendName) => {
+      const userInfo = await axios.get(links.users, {
+        params: { name: friendName },
+      });
+      const user = { ...this.state.user };
+      let friends = user.friends;
+      friends.push(userInfo.data.user);
+      user.friends = friends;
+      this.setState({ user });
+    });
   }
 
   handleCreateFormDoSubmit = async (name, imagePath) => {
@@ -74,6 +98,10 @@ class Chat extends Component {
   };
 
   handleFriendRequestAccept = async (requestSenderName) => {
+    socket.emit("ADD_FRIEND", {
+      userName: this.state.user.name,
+      friendName: requestSenderName,
+    });
     const friendsInfo = await axios.post(
       `${links.users}/friendRequest/accept`,
       {
@@ -95,11 +123,13 @@ class Chat extends Component {
           requests={requests}
           handleFriendRequestDecline={this.handleFriendRequestDecline}
           handleFriendRequestAccept={this.handleFriendRequestAccept}
+          socket={socket}
         />
         <ChatSection
           user={user}
           handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
           handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}
+          socket={socket}
         />
       </>
     );

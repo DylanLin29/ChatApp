@@ -1,5 +1,5 @@
 module.exports = {
-  connection: "https://dylan-chatapp.herokuapp.com/",
+  connection: "https://dylan-chatapp.herokuapp.com/chat",
   logout: "https://dylan-chatapp.herokuapp.com/api/logout",
   auth: "https://dylan-chatapp.herokuapp.com/api/auth",
   users: "https://dylan-chatapp.herokuapp.com/api/users",
