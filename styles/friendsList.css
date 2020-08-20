@@ -68,6 +68,22 @@ body {
   cursor: pointer;
 }
 
+.friend-chat-profile {
+  width: 14.5rem;
+  margin-top: 0.5rem;
+  position: absolute;
+  right: -14.5rem;
+  visibility: hidden;
+  transition: all 0.4s;
+  z-index: 1;
+}
+
+.friend-chat-profile-open {
+  visibility: visible;
+  transition: all 0.4s;
+  transform: translate(-15.7rem);
+}
+
 .search-area {
   display: flex;
   justify-content: center;
@@ -135,6 +151,7 @@ body {
 .chat-window-current-title .fa-ellipsis-h {
   position: absolute;
   right: 1rem;
+  color: #393e46;
 }
 
 .chat-groups-operations {

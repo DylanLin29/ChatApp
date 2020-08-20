@@ -6,7 +6,7 @@ const FriendsList = ({
 }) => {
   return (
     <div className="friends-list">
-      {groups.map(({ name, imagePath }, index) => {
+      {groups?.map(({ name, imagePath }, index) => {
         return (
           <div
             className="friend-info"
@@ -18,7 +18,7 @@ const FriendsList = ({
           </div>
         );
       })}
-      {friends.map(({ name, imagePath }, index) => {
+      {friends?.map(({ name, imagePath }, index) => {
         return (
           <div
             className="friend-info"

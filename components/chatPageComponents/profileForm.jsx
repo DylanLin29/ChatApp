@@ -6,21 +6,37 @@ const ProfileForm = ({
   searchUser,
   profileOpen,
   handleProfileClose,
+  handleOpenFriendChat,
   groupFound,
-  userName,
   socket,
+  user,
 }) => {
   const handleAddClick = () => {
     socket.emit("FRIEND_REQUEST", {
-      userName: userName,
+      userName: user.name,
       friendName: searchUser.name,
     });
     axios.post(`${links.users}/friendRequest`, {
       friendName: searchUser.name,
-      userName: userName,
+      userName: user.name,
     });
     handleProfileClose();
   };
+
+  const handleChatOpen = () => {
+    handleProfileClose();
+    handleOpenFriendChat(searchUser.name, searchUser.imagePath);
+  };
+
+  const alreadyFriend = () => {
+    for (let i = 0; i < user.friends.length; i++) {
+      if (user.friends[i].name === searchUser.name) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <div
       className={
@@ -39,9 +55,15 @@ const ProfileForm = ({
           <button className="cancel-button" onClick={handleProfileClose}>
             Close
           </button>
-          <button className="continue-button" onClick={handleAddClick}>
-            Add
-          </button>
+          {alreadyFriend() ? (
+            <button className="continue-button" onClick={handleChatOpen}>
+              Open
+            </button>
+          ) : (
+            <button className="continue-button" onClick={handleAddClick}>
+              Add
+            </button>
+          )}
         </div>
       </div>
     </div>

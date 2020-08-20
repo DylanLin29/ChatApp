@@ -2,14 +2,14 @@ import JoinGroupForm from "./joinGroupForm";
 import ProfileForm from "./profileForm";
 const searchResult = ({
   joinGroupFormOpen,
-  group,
+  searchGroup,
   handleJoinFormSubmit,
   handleJoinFormClose,
-  handleJoinFormOpen,
-  userJoined,
   searchUser,
-  userName,
+  user,
   handleProfileClose,
+  handleOpenFriendChat,
+  handleOpenGroupChat,
   profileOpen,
   socket,
 }) => {
@@ -17,18 +17,19 @@ const searchResult = ({
     <div className="search-result-wrapper">
       <JoinGroupForm
         joinGroupFormOpen={joinGroupFormOpen}
-        group={group}
+        searchGroup={searchGroup}
         handleJoinFormClose={handleJoinFormClose}
         handleJoinFormSubmit={handleJoinFormSubmit}
-        handleJoinFormOpen={handleJoinFormOpen}
-        userJoined={userJoined}
+        handleOpenGroupChat={handleOpenGroupChat}
+        user={user}
       />
       <ProfileForm
         searchUser={searchUser}
+        user={user}
         profileOpen={profileOpen}
         handleProfileClose={handleProfileClose}
+        handleOpenFriendChat={handleOpenFriendChat}
         groupFound={joinGroupFormOpen}
-        userName={userName}
         socket={socket}
       />
     </div>

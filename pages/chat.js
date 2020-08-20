@@ -114,6 +114,10 @@ class Chat extends Component {
     this.setState({ user, requests: friendsInfo.data.requests });
   };
 
+  handleUserUpdate = (user) => {
+    this.setState({ user });
+  };
+
   render() {
     const { user, requests } = this.state;
     return (
@@ -129,6 +133,7 @@ class Chat extends Component {
           user={user}
           handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
           handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}
+          handleUserUpdate={this.handleUserUpdate}
           socket={socket}
         />
       </>

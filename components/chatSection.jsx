@@ -20,7 +20,7 @@ class ChatSection extends Component {
     this.searchRef = React.createRef();
 
     this.state = {
-      group: {
+      searchGroup: {
         name: "",
         imagePath: "",
         size: "",
@@ -44,7 +44,6 @@ class ChatSection extends Component {
       profileOpen: false,
       searchNotFound: false,
       membersListOpen: false,
-      userJoined: false,
     };
   }
 
@@ -97,14 +96,12 @@ class ChatSection extends Component {
     const groupResult = await axios.get(links.groups, {
       params: {
         groupName: name,
-        userId: this.props.user._id,
       },
     });
     if (groupResult.data.success) {
       this.setState({
-        group: groupResult.data.group,
+        searchGroup: groupResult.data.group,
         joinGroupFormOpen: true,
-        userJoined: groupResult.data.joined,
       });
     }
     const userResult = await axios.get(links.users, {
@@ -145,6 +142,7 @@ class ChatSection extends Component {
         isFriendChat: false,
       },
       response: responseResult.data.response,
+      membersListOpen: false,
     });
   };
 
@@ -160,6 +158,7 @@ class ChatSection extends Component {
         isFriendChat: true,
       },
       response: responseResult.data.responses,
+      membersListOpen: false,
     });
   };
 
@@ -189,7 +188,8 @@ class ChatSection extends Component {
       });
       const user = { ...this.props.user };
       user.groups = result.data.groups;
-      this.setState({ createGroupFormOpen: false, user });
+      this.props.handleUserUpdate(user);
+      this.setState({ createGroupFormOpen: false });
     } catch (err) {
       this.setState({ createGroupErrorMessage: "Group Chat Already Exists" });
     }
@@ -201,20 +201,13 @@ class ChatSection extends Component {
     });
   };
 
-  handleJoinFormOpen = (groupName, groupImagePath) => {
-    this.setState({ joinGroupFormOpen: false });
-    this.handleOpenGroupChat(groupName, groupImagePath);
-  };
-
   handleJoinFormSubmit = () => {
-    this.props.handleJoinFormDoSubmit(this.state.group.name);
-    const user = { ...this.props.user };
-    user.groups.push(this.state.group);
+    this.props.handleJoinFormDoSubmit(this.state.searchGroup.name);
     this.props.socket.emit("JOIN_GROUPCHAT", {
       userName: this.props.user.name,
-      groupName: this.state.group.name,
+      groupName: this.state.searchGroup.name,
     });
-    this.setState({ joinGroupFormOpen: false, user });
+    this.setState({ joinGroupFormOpen: false });
   };
 
   handleProfileClose = () => {
@@ -238,15 +231,17 @@ class ChatSection extends Component {
     });
     this.props.socket.emit("LEAVE_GROUPCHAT", {
       userName: this.props.user.name,
-      groupName: this.state.group.name,
+      groupName: this.state.searchGroup.name,
     });
     currentChat.name = "";
     currentChat.imagePath = "";
     currentChat.members = this.state.currentChat.members.filter(
       (member) => member.name !== this.props.user.name
     );
+    const user = { ...this.props.user };
+    user.groups = result.data.groups;
+    this.props.handleUserUpdate(user);
     this.setState({ currentChat, membersListOpen: false });
-    this.setState({ user: { groups: result.data.groups } });
   };
 
   handleSearchNotFoundChange = () => {
@@ -255,6 +250,16 @@ class ChatSection extends Component {
 
   handleResetError = () => {
     this.setState({ createGroupErrorMessage: "" });
+  };
+
+  clearCurrentChat = () => {
+    const currentChat = {
+      name: "",
+      imagePath: "",
+      members: [],
+      isFriendChat: false,
+    };
+    this.setState({ currentChat });
   };
 
   render() {
@@ -284,9 +289,13 @@ class ChatSection extends Component {
             />
             <div className="chat-section-below-header">
               <MembersList
-                groups={this.state.currentChat.members}
+                currentChat={this.state.currentChat}
                 membersListOpen={this.state.membersListOpen}
                 handleLeaveClick={this.handleLeaveClick}
+                handleCloseClick={this.handleTitleInfoClick}
+                handleUserUpdate={this.props.handleUserUpdate}
+                clearCurrentChat={this.clearCurrentChat}
+                user={this.props.user}
               />
               <CreateGroupForm
                 createGroupFormOpen={this.state.createGroupFormOpen}
@@ -305,14 +314,14 @@ class ChatSection extends Component {
               />
               <SearchResult
                 joinGroupFormOpen={this.state.joinGroupFormOpen}
-                group={this.state.group}
+                searchGroup={this.state.searchGroup}
                 handleJoinFormSubmit={this.handleJoinFormSubmit}
                 handleJoinFormClose={this.handleJoinFormClose}
-                handleJoinFormOpen={this.handleJoinFormOpen}
                 handleProfileClose={this.handleProfileClose}
-                userJoined={this.state.userJoined}
+                handleOpenFriendChat={this.handleOpenFriendChat}
+                handleOpenGroupChat={this.handleOpenGroupChat}
                 searchUser={this.state.searchUser}
-                userName={this.props.user.name}
+                user={this.props.user}
                 profileOpen={this.state.profileOpen}
                 socket={this.props.socket}
               />

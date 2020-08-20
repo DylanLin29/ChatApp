@@ -4,6 +4,7 @@ const _ = require("lodash");
 const dbConnect = require("../utils/dbConnect");
 const createToken = require("../utils/createToken");
 const User = require("../../models/user");
+const message = require("../../models/message");
 
 dbConnect();
 
@@ -77,6 +78,39 @@ router.post("/friendRequest/accept", async (req, res) => {
   res
     .status(200)
     .json({ success: true, friendsList: friendsList, requests: user.requests });
+});
+
+// delete a friend
+router.post("/friends/delete", async (req, res) => {
+  const { friendName, userName } = req.body;
+  const friend = await User.findOne({ name: friendName }).populate(
+    "privateMessages"
+  );
+  const user = await User.findOne({ name: userName }).populate(
+    "privateMessages"
+  );
+
+  const handleDeleteFriend = async (user, friendName, friendId) => {
+    const privateMessages = user.privateMessages;
+    const updateMessages = privateMessages.filter(
+      (message) => message.friendName !== friendName
+    );
+
+    user.privateMessages = updateMessages;
+
+    const friends = user.friends;
+    const friendIndex = friends.indexOf(friendId);
+    if (friendIndex > -1) {
+      friends.splice(friendIndex, 1);
+    }
+    user.friends = friends;
+    await user.save();
+  };
+
+  await handleDeleteFriend(user, friendName, friend._id);
+  await handleDeleteFriend(friend, userName, user._id);
+
+  res.status(200).json({ success: true });
 });
 
 module.exports = router;

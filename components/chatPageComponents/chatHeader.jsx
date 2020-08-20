@@ -6,7 +6,11 @@ const ChatHeader = ({ name, imagePath, handleTitleInfoClick }) => {
       <img src={imagePath} />
       <span>{name}</span>
       {name && (
-        <FontAwesomeIcon icon={faEllipsisH} onClick={handleTitleInfoClick} />
+        <FontAwesomeIcon
+          icon={faEllipsisH}
+          onClick={handleTitleInfoClick}
+          size="lg"
+        />
       )}
     </div>
   );

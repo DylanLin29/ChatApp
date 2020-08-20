@@ -20,7 +20,6 @@ router.get("/", async (req, res) => {
         imagePath: group.imagePath,
         size: completeGroup.userlist.length,
       },
-      joined: completeGroup.userlist.includes(req.query.userId),
     });
   }
   return res

@@ -3,12 +3,26 @@ import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
 
 const JoinGroupForm = ({
   joinGroupFormOpen,
-  group,
+  searchGroup,
   handleJoinFormSubmit,
   handleJoinFormClose,
-  handleJoinFormOpen,
-  userJoined,
+  handleOpenGroupChat,
+  user,
 }) => {
+  const handleChatOpen = () => {
+    handleJoinFormClose();
+    handleOpenGroupChat(searchGroup.name, searchGroup.imagePath);
+  };
+
+  const alreadyJoinGroup = () => {
+    for (let i = 0; i < user.groups.length; i++) {
+      if (searchGroup.name === user.groups[i].name) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="join-group-form">
       <div
@@ -16,19 +30,20 @@ const JoinGroupForm = ({
           joinGroupFormOpen ? "group-form group-form-open" : "group-form"
         }
       >
-        <img src={group.imagePath} />
-        <h3>{group.name}</h3>
+        <img src={searchGroup.imagePath} />
+        <h3>{searchGroup.name}</h3>
         <div>
-          <FontAwesomeIcon icon={faUserFriends} /> <span>{group.size}</span>
+          <FontAwesomeIcon icon={faUserFriends} />{" "}
+          <span>{searchGroup.size}</span>
         </div>
-        {userJoined ? (
+        {alreadyJoinGroup() ? (
           <div className="join-group-form-buttons">
             <button onClick={handleJoinFormClose} className="cancel-button">
               Close
             </button>
             <button
               id={"join-group-form-join"}
-              onClick={() => handleJoinFormOpen(group.name, group.imagePath)}
+              onClick={handleChatOpen}
               className="continue-button"
             >
               Open

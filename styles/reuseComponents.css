@@ -1,5 +1,6 @@
 .cancel-button,
-.continue-button {
+.continue-button,
+.close-button {
   background-color: white;
   width: 4rem;
   border-radius: 0.2rem;
@@ -16,6 +17,11 @@
   border: cornflowerblue 1px solid;
 }
 
+.close-button {
+  color: #797a7e;
+  border: #797a7e 1px solid;
+}
+
 .cancel-button:hover {
   color: white;
   background-color: crimson;
@@ -26,8 +32,14 @@
   background-color: cornflowerblue;
 }
 
+.close-button:hover {
+  color: white;
+  background-color: #797a7e;
+}
+
 .cancel-button:focus,
-.continue-button:focus {
+.continue-button:focus,
+.close-button:focus {
   outline: none;
 }
 
