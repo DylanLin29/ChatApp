@@ -11,7 +11,6 @@ import ChatHeader from "./chatPageComponents/chatHeader";
 import SearchResult from "./chatPageComponents/searchResult";
 import axios from "axios";
 const links = require("../config/links");
-var timeout = undefined;
 
 class ChatSection extends Component {
   constructor(props) {
@@ -36,6 +35,7 @@ class ChatSection extends Component {
         name: "",
         imagePath: "",
         members: [],
+        isFriendChat: false,
       },
       addButtonClick: false,
       createGroupFormOpen: false,
@@ -50,6 +50,13 @@ class ChatSection extends Component {
 
   async componentDidMount() {
     // listen to the server
+    this.props.socket.on("PRIVATE_MESSAGE", (message) => {
+      let response = this.state.response;
+      response.push(message);
+      this.setState({ response });
+      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+    });
+
     this.props.socket.on("MESSAGE", (data) => {
       let response = this.state.response;
       response.push(data);
@@ -64,6 +71,10 @@ class ChatSection extends Component {
       this.setState({ response });
       this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
     });
+
+    if (this.state.currentChat.name) {
+      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+    }
 
     this.props.socket.on("TYPING", (typingUser) => {
       this.setState({ typingUser });
@@ -82,10 +93,10 @@ class ChatSection extends Component {
     });
   }
 
-  searchSubmit = async (groupName) => {
+  searchSubmit = async (name) => {
     const groupResult = await axios.get(links.groups, {
       params: {
-        groupName: groupName,
+        groupName: name,
         userId: this.props.user._id,
       },
     });
@@ -98,7 +109,7 @@ class ChatSection extends Component {
     }
     const userResult = await axios.get(links.users, {
       params: {
-        name: groupName,
+        name: name,
       },
     });
     if (userResult.data.user) {
@@ -107,38 +118,6 @@ class ChatSection extends Component {
 
     if (!userResult.data.user && !groupResult.data.success) {
       this.setState({ searchNotFound: true });
-    }
-  };
-
-  handleNoTyping = () => {
-    this.props.socket.emit("NOT_TYPING", this.props.user.name);
-  };
-
-  handleChatInputEnter = async (event, message) => {
-    if (event.key !== "Enter") {
-      this.props.socket.emit("TYPING", {
-        name: this.props.user.name,
-        room: this.state.currentChat.name,
-      });
-      clearTimeout(timeout);
-      timeout = setTimeout(this.handleNoTyping, 5000);
-    } else {
-      const removeSpaces = message.content.replace(/\s/g, "");
-      if (event.key === "Enter" && removeSpaces) {
-        this.props.socket.emit("MESSAGE", {
-          message: message,
-          room: this.state.currentChat.name,
-        });
-        clearTimeout(timeout);
-        // save message to database
-        await axios.post(links.messages, {
-          username: message.id,
-          imagePath: message.imagePath,
-          content: message.content,
-          groupName: this.state.currentChat.name,
-        });
-        this.props.socket.emit("NOT_TYPING", this.props.user.name);
-      }
     }
   };
 
@@ -163,19 +142,24 @@ class ChatSection extends Component {
         name: name,
         imagePath: imagePath,
         members: result.data.userList,
+        isFriendChat: false,
       },
       response: responseResult.data.response,
     });
   };
 
   handleOpenFriendChat = async (name, imagePath) => {
+    const responseResult = await axios.get(`${links.messages}/privateMessage`, {
+      params: { friendName: name, userName: this.props.user.name },
+    });
     this.setState({
       currentChat: {
         name: name,
         imagePath: imagePath,
         members: [{ name: name, imagePath: imagePath }],
+        isFriendChat: true,
       },
-      response: [],
+      response: responseResult.data.responses,
     });
   };
 
@@ -332,18 +316,25 @@ class ChatSection extends Component {
                 profileOpen={this.state.profileOpen}
                 socket={this.props.socket}
               />
-              <MessageSection
-                messagesRef={this.messagesRef}
-                response={this.state.response}
-                username={this.props.user.name}
-                userImagePath={this.props.user.imagePath}
-              />
+              {this.state.currentChat.name && (
+                <MessageSection
+                  messagesRef={this.messagesRef}
+                  response={this.state.response}
+                  username={this.props.user.name}
+                  friendname={this.state.currentChat.name}
+                  userImagePath={this.props.user.imagePath}
+                  friendImagePath={this.state.currentChat.imagePath}
+                  isFriendChat={this.state.currentChat.isFriendChat}
+                />
+              )}
               {this.state.currentChat.name && (
                 <ChatInputArea
                   handleChatInputEnter={this.handleChatInputEnter}
                   user={this.props.user}
                   typingUser={this.state.typingUser}
-                  groupName={this.state.currentChat.name}
+                  currentChatName={this.state.currentChat.name}
+                  socket={this.props.socket}
+                  isFriendChat={this.state.currentChat.isFriendChat}
                 />
               )}
             </div>

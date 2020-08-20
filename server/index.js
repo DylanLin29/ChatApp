@@ -58,7 +58,6 @@ nextApp
 
       socket.on("setUserName", (userName) => {
         usersList[userName] = socket;
-        console.log(usersList);
       });
 
       socket.on("joinRoom", (room) => {
@@ -103,8 +102,17 @@ nextApp
         });
       });
 
+      // Group Message
       socket.on("MESSAGE", ({ message, room }) => {
         io.to(room).emit("MESSAGE", message);
+      });
+
+      // Private Message
+      socket.on("PRIVATE_MESSAGE", ({ message, friendName }) => {
+        if (usersList[friendName]) {
+          usersList[friendName].emit("PRIVATE_MESSAGE", message);
+        }
+        socket.emit("PRIVATE_MESSAGE", message);
       });
 
       socket.on("TYPING", ({ name, room }) => {

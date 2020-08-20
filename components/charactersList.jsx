@@ -8,14 +8,18 @@ const CharactersList = ({ handleSelect, charactersDisplay }) => {
     }
   };
   const imagesLinks = [
-    "https://playjoor.com/assets/avatar/matthew.png",
-    "https://playjoor.com/assets/avatar/jenny.jpg",
-    "https://playjoor.com/assets/avatar/joe.jpg",
-    "https://playjoor.com/assets/avatar/nan.jpg",
-    "https://playjoor.com/assets/avatar/elliot.jpg",
-    "https://playjoor.com/assets/avatar/helen.jpg",
-    "https://playjoor.com/assets/avatar/mark.png",
-    "https://playjoor.com/assets/avatar/rachel.png",
+    "../images/Character_1.png",
+    "../images/Character_2.png",
+    "../images/Character_3.png",
+    "../images/Character_4.png",
+    "../images/Character_5.png",
+    "../images/Character_6.png",
+    "../images/Character_7.png",
+    "../images/Character_8.png",
+    "../images/Character_9.png",
+    "../images/Character_10.png",
+    "../images/Character_11.png",
+    "../images/Character_12.png",
   ];
   return (
     <div className="characters-list-container">

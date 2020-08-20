@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  privateMessages: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "PrivateMessage" },
+  ],
 });
 
 module.exports = mongoose.model.User || mongoose.model("User", userSchema);
