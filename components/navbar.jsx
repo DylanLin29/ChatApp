@@ -23,6 +23,9 @@ class Navbar extends Component {
 
   handleNotificationClick = () => {
     const notificationOpen = !this.state.notificationOpen;
+    if (!notificationOpen) {
+      this.props.ClearNotifications();
+    }
     this.setState({ notificationOpen });
   };
 
@@ -50,7 +53,12 @@ class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
               <li>
                 <div
-                  className={this.props.requests.length !== 0 ? "red-bell" : ""}
+                  className={
+                    this.props.requests.length !== 0 ||
+                    this.props.notifications.length
+                      ? "red-bell"
+                      : ""
+                  }
                 >
                   <FontAwesomeIcon
                     icon={faBell}
@@ -81,7 +89,7 @@ class Navbar extends Component {
           {notificationOpen && (
             <div id="notification">
               <ul>
-                {this.props.requests.length !== 0 ? (
+                {this.props.requests.length !== 0 &&
                   this.props.requests.map((requestSenderName) => {
                     return (
                       <li
@@ -112,10 +120,23 @@ class Navbar extends Component {
                         </div>
                       </li>
                     );
-                  })
-                ) : (
-                  <p id="no-notification">You don't have any notifications</p>
-                )}
+                  })}
+                {this.props.notifications.length !== 0 &&
+                  this.props.notifications.map((senderName) => {
+                    return (
+                      <li
+                        key={`notifications-${this.props.user.name}-${senderName}`}
+                      >
+                        <p id="no-notification">
+                          Opps! You have been deleted by {senderName}
+                        </p>
+                      </li>
+                    );
+                  })}
+                {this.props.notifications.length === 0 &&
+                  this.props.requests.length === 0 && (
+                    <p id="no-notification">You don't have any notifications</p>
+                  )}
               </ul>
             </div>
           )}

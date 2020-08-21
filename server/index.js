@@ -134,6 +134,13 @@ nextApp
         }
       });
 
+      socket.on("DELETE_FRIEND", ({ userName, friendName }) => {
+        console.log(usersList);
+        if (usersList[userName]) {
+          usersList[userName].emit("DELETE_FRIEND", friendName);
+        }
+      });
+
       socket.on("LOGOUT", (userName) => {
         delete usersList[userName];
       });

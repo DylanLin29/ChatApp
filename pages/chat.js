@@ -18,6 +18,7 @@ class Chat extends Component {
         friends: [],
       },
       requests: [],
+      notifications: [],
     };
   }
 
@@ -62,6 +63,19 @@ class Chat extends Component {
       friends.push(userInfo.data.user);
       user.friends = friends;
       this.setState({ user });
+    });
+
+    socket.on("DELETE_FRIEND", async (friendName) => {
+      console.log("clientside", friendName);
+      const user = { ...this.state.user };
+      const friends = user.friends.filter((friend) => {
+        friend.name !== friendName;
+      });
+      user.friends = friends;
+      this.setState({ user });
+      let notifications = this.state.notifications;
+      notifications.push(friendName);
+      this.setState({ notifications });
     });
   }
 
@@ -118,15 +132,21 @@ class Chat extends Component {
     this.setState({ user });
   };
 
+  ClearNotifications = () => {
+    this.setState({ notifications: [] });
+  };
+
   render() {
-    const { user, requests } = this.state;
+    const { user, requests, notifications } = this.state;
     return (
       <>
         <Navbar
           user={user}
           requests={requests}
+          notifications={notifications}
           handleFriendRequestDecline={this.handleFriendRequestDecline}
           handleFriendRequestAccept={this.handleFriendRequestAccept}
+          ClearNotifications={this.ClearNotifications}
           socket={socket}
         />
         <ChatSection

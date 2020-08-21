@@ -9,6 +9,7 @@ const MembersList = ({
   handleUserUpdate,
   clearCurrentChat,
   user,
+  socket,
 }) => {
   const { name, imagePath, members, isFriendChat } = currentChat;
 
@@ -25,6 +26,11 @@ const MembersList = ({
     updateUser.friends = friends;
     handleUserUpdate(updateUser);
     clearCurrentChat();
+    // Delete Friend on Friend Side
+    socket.emit("DELETE_FRIEND", {
+      userName: currentChat.name,
+      friendName: user.name,
+    });
   };
 
   if (isFriendChat) {

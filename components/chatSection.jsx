@@ -6,6 +6,7 @@ import SearchArea from "./chatPageComponents/searchArea";
 import FriendsList from "./chatPageComponents/friendsList";
 import MembersList from "./chatPageComponents/membersList";
 import MessageSection from "./chatPageComponents/messageSection";
+import Background from "./chatPageComponents/background";
 import ChatInputArea from "./chatPageComponents/chatInputArea";
 import ChatHeader from "./chatPageComponents/chatHeader";
 import SearchResult from "./chatPageComponents/searchResult";
@@ -53,7 +54,7 @@ class ChatSection extends Component {
       let response = this.state.response;
       response.push(message);
       this.setState({ response });
-      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+      this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
     });
 
     this.props.socket.on("MESSAGE", (data) => {
@@ -61,14 +62,14 @@ class ChatSection extends Component {
       response.push(data);
       this.setState({ response });
       // set the messages always view at the bottom
-      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+      this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
     });
 
     this.props.socket.on("GROUP_NOTIFICATION", (message) => {
       let response = this.state.response;
       response.push(message);
       this.setState({ response });
-      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+      this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
     });
 
     if (this.state.currentChat.name) {
@@ -286,6 +287,7 @@ class ChatSection extends Component {
               name={this.state.currentChat.name}
               imagePath={this.state.currentChat.imagePath}
               handleTitleInfoClick={this.handleTitleInfoClick}
+              clearCurrentChat={this.clearCurrentChat}
             />
             <div className="chat-section-below-header">
               <MembersList
@@ -296,6 +298,7 @@ class ChatSection extends Component {
                 handleUserUpdate={this.props.handleUserUpdate}
                 clearCurrentChat={this.clearCurrentChat}
                 user={this.props.user}
+                socket={this.props.socket}
               />
               <CreateGroupForm
                 createGroupFormOpen={this.state.createGroupFormOpen}
@@ -335,6 +338,9 @@ class ChatSection extends Component {
                   friendImagePath={this.state.currentChat.imagePath}
                   isFriendChat={this.state.currentChat.isFriendChat}
                 />
+              )}
+              {this.state.currentChat.name === "" && (
+                <Background hasFriends={this.props.user.friends.length !== 0} />
               )}
               {this.state.currentChat.name && (
                 <ChatInputArea
