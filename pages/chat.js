@@ -4,7 +4,7 @@ import { Component } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 const links = require("../config/links");
-const socket = io(links.connection);
+const socket = io();
 
 class Chat extends Component {
   constructor(props) {
