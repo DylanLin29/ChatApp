@@ -5,6 +5,10 @@ class Home extends Component {
     return (
       <div className="chat-page">
         <Navbar />
+        <h1>FLASH CHAT</h1>
+        <img src="../images/LandingPage_1.png" />
+        <img src="../images/LandingPage_2.png" />
+        {/* <div className="footer">PlaceHolder</div> */}
       </div>
     );
   }

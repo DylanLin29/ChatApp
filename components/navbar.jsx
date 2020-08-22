@@ -89,6 +89,18 @@ class Navbar extends Component {
           {notificationOpen && (
             <div id="notification">
               <ul>
+                {this.props.notifications.length !== 0 &&
+                  this.props.notifications.map((senderName) => {
+                    return (
+                      <li
+                        key={`notifications-${this.props.user.name}-${senderName}`}
+                      >
+                        <p id="no-notification">
+                          Opps! You have been deleted by {senderName}
+                        </p>
+                      </li>
+                    );
+                  })}
                 {this.props.requests.length !== 0 &&
                   this.props.requests.map((requestSenderName) => {
                     return (
@@ -118,18 +130,6 @@ class Navbar extends Component {
                             Accept
                           </button>
                         </div>
-                      </li>
-                    );
-                  })}
-                {this.props.notifications.length !== 0 &&
-                  this.props.notifications.map((senderName) => {
-                    return (
-                      <li
-                        key={`notifications-${this.props.user.name}-${senderName}`}
-                      >
-                        <p id="no-notification">
-                          Opps! You have been deleted by {senderName}
-                        </p>
                       </li>
                     );
                   })}
