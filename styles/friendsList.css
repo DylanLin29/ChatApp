@@ -424,12 +424,16 @@ body {
   margin-top: 1rem;
   padding-top: 0;
   color: var(--form-text-color);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 1rem 0 1rem;
 }
 
 .join-group-form button {
-  margin: 0.5rem;
+  margin: 2rem 0.5rem 0.5rem;
   margin-top: 1rem;
   background-color: var(--form-background-color);
+  font-family: "Arimo", sans-serif;
 }
 
 .join-group-form .fa-user-friends {

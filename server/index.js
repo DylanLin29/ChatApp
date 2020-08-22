@@ -20,6 +20,7 @@ nextApp
   .prepare()
   .then(() => {
     const app = express();
+    const http = require("http").createServer(app);
 
     app.use(express.json());
     app.use(cookieParser());
@@ -44,13 +45,13 @@ nextApp
       return handle(req, res);
     });
 
-    const server = app.listen(PORT, (err) => {
+    http.listen(PORT, (err) => {
       if (err) throw err;
       console.log(`Ready on ${PORT}`);
     });
 
     const socket = require("socket.io");
-    const io = socket(server);
+    const io = socket(http);
     const usersList = {};
 
     io.on("connection", (socket) => {
