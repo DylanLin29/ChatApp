@@ -314,6 +314,7 @@ body {
   font-size: 1.3rem;
   color: var(--form-text-color);
   text-align: center;
+  font-weight: 700;
 }
 
 .create-group-form p {
@@ -386,6 +387,7 @@ body {
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
   background-color: #222632;
+  font-family: "Arimo", sans-serif;
 }
 
 .create-group-form div.pointing.ui.label.red {
@@ -471,6 +473,8 @@ body {
 .background-wrapper h3 {
   font-family: "Arimo", sans-serif;
   font-size: 2rem;
+  margin: calc(2rem - 0.14285714em) 0 1rem;
+  font-weight: 700;
 }
 
 .background-wrapper p {
