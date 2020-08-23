@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const dbConnect = require("../utils/dbConnect");
 const createToken = require("../utils/createToken");
 const User = require("../../models/user");
-const message = require("../../models/message");
 
 dbConnect();
 
@@ -26,6 +26,9 @@ router.get("/", async (req, res) => {
 // create a user
 router.post("/", async (req, res) => {
   const newUser = await User.create(req.body);
+  // encrypt password
+  const salt = await bcrypt.genSalt(10);
+  newUser.password = await bcrypt.hash(newUser.password, salt);
   await newUser.save();
   // Create Token and save as cookies
   createToken(res, newUser.name, newUser.imagePath, newUser._id);

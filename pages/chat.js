@@ -149,13 +149,15 @@ class Chat extends Component {
           ClearNotifications={this.ClearNotifications}
           socket={socket}
         />
-        <ChatSection
-          user={user}
-          handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
-          handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}
-          handleUserUpdate={this.handleUserUpdate}
-          socket={socket}
-        />
+        {user.name && (
+          <ChatSection
+            user={user}
+            handleCreateFormDoSubmit={this.handleCreateFormDoSubmit}
+            handleJoinFormDoSubmit={this.handleJoinFormDoSubmit}
+            handleUserUpdate={this.handleUserUpdate}
+            socket={socket}
+          />
+        )}
       </>
     );
   }
