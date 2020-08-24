@@ -34,14 +34,15 @@
   color: white;
 }
 
-.fa-bell {
-  margin-right: 1.5rem;
-  /* color: rgb(238, 67, 101); */
-  color: #aeb1be;
-}
-
-.red-bell .fa-bell {
-  color: rgb(240, 74, 107);
+.notification-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  background-color: #0962a7;
+  display: block;
+  border-radius: 50%;
+  position: absolute;
+  top: 0.8rem;
+  right: 0.6rem;
 }
 
 .navbar-brand span {
@@ -52,17 +53,99 @@
   letter-spacing: 0.1rem;
 }
 
+.profile {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0.5rem;
+  top: 3.5rem;
+  background-color: white;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  z-index: 1;
+  align-items: center;
+  text-align: center;
+  width: 11rem;
+}
+
+.notification-section {
+  display: none;
+  position: absolute;
+  top: 2.8rem;
+  right: 11.1rem;
+  background-color: #222632;
+  color: #aeb1be;
+  padding: 1rem 0.45rem;
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  min-width: 20rem;
+  text-align: center;
+}
+
+.notification {
+  padding: 0 1rem;
+}
+
+.each-notification:not(:nth-last-child(1)) {
+  padding-bottom: 1rem;
+}
+
+.each-notification:not(:nth-child(1)) {
+  padding-top: 0.5rem;
+  width: 100%;
+  border-top: rgba(136, 133, 133, 0.4) 1.5px solid;
+}
+
+.profile span {
+  padding: 1rem 1rem;
+  width: 100%;
+}
+
+.notification-wrapper {
+  width: 100%;
+}
+
+#notification-button {
+  width: 11rem;
+}
+
+#notification-button:hover + div {
+  display: inline;
+}
+
+.notification-wrapper:hover .notification-section {
+  display: inline;
+}
+
+.notification-wrapper .notification-buttons-wrapper {
+  margin-top: 1rem;
+}
+
+.notification-wrapper .cancel-button,
+.notification-wrapper .continue-button {
+  background-color: #222632;
+}
+
+.notification-section::after {
+  content: " ";
+  position: absolute;
+  right: 0rem;
+  top: 1rem;
+  border-top: 7px solid transparent;
+  border-right: 7px solid white;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
 #sign-out-button {
   color: crimson;
-  position: absolute;
-  background-color: white;
-  right: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  top: 3.5rem;
-  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   z-index: 1;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  margin-top: 0.7rem;
+  width: 100%;
 }
 
 #sign-out-button:after {
@@ -79,57 +162,9 @@
 #sign-out-button:hover {
   color: white;
   background-color: crimson;
-}
-
-#sign-out-button:hover:after {
-  border-bottom: 7px solid crimson;
-}
-
-#notification {
-  position: absolute;
-  top: 3.5rem;
-  right: 5rem;
-  background-color: white;
-  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
-  border-radius: 0.4rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0.2rem 1rem;
-  width: 17rem;
-}
-
-#notification:after {
-  content: " ";
-  position: absolute;
-  right: 1.1rem;
-  top: -0.5rem;
-  border-top: none;
-  border-right: 7px solid transparent;
-  border-left: 7px solid transparent;
-  border-bottom: 7px solid white;
-}
-
-#notification ul {
-  list-style-type: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-left: -3rem;
-  display: flex;
-}
-
-#notification li p {
-  margin-bottom: 0.6rem;
-  font-family: "Arimo", sans-serif;
-  font-size: 1.05rem;
-}
-
-#notification li:not(:first-child) {
-  border-top: 1px solid rgba(136, 133, 133, 0.4);
-  padding-top: 0.6rem;
-  width: 17rem;
-  text-align: center;
+  width: 100%;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
 }
 
 .notification-buttons-wrapper {
@@ -138,13 +173,9 @@
 }
 
 .notification-buttons-wrapper button {
-  margin-left: 0.4rem;
-}
-
-#notification li {
-  margin-left: 0;
-  padding-left: 0;
-  margin-top: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0;
 }
 
 .navbar-nav button {
@@ -180,10 +211,4 @@
 
 .navbar-nav .continue-button:nth-child(1) {
   margin-right: 1rem !important;
-}
-
-#no-notification {
-  margin-top: 0.8rem;
-  font-size: 1.05rem;
-  font-family: "Arimo", sans-serif;
 }

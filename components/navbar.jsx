@@ -13,20 +13,14 @@ const links = require("../config/links");
 class Navbar extends Component {
   state = {
     profileOpen: false,
-    notificationOpen: false,
   };
 
   handleProflieClick = () => {
     let profileOpen = !this.state.profileOpen;
-    this.setState({ profileOpen });
-  };
-
-  handleNotificationClick = () => {
-    const notificationOpen = !this.state.notificationOpen;
-    if (!notificationOpen) {
+    if (!profileOpen) {
       this.props.ClearNotifications();
     }
-    this.setState({ notificationOpen });
+    this.setState({ profileOpen });
   };
 
   handleLogout = async () => {
@@ -37,6 +31,7 @@ class Navbar extends Component {
 
   render() {
     const { profileOpen, notificationOpen } = this.state;
+    const { requests, notifications, user } = this.props;
     return (
       <nav className="navbar navbar-expand">
         <div className="navbar-brand">
@@ -51,25 +46,16 @@ class Navbar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {this.props.user ? (
             <ul className="navbar-nav ml-auto">
-              <li>
-                <div
-                  className={
-                    this.props.requests.length !== 0 ||
-                    this.props.notifications.length
-                      ? "red-bell"
-                      : ""
-                  }
-                >
-                  <FontAwesomeIcon
-                    icon={faBell}
-                    size="lg"
-                    onClick={this.handleNotificationClick}
-                  />
-                </div>
-              </li>
               <li onClick={this.handleProflieClick}>
                 <img src={this.props.user.imagePath} />
-                <FontAwesomeIcon icon={faAngleDown} />
+                <FontAwesomeIcon icon={faAngleDown} size="lg" />
+                <span
+                  className={
+                    requests.length !== 0 || notifications.length !== 0
+                      ? "notification-dot"
+                      : ""
+                  }
+                />
               </li>
             </ul>
           ) : (
@@ -86,64 +72,81 @@ class Navbar extends Component {
               </li>
             </ul>
           )}
-          {notificationOpen && (
-            <div id="notification">
-              <ul>
-                {this.props.notifications.length !== 0 &&
-                  this.props.notifications.map((senderName) => {
-                    return (
-                      <li
-                        key={`notifications-${this.props.user.name}-${senderName}`}
-                      >
-                        <p id="no-notification">
-                          Opps! You have been deleted by {senderName}
-                        </p>
-                      </li>
-                    );
-                  })}
-                {this.props.requests.length !== 0 &&
-                  this.props.requests.map((requestSenderName) => {
-                    return (
-                      <li
-                        key={`requests-${this.props.user.name}-${requestSenderName}`}
-                      >
-                        <p>{requestSenderName} sent you a friend request</p>
-                        <div className="notification-buttons-wrapper">
-                          <button
-                            className="cancel-button"
-                            onClick={() =>
-                              this.props.handleFriendRequestDecline(
-                                requestSenderName
-                              )
-                            }
-                          >
-                            Decline
-                          </button>
-                          <button
-                            className="continue-button"
-                            onClick={() =>
-                              this.props.handleFriendRequestAccept(
-                                requestSenderName
-                              )
-                            }
-                          >
-                            Accept
-                          </button>
-                        </div>
-                      </li>
-                    );
-                  })}
-                {this.props.notifications.length === 0 &&
-                  this.props.requests.length === 0 && (
-                    <p id="no-notification">You don't have any notifications</p>
-                  )}
-              </ul>
-            </div>
-          )}
           {profileOpen && (
-            <div id="sign-out-button" onClick={this.handleLogout}>
-              Sign Out
-            </div>
+            <>
+              <div className="profile">
+                <span>Hi, {this.props.user.name} ~</span>
+                <div className="notification-wrapper">
+                  <div>
+                    <span id="notification-button">Notifications</span>
+                    <div className="notification-section">
+                      {requests.length === 0 && notifications.length === 0 && (
+                        <span>You Don't Have Any Notifications</span>
+                      )}
+                      {notifications.map((senderName) => {
+                        return (
+                          <div className="each-notification notification">
+                            Oops! You Have Been Deleted By{" "}
+                            <div
+                              style={{
+                                paddingTop: "0.45rem",
+                                marginTop: "0.45rem",
+                                margin: "0",
+                                color: "#d6d8e0",
+                              }}
+                            >
+                              {senderName}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {requests.map((requestSenderName) => {
+                        return (
+                          <div
+                            className="each-notification"
+                            key={`friend-request-${requestSenderName}-${user.name}`}
+                          >
+                            <span>
+                              <span
+                                style={{ color: "#d6d8e0", padding: "0rem" }}
+                              >
+                                Dylan
+                              </span>{" "}
+                              Sent You a Friend Request
+                            </span>
+                            <div className="notification-buttons-wrapper">
+                              <button
+                                className="cancel-button"
+                                onClick={() =>
+                                  this.props.handleFriendRequestDecline(
+                                    requestSenderName
+                                  )
+                                }
+                              >
+                                Decline
+                              </button>
+                              <button
+                                className="continue-button"
+                                onClick={() =>
+                                  this.props.handleFriendRequestAccept(
+                                    requestSenderName
+                                  )
+                                }
+                              >
+                                Accept
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+                <div id="sign-out-button" onClick={this.handleLogout}>
+                  Sign Out
+                </div>
+              </div>
+            </>
           )}
         </div>
       </nav>
