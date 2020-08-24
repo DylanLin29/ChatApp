@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Label } from "semantic-ui-react";
-const Form = ({ title, handleFormContinueClick, errorMessage }) => {
+const Form = ({ title, handleFormContinueClick, errorMessage, formType }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
@@ -10,6 +10,8 @@ const Form = ({ title, handleFormContinueClick, errorMessage }) => {
     setUsername(event.target.value);
     if (event.target.value.length < 3) {
       setUsernameError("Username must be greater than 2 characters");
+    } else if (event.target.value.length > 9) {
+      setUsernameError("Username must be less than 9 characthers");
     } else {
       setUsernameError("");
     }
@@ -44,7 +46,7 @@ const Form = ({ title, handleFormContinueClick, errorMessage }) => {
             className={usernameError !== "" ? "input-with-error" : ""}
           />
         </div>
-        {usernameError !== "" && (
+        {usernameError !== "" && formType === "register" && (
           <Label basic pointing color="red">
             {usernameError}
           </Label>
@@ -59,7 +61,7 @@ const Form = ({ title, handleFormContinueClick, errorMessage }) => {
             onChange={(event) => handlePasswordChange(event)}
           />
         </div>
-        {passwordError !== "" && (
+        {passwordError !== "" && formType === "register" && (
           <Label basic pointing color="red">
             {passwordError}
           </Label>

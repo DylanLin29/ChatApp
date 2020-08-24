@@ -32,6 +32,7 @@ const RegisterForm = ({ handleFormContinueClick, charactersDisplay }) => {
           title="REGISTER"
           handleFormContinueClick={handleRegisterContinueClick}
           errorMessage={errorMessage}
+          formType="register"
         />
       </div>
     </div>

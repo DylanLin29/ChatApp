@@ -30,7 +30,7 @@ class Navbar extends Component {
   };
 
   render() {
-    const { profileOpen, notificationOpen } = this.state;
+    const { profileOpen } = this.state;
     const { requests, notifications, user } = this.props;
     return (
       <nav className="navbar navbar-expand">
