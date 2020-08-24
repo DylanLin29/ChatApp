@@ -21,6 +21,10 @@
   color: white;
 }
 
+.is-private-message .message-receive {
+  margin-top: 0;
+}
+
 .message-sent::after,
 .message-receive::after {
   content: " ";

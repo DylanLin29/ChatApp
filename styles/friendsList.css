@@ -6,6 +6,10 @@
 }
 
 body {
+  letter-spacing: 0.03rem;
+}
+
+body {
   overflow: hidden;
 }
 .chat-window {
@@ -88,7 +92,7 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  padding: 0.8rem 0;
+  padding: 0.9rem 0;
   border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
   align-items: center;
 }
@@ -146,6 +150,7 @@ body {
   align-items: center;
   width: 100%;
   background-color: rgba(136, 133, 133, 0.03);
+  height: 3.9rem;
 }
 
 .chat-window-current-title .fa-chevron-left {
@@ -154,10 +159,37 @@ body {
   cursor: pointer;
 }
 
-.chat-window-current-title .fa-ellipsis-h {
+.chat-window-current-title .fa-ellipsis-h,
+.fa-info-circle {
   position: absolute;
   right: 1rem;
   color: #393e46;
+  cursor: pointer;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.2rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-online {
+  background-color: #46cf72;
+}
+
+.status-offline {
+  background-color: rgb(233, 73, 105);
+}
+
+.status-text {
+  color: rgb(119, 116, 116);
 }
 
 .chat-groups-operations {

@@ -1,11 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisH,
+  faChevronLeft,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 const ChatHeader = ({
-  name,
-  imagePath,
+  currentChat,
   handleTitleInfoClick,
   clearCurrentChat,
 }) => {
+  const { name, imagePath, isFriendChat, status } = currentChat;
   return (
     <div className="chat-window-current-title">
       {name && (
@@ -16,14 +20,35 @@ const ChatHeader = ({
         />
       )}
       <img src={imagePath} />
-      <span>{name}</span>
-      {name && (
-        <FontAwesomeIcon
-          icon={faEllipsisH}
-          onClick={handleTitleInfoClick}
-          size="lg"
-        />
-      )}
+      <div className="header-info">
+        <span>{name}</span>
+        {isFriendChat && (
+          <div>
+            <span
+              className={
+                status
+                  ? "status-dot status-online"
+                  : "status-dot status-offline"
+              }
+            />
+            <span className="status-text">{status ? "Online" : "Offline"}</span>
+          </div>
+        )}
+      </div>
+      {name &&
+        (isFriendChat ? (
+          <FontAwesomeIcon
+            icon={faInfoCircle}
+            onClick={handleTitleInfoClick}
+            size="lg"
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faEllipsisH}
+            onClick={handleTitleInfoClick}
+            size="lg"
+          />
+        ))}
     </div>
   );
 };

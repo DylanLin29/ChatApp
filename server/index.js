@@ -59,6 +59,7 @@ nextApp
 
       socket.on("setUserName", (userName) => {
         usersList[userName] = socket;
+        io.emit("USER_STATUS", { userName: userName, status: true });
       });
 
       socket.on("joinRoom", (room) => {
@@ -116,6 +117,12 @@ nextApp
         socket.emit("PRIVATE_MESSAGE", message);
       });
 
+      socket.on("USER_STATUS", (userName) => {
+        if (usersList[userName]) {
+          socket.emit("USER_STATUS", userName);
+        }
+      });
+
       socket.on("TYPING", ({ name, room }) => {
         socket.to(room).broadcast.emit("TYPING", name);
       });
@@ -144,6 +151,7 @@ nextApp
 
       socket.on("LOGOUT", (userName) => {
         delete usersList[userName];
+        io.emit("USER_STATUS", { userName: userName, status: false });
       });
     });
   })

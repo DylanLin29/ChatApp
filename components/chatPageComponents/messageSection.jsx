@@ -23,12 +23,16 @@ const MessageSection = ({
                 <img src={userImagePath} />
               </div>
             ) : (
-              <div className="chat-message" key={`chat-message-${index}`}>
+              <div
+                className="chat-message is-private-message"
+                key={`chat-message-${index}`}
+              >
                 <img src={friendImagePath} />
                 <Message
                   messageType="message-receive"
                   message={content}
                   name={friendname}
+                  isPrivateMessage={true}
                 />
               </div>
             );
@@ -57,6 +61,7 @@ const MessageSection = ({
                     messageType="message-receive"
                     message={content}
                     name={id}
+                    isPrivateMessage={false}
                   />
                 </div>
               );

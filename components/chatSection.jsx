@@ -37,6 +37,7 @@ class ChatSection extends Component {
         imagePath: "",
         members: [],
         isFriendChat: false,
+        status: false,
       },
       addButtonClick: false,
       createGroupFormOpen: false,
@@ -90,6 +91,14 @@ class ChatSection extends Component {
       const currentChat = { ...this.state.currentChat };
       currentChat.members = membersData.members;
       this.setState({ currentChat });
+    });
+
+    this.props.socket.on("USER_STATUS", ({ userName, status }) => {
+      if (userName === this.state.currentChat.name) {
+        const currentChat = { ...this.state.currentChat };
+        currentChat.status = status;
+        this.setState({ currentChat });
+      }
     });
   }
 
@@ -157,10 +166,13 @@ class ChatSection extends Component {
         imagePath: imagePath,
         members: [{ name: name, imagePath: imagePath }],
         isFriendChat: true,
+        status: false,
       },
       response: responseResult.data.responses,
       membersListOpen: false,
     });
+    console.log("Name", name);
+    this.props.socket.emit("USER_STATUS", name);
   };
 
   handleAddClick = () => {
@@ -259,6 +271,7 @@ class ChatSection extends Component {
       imagePath: "",
       members: [],
       isFriendChat: false,
+      status: false,
     };
     this.setState({ currentChat });
   };
@@ -284,8 +297,7 @@ class ChatSection extends Component {
           </div>
           <div className="content">
             <ChatHeader
-              name={this.state.currentChat.name}
-              imagePath={this.state.currentChat.imagePath}
+              currentChat={this.state.currentChat}
               handleTitleInfoClick={this.handleTitleInfoClick}
               clearCurrentChat={this.clearCurrentChat}
             />
