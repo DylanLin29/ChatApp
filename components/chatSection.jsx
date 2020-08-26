@@ -166,7 +166,6 @@ class ChatSection extends Component {
         imagePath: imagePath,
         members: [{ name: name, imagePath: imagePath }],
         isFriendChat: true,
-        status: false,
       },
       response: responseResult.data.responses,
       membersListOpen: false,
@@ -271,7 +270,6 @@ class ChatSection extends Component {
       imagePath: "",
       members: [],
       isFriendChat: false,
-      status: false,
     };
     this.setState({ currentChat });
   };

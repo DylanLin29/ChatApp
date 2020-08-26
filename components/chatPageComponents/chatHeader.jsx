@@ -10,6 +10,7 @@ const ChatHeader = ({
   clearCurrentChat,
 }) => {
   const { name, imagePath, isFriendChat, status } = currentChat;
+  console.log("status", status);
   return (
     <div className="chat-window-current-title">
       {name && (

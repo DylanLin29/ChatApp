@@ -16,11 +16,13 @@ class Register extends Component {
     continueClick: false,
   };
 
-  handleSelect = (imagePath) => {
+  handleSelect = async (imagePath) => {
     const user = { ...this.state.user };
     user.imagePath = imagePath;
-    this.setState({ user }, async () => {
-      await axios.post(links.users, this.state.user);
+    await axios.post(links.users, user);
+    await axios.post(links.login, {
+      name: user.name,
+      password: user.password,
     });
     Router.push("/chat");
   };
@@ -42,7 +44,6 @@ class Register extends Component {
         />
         <CharactersList
           handleSelect={this.handleSelect}
-          charactersDisplay={this.state.continueClick}
           charactersDisplay={this.state.continueClick}
         />
       </div>

@@ -46,9 +46,10 @@
 
 .register-form input {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
+  padding-left: 0.3rem;
   margin-bottom: 1.3rem;
   width: 25rem;
+  height: 2rem;
   font-family: "Catamaran", sans-serif;
   letter-spacing: 0.02rem;
   border-radius: 0.2rem;

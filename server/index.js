@@ -119,7 +119,9 @@ nextApp
 
       socket.on("USER_STATUS", (userName) => {
         if (usersList[userName]) {
-          socket.emit("USER_STATUS", userName);
+          socket.emit("USER_STATUS", { userName: userName, status: true });
+        } else {
+          socket.emit("USER_STATUS", { userName: userName, status: false });
         }
       });
 
