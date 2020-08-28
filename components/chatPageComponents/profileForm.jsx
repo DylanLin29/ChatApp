@@ -55,15 +55,16 @@ const ProfileForm = ({
           <button className="cancel-button" onClick={handleProfileClose}>
             Close
           </button>
-          {alreadyFriend() ? (
-            <button className="continue-button" onClick={handleChatOpen}>
-              Open
-            </button>
-          ) : (
-            <button className="continue-button" onClick={handleAddClick}>
-              Add
-            </button>
-          )}
+          {user.name !== searchUser.name &&
+            (alreadyFriend() ? (
+              <button className="continue-button" onClick={handleChatOpen}>
+                Open
+              </button>
+            ) : (
+              <button className="continue-button" onClick={handleAddClick}>
+                Add
+              </button>
+            ))}
         </div>
       </div>
     </div>
