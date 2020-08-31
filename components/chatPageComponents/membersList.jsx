@@ -11,12 +11,17 @@ const MembersList = ({
   user,
   socket,
 }) => {
-  const { name, imagePath, members, isFriendChat, groupAdmin } = currentChat;
+  const { imagePath, members, isFriendChat, groupAdmin } = currentChat;
 
   const handleDeleteFriend = async () => {
     await axios.post(`${links.users}/friends/delete`, {
       userName: user.name,
       friendName: currentChat.name,
+    });
+    await axios.post(`${links.users}/notifications`, {
+      type: "delete friend",
+      friendName: user.name,
+      userName: currentChat.name,
     });
     handleCloseClick();
     const friends = user.friends.filter(
@@ -38,13 +43,21 @@ const MembersList = ({
     handleCloseClick();
     setTimeout(() => clearCurrentChat(), 350);
     const result = await axios.post(`${links.groups}/delete`, {
-      groupName: name,
+      groupName: currentChat.name,
       userName: user.name,
     });
     socket.emit("DELETE_GROUP", {
       adminName: groupAdmin,
-      groupName: name,
+      groupName: currentChat.name,
       userList: result.data.userList,
+    });
+    members.map(async ({ name }) => {
+      await axios.post(`${links.users}/notifications`, {
+        type: "delete group",
+        groupName: currentChat.name,
+        adminName: groupAdmin,
+        userName: name,
+      });
     });
   };
 

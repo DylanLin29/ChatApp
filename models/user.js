@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
   privateMessages: [
     { type: mongoose.Schema.Types.ObjectId, ref: "PrivateMessage" },
   ],
+  notifications: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
+  ],
 });
 
 module.exports = mongoose.model.User || mongoose.model("User", userSchema);

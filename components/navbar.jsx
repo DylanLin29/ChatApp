@@ -15,10 +15,13 @@ class Navbar extends Component {
     profileOpen: false,
   };
 
-  handleProflieClick = () => {
+  handleProflieClick = async () => {
     let profileOpen = !this.state.profileOpen;
     if (!profileOpen) {
       this.props.ClearNotifications();
+      await axios.post(`${links.users}/notifications/clear`, {
+        userName: this.props.user.name,
+      });
     }
     this.setState({ profileOpen });
   };

@@ -5,6 +5,7 @@ const _ = require("lodash");
 const dbConnect = require("../utils/dbConnect");
 const createToken = require("../utils/createToken");
 const User = require("../../models/user");
+const Notification = require("../../models/notification");
 
 dbConnect();
 
@@ -114,6 +115,67 @@ router.post("/friends/delete", async (req, res) => {
   await handleDeleteFriend(friend, userName, user._id);
 
   res.status(200).json({ success: true });
+});
+
+router.get("/notifications", async (req, res) => {
+  const { userName } = req.query;
+  try {
+    const user = await User.findOne({ name: userName }).populate(
+      "notifications"
+    );
+
+    return res
+      .status(200)
+      .json({ success: true, notifications: user.notifications });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ success: false });
+  }
+});
+
+// add a notification to the user
+router.post("/notifications", async (req, res) => {
+  const { type, userName } = req.body;
+  if (type === "delete friend") {
+    const { friendName } = req.body;
+    const newNotification = new Notification({
+      type: type,
+      friendName: friendName,
+    });
+    await newNotification.save();
+    await User.findOneAndUpdate(
+      { name: userName },
+      { $push: { notifications: newNotification._id } }
+    );
+  } else if (type === "delete group") {
+    const { adminName, groupName } = req.body;
+    const newNotification = new Notification({
+      type: type,
+      adminName: adminName,
+      groupName: groupName,
+    });
+    await newNotification.save();
+    await User.findOneAndUpdate(
+      { name: userName },
+      { $push: { notifications: newNotification._id } }
+    );
+  }
+  return res.status(200).json({ success: true });
+});
+
+// remove all the notifications
+router.post("/notifications/clear", async (req, res) => {
+  const { userName } = req.body;
+  try {
+    await User.findOneAndUpdate(
+      { name: userName },
+      { $set: { notifications: [] } }
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ success: false });
+  }
 });
 
 module.exports = router;

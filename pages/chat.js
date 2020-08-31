@@ -39,9 +39,22 @@ class Chat extends Component {
           },
         }
       );
+
+      const notificationsResult = await axios.get(
+        `${links.users}/notifications`,
+        {
+          params: {
+            userName: userInfo.data.name,
+          },
+        }
+      );
+
+      console.log("notification", notificationsResult.data.notifications);
+
       this.setState({
         user: userInfo.data,
         requests: friendRequestResult.data.requests,
+        notifications: notificationsResult.data.notifications,
       });
     } else {
       Router.push(`${links.connection}/login`);
