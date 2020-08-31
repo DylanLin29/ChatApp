@@ -31,23 +31,26 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const newGroupInfo = new GroupInfo({
-      name: req.body.name,
+      name: req.body.groupName,
       imagePath: req.body.imagePath,
     });
 
     await newGroupInfo.save();
     const newGroup = new Group({
       groupInfo: newGroupInfo._id,
-      userlist: [req.body._id],
+      groupAdmin: req.body.userName,
+      userlist: [req.body.userId],
     });
     await newGroup.save();
 
     // Update the user who creates the new group
     await User.findOneAndUpdate(
-      { _id: req.body._id },
+      { _id: req.body.userId },
       { $push: { groups: newGroupInfo._id } }
     );
-    const user = await User.findOne({ _id: req.body._id }).populate("groups");
+    const user = await User.findOne({ _id: req.body.userId }).populate(
+      "groups"
+    );
     return res.status(200).json({ success: true, groups: user.groups });
   } catch (err) {
     console.log(err);
@@ -80,7 +83,11 @@ router.get("/members", async (req, res) => {
     completeGroup.userlist,
     _.partialRight(_.pick, ["name", "imagePath"])
   );
-  res.status(200).json({ success: true, userList: userList });
+  res.status(200).json({
+    success: true,
+    userList: userList,
+    groupAdmin: completeGroup.groupAdmin,
+  });
 });
 
 // Users can leave the group chat
@@ -99,6 +106,20 @@ router.post("/leave", async (req, res) => {
     "groups"
   );
   res.status(200).json({ success: true, groups: updateUser.groups });
+});
+
+// Admin can delete the group chat
+router.post("/delete", async (req, res) => {
+  const groupInfo = await GroupInfo.findOne({ name: req.body.groupName });
+  const group = await Group.findOne({ groupInfo: groupInfo._id }).populate(
+    "userlist"
+  );
+  const userList = _.map(group.userlist, _.partialRight(_.pick, "name"));
+
+  await User.updateMany({}, { $pull: { groups: groupInfo._id } });
+  await Group.findOneAndRemove({ groupInfo: groupInfo._id });
+  await GroupInfo.findOneAndRemove({ _id: groupInfo._id });
+  res.status(200).json({ success: true, userList: userList });
 });
 
 module.exports = router;

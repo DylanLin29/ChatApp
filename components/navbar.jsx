@@ -44,7 +44,7 @@ class Navbar extends Component {
         </div>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          {this.props.user ? (
+          {this.props.user && this.props.user.name ? (
             <ul className="navbar-nav ml-auto">
               <li onClick={this.handleProflieClick}>
                 <img src={this.props.user.imagePath} />
@@ -83,21 +83,46 @@ class Navbar extends Component {
                       {requests.length === 0 && notifications.length === 0 && (
                         <span>You Don't Have Any Notifications</span>
                       )}
-                      {notifications.map((senderName) => {
+                      {notifications.map((notification) => {
                         return (
-                          <div className="each-notification notification">
-                            Oops! You Have Been Deleted By{" "}
-                            <div
-                              style={{
-                                paddingTop: "0.45rem",
-                                marginTop: "0.45rem",
-                                margin: "0",
-                                color: "#d6d8e0",
-                              }}
-                            >
-                              {senderName}
+                          (notification.type === "delete friend" && (
+                            <div className="each-notification notification">
+                              Oops! You Have Been Deleted By{" "}
+                              <div
+                                style={{
+                                  paddingTop: "0.45rem",
+                                  marginTop: "0.45rem",
+                                  margin: "0",
+                                  color: "#d6d8e0",
+                                }}
+                              >
+                                {notification.friendName}
+                              </div>
                             </div>
-                          </div>
+                          )) ||
+                          (notification.type === "delete group" && (
+                            <div className="each-notification notification">
+                              <span
+                                style={{
+                                  color: "#d6d8e0",
+                                  margin: "0",
+                                  padding: "0",
+                                }}
+                              >
+                                {notification.adminName}{" "}
+                              </span>
+                              has deleted{" "}
+                              <span
+                                style={{
+                                  color: "#d6d8e0",
+                                  margin: "0",
+                                  padding: "0",
+                                }}
+                              >
+                                {notification.groupName}
+                              </span>
+                            </div>
+                          ))
                         );
                       })}
                       {requests.map((requestSenderName) => {

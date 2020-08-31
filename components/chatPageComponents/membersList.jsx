@@ -11,7 +11,7 @@ const MembersList = ({
   user,
   socket,
 }) => {
-  const { name, imagePath, members, isFriendChat } = currentChat;
+  const { name, imagePath, members, isFriendChat, groupAdmin } = currentChat;
 
   const handleDeleteFriend = async () => {
     await axios.post(`${links.users}/friends/delete`, {
@@ -30,6 +30,21 @@ const MembersList = ({
     socket.emit("DELETE_FRIEND", {
       userName: currentChat.name,
       friendName: user.name,
+    });
+  };
+
+  // Admin can delete group
+  const handleDeleteGroup = async () => {
+    handleCloseClick();
+    setTimeout(() => clearCurrentChat(), 350);
+    const result = await axios.post(`${links.groups}/delete`, {
+      groupName: name,
+      userName: user.name,
+    });
+    socket.emit("DELETE_GROUP", {
+      adminName: groupAdmin,
+      groupName: name,
+      userList: result.data.userList,
     });
   };
 
@@ -71,9 +86,16 @@ const MembersList = ({
             </div>
           );
         })}
-        <div className="group-leave" onClick={handleLeaveClick}>
-          Leave
-        </div>
+        {user.name === groupAdmin ? (
+          <div className="group-options">
+            <div onClick={handleDeleteGroup}>Delete</div>
+            <div onClick={handleLeaveClick}>Leave</div>
+          </div>
+        ) : (
+          <div className="group-options">
+            <div onClick={handleLeaveClick}>Leave</div>
+          </div>
+        )}
       </div>
     );
   }

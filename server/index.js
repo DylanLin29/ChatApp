@@ -151,6 +151,17 @@ nextApp
         }
       });
 
+      socket.on("DELETE_GROUP", ({ adminName, groupName, userList }) => {
+        for (let i = 1; i < userList.length; i++) {
+          if (usersList[userList[i].name]) {
+            usersList[userList[i].name].emit("DELETE_GROUP", {
+              adminName: adminName,
+              groupName: groupName,
+            });
+          }
+        }
+      });
+
       socket.on("LOGOUT", (userName) => {
         delete usersList[userName];
         io.emit("USER_STATUS", { userName: userName, status: false });

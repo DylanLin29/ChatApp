@@ -3,6 +3,7 @@ import ChatSection from "../components/chatSection";
 import { Component } from "react";
 import axios from "axios";
 import io from "socket.io-client";
+import Router from "next/router";
 const links = require("../config/links");
 const socket = io();
 
@@ -29,9 +30,7 @@ class Chat extends Component {
 
     if (userInfo.data.name) {
       socket.emit("setUserName", userInfo.data.name);
-    }
 
-    if (userInfo.data) {
       const friendRequestResult = await axios.get(
         `${links.users}/friendRequest`,
         {
@@ -45,6 +44,7 @@ class Chat extends Component {
         requests: friendRequestResult.data.requests,
       });
     } else {
+      Router.push(`${links.connection}/login`);
       this.setState({ user: userInfo.data });
     }
 
@@ -66,7 +66,6 @@ class Chat extends Component {
     });
 
     socket.on("DELETE_FRIEND", async (friendName) => {
-      console.log("clientside", friendName);
       const user = { ...this.state.user };
       const friends = user.friends.filter((friend) => {
         friend.name !== friendName;
@@ -74,7 +73,23 @@ class Chat extends Component {
       user.friends = friends;
       this.setState({ user });
       let notifications = this.state.notifications;
-      notifications.push(friendName);
+      notifications.push({ type: "delete friend", friendName: friendName });
+      this.setState({ notifications });
+    });
+
+    socket.on("DELETE_GROUP", async ({ groupName, adminName }) => {
+      const user = { ...this.state.user };
+      const groups = user.groups.filter((group) => {
+        group.name !== groupName;
+      });
+      user.groups = groups;
+      this.setState({ user });
+      let notifications = this.state.notifications;
+      notifications.push({
+        type: "delete group",
+        adminName: adminName,
+        groupName: groupName,
+      });
       this.setState({ notifications });
     });
   }

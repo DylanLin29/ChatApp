@@ -3,10 +3,11 @@ const router = express.Router();
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const dbConnect = require("../utils/dbConnect");
+const isAuthenticated = require("../utils/isAuthenticated");
 const User = require("../../models/user");
 
 // Check users are logged in
-router.get("/", async (req, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
   try {
     const decoded = jwt.verify(req.cookies["user-auth"], process.env.JWT_KEY);
     dbConnect();

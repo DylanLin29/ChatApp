@@ -72,6 +72,31 @@ body {
   cursor: pointer;
 }
 
+.group-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.group-options div:nth-child(1) {
+  margin-top: 3rem;
+}
+
+.group-options div {
+  padding: 1rem;
+  border-top: 1.5px solid rgba(136, 133, 133, 0.3);
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  color: crimson;
+  font-size: 1.1rem;
+}
+
+.group-options div:nth-last-child(1) {
+  border-bottom: 1.5px solid rgba(136, 133, 133, 0.3);
+}
+
 .friend-chat-profile {
   width: 14.5rem;
   margin-top: 0.5rem;

@@ -38,6 +38,7 @@ class ChatSection extends Component {
         members: [],
         isFriendChat: false,
         status: false,
+        groupAdmin: "",
       },
       addButtonClick: false,
       createGroupFormOpen: false,
@@ -70,7 +71,7 @@ class ChatSection extends Component {
       let response = this.state.response;
       response.push(message);
       this.setState({ response });
-      this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
+      // this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
     });
 
     if (this.state.currentChat.name) {
@@ -150,6 +151,7 @@ class ChatSection extends Component {
         imagePath: imagePath,
         members: result.data.userList,
         isFriendChat: false,
+        groupAdmin: result.data.groupAdmin,
       },
       response: responseResult.data.response,
       membersListOpen: false,
@@ -170,7 +172,6 @@ class ChatSection extends Component {
       response: responseResult.data.responses,
       membersListOpen: false,
     });
-    console.log("Name", name);
     this.props.socket.emit("USER_STATUS", name);
   };
 
@@ -194,9 +195,10 @@ class ChatSection extends Component {
   handleCreateFormSubmit = async (name, imagePath) => {
     try {
       const result = await axios.post(links.groups, {
-        name: name,
+        groupName: name,
         imagePath: imagePath,
-        _id: this.props.user._id,
+        userName: this.props.user.name,
+        userId: this.props.user._id,
       });
       const user = { ...this.props.user };
       user.groups = result.data.groups;
@@ -254,6 +256,10 @@ class ChatSection extends Component {
     user.groups = result.data.groups;
     this.props.handleUserUpdate(user);
     this.setState({ currentChat, membersListOpen: false });
+  };
+
+  handleDeleteClick = async () => {
+    const currentChat = { ...this.stat };
   };
 
   handleSearchNotFoundChange = () => {
