@@ -1,4 +1,7 @@
 import axios from "axios";
+import { useState } from "react";
+import UserProfile from "./membersListComponents/userProfile";
+import MemberProfile from "./membersListComponents/memberProfile";
 const links = require("../../config/links");
 
 const MembersList = ({
@@ -7,11 +10,15 @@ const MembersList = ({
   handleLeaveClick,
   handleCloseClick,
   handleUserUpdate,
+  handleOpenFriendChat,
   clearCurrentChat,
   user,
   socket,
 }) => {
   const { imagePath, members, isFriendChat, groupAdmin } = currentChat;
+  const [memberInfoOpen, setMemberInfoOpen] = useState(false);
+  const [memberName, setMemberName] = useState("");
+  const [memberImagePath, setMemberImagePath] = useState("");
 
   const handleDeleteFriend = async () => {
     await axios.post(`${links.users}/friends/delete`, {
@@ -52,13 +59,62 @@ const MembersList = ({
       userList: result.data.userList,
     });
     members.map(async ({ name }) => {
-      await axios.post(`${links.users}/notifications`, {
-        type: "delete group",
-        groupName: currentChat.name,
-        adminName: groupAdmin,
-        userName: name,
-      });
+      if (name !== groupAdmin) {
+        await axios.post(`${links.users}/notifications`, {
+          type: "delete group",
+          groupName: currentChat.name,
+          adminName: groupAdmin,
+          userName: name,
+        });
+      }
     });
+  };
+
+  const handleMemberInfoClick = (name, imagePath) => {
+    if (memberName === "" || !memberInfoOpen) {
+      setMemberInfoOpen(true);
+      setMemberName(name);
+      setMemberImagePath(imagePath);
+    } else if (name === memberName) {
+      setMemberInfoOpen(false);
+    } else {
+      setMemberName(name);
+      setMemberImagePath(imagePath);
+    }
+  };
+
+  const handleMemberInfoClose = () => {
+    setMemberInfoOpen(false);
+  };
+
+  const handleAddFriend = (name) => {
+    socket.emit("FRIEND_REQUEST", {
+      userName: user.name,
+      friendName: name,
+    });
+    axios.post(`${links.users}/friendRequest`, {
+      friendName: name,
+      userName: user.name,
+    });
+    setMemberInfoOpen(false);
+  };
+
+  const handleChat = (name, imagePath) => {
+    setMemberInfoOpen(false);
+    handleCloseClick();
+    handleOpenFriendChat(name, imagePath);
+  };
+
+  const getMemberStatus = (name) => {
+    if (name === user.name) {
+      return "isSelf";
+    }
+    for (let i = 0; i < user.friends.length; i++) {
+      if (user.friends[i].name === name) {
+        return "isFriend";
+      }
+    }
+    return "isNotFriend";
   };
 
   if (isFriendChat) {
@@ -70,45 +126,66 @@ const MembersList = ({
             : "friend-chat-profile join-group-form"
         }
       >
-        <div className="group-form group-form-open">
-          <img src={imagePath} />
-          <h3>{name}</h3>
-          <div className="join-group-form-buttons">
-            <button className="close-button" onClick={handleCloseClick}>
-              Close
-            </button>
-            <button className="cancel-button" onClick={handleDeleteFriend}>
-              Delete
-            </button>
-          </div>
-        </div>
+        <UserProfile
+          name={currentChat.name}
+          imagePath={imagePath}
+          handleCloseClick={handleMemberInfoClick}
+          handleDeleteFriend={handleDeleteFriend}
+        />
       </div>
     );
   } else {
     return (
-      <div
-        className={
-          membersListOpen ? "members-list members-list-open" : "members-list"
-        }
-      >
-        {members.map(({ name, imagePath }, index) => {
-          return (
-            <div className="member-info" key={`member-info-${index}`}>
-              <img src={imagePath} />
-              <span>{name}</span>
+      <div>
+        <div
+          className={
+            membersListOpen ? "members-list members-list-open" : "members-list"
+          }
+        >
+          {members.map(({ name, imagePath }, index) => {
+            return (
+              <div
+                className={
+                  name === memberName && memberInfoOpen
+                    ? "member-info member-info-active"
+                    : "member-info"
+                }
+                key={`member-info-${index}`}
+                onClick={() => handleMemberInfoClick(name, imagePath)}
+              >
+                <img src={imagePath} />
+                <span>{name}</span>
+              </div>
+            );
+          })}
+          {user.name === groupAdmin ? (
+            <div className="group-options">
+              <div onClick={handleDeleteGroup}>Delete</div>
+              <div onClick={handleLeaveClick}>Leave</div>
             </div>
-          );
-        })}
-        {user.name === groupAdmin ? (
-          <div className="group-options">
-            <div onClick={handleDeleteGroup}>Delete</div>
-            <div onClick={handleLeaveClick}>Leave</div>
-          </div>
-        ) : (
-          <div className="group-options">
-            <div onClick={handleLeaveClick}>Leave</div>
-          </div>
-        )}
+          ) : (
+            <div className="group-options">
+              <div onClick={handleLeaveClick}>Leave</div>
+            </div>
+          )}
+        </div>
+        <div
+          className={
+            memberInfoOpen
+              ? "friend-chat-profile join-group-form member-profile-open"
+              : "friend-chat-profile join-group-form"
+          }
+        >
+          <MemberProfile
+            name={memberName}
+            imagePath={memberImagePath}
+            handleCloseClick={handleMemberInfoClose}
+            handleAddFriend={handleAddFriend}
+            handleChat={handleChat}
+            isAdmin={memberName === groupAdmin}
+            memberStatus={getMemberStatus(memberName)}
+          />
+        </div>
       </div>
     );
   }

@@ -312,6 +312,7 @@ class ChatSection extends Component {
                 handleLeaveClick={this.handleLeaveClick}
                 handleCloseClick={this.handleTitleInfoClick}
                 handleUserUpdate={this.props.handleUserUpdate}
+                handleOpenFriendChat={this.handleOpenFriendChat}
                 clearCurrentChat={this.clearCurrentChat}
                 user={this.props.user}
                 socket={this.props.socket}

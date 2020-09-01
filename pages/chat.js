@@ -96,14 +96,17 @@ class Chat extends Component {
         group.name !== groupName;
       });
       user.groups = groups;
-      this.setState({ user });
-      let notifications = this.state.notifications;
-      notifications.push({
-        type: "delete group",
-        adminName: adminName,
-        groupName: groupName,
-      });
-      this.setState({ notifications });
+      if (user.name !== adminName) {
+        let notifications = this.state.notifications;
+        notifications.push({
+          type: "delete group",
+          adminName: adminName,
+          groupName: groupName,
+        });
+        this.setState({ notifications, user });
+      } else {
+        this.setState({ user });
+      }
     });
   }
 
