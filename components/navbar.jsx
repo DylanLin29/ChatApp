@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faComments,
-  faAngleDown,
-  faBell,
-} from "@fortawesome/free-solid-svg-icons";
+import { faComments, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { Component } from "react";
 import Router from "next/router";
 import axios from "axios";
@@ -115,6 +111,20 @@ class Navbar extends Component {
                                 {notification.adminName}{" "}
                               </span>
                               has deleted{" "}
+                              <span
+                                style={{
+                                  color: "#d6d8e0",
+                                  margin: "0",
+                                  padding: "0",
+                                }}
+                              >
+                                {notification.groupName}
+                              </span>
+                            </div>
+                          )) ||
+                          (notification.type === "delete member" && (
+                            <div className="each-notification notification">
+                              You have been deleted from{" "}
                               <span
                                 style={{
                                   color: "#d6d8e0",

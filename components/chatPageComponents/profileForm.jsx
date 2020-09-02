@@ -58,7 +58,7 @@ const ProfileForm = ({
           {user.name !== searchUser.name &&
             (alreadyFriend() ? (
               <button className="continue-button" onClick={handleChatOpen}>
-                Open
+                Chat
               </button>
             ) : (
               <button className="continue-button" onClick={handleAddClick}>

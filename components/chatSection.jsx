@@ -259,7 +259,11 @@ class ChatSection extends Component {
   };
 
   handleDeleteClick = async () => {
-    const currentChat = { ...this.stat };
+    console.log("delete click");
+  };
+
+  handleCurrentChatUpdate = (currentChat) => {
+    this.setState({ currentChat });
   };
 
   handleSearchNotFoundChange = () => {
@@ -312,6 +316,7 @@ class ChatSection extends Component {
                 handleLeaveClick={this.handleLeaveClick}
                 handleCloseClick={this.handleTitleInfoClick}
                 handleUserUpdate={this.props.handleUserUpdate}
+                handleCurrentChatUpdate={this.handleCurrentChatUpdate}
                 handleOpenFriendChat={this.handleOpenFriendChat}
                 clearCurrentChat={this.clearCurrentChat}
                 user={this.props.user}

@@ -10,6 +10,7 @@ const MembersList = ({
   handleLeaveClick,
   handleCloseClick,
   handleUserUpdate,
+  handleCurrentChatUpdate,
   handleOpenFriendChat,
   clearCurrentChat,
   user,
@@ -99,6 +100,29 @@ const MembersList = ({
     setMemberInfoOpen(false);
   };
 
+  const handleDeleteMember = async (name) => {
+    socket.emit("DELETE_MEMBER", {
+      groupName: currentChat.name,
+      userName: name,
+    });
+    handleMemberInfoClose();
+    const updateCurrentChat = { ...currentChat };
+    const updateMembers = members.filter((member) => member.name !== name);
+    updateCurrentChat.members = updateMembers;
+    handleCurrentChatUpdate(updateCurrentChat);
+
+    await axios.post(`${links.users}/notifications`, {
+      type: "delete member",
+      groupName: currentChat.name,
+      userName: name,
+    });
+
+    await axios.post(`${links.groups}/leave`, {
+      groupName: currentChat.name,
+      userName: name,
+    });
+  };
+
   const handleChat = (name, imagePath) => {
     setMemberInfoOpen(false);
     handleCloseClick();
@@ -181,8 +205,10 @@ const MembersList = ({
             imagePath={memberImagePath}
             handleCloseClick={handleMemberInfoClose}
             handleAddFriend={handleAddFriend}
+            handleDeleteMember={handleDeleteMember}
             handleChat={handleChat}
             isAdmin={memberName === groupAdmin}
+            currentUserAdmin={user.name === groupAdmin}
             memberStatus={getMemberStatus(memberName)}
           />
         </div>

@@ -49,8 +49,6 @@ class Chat extends Component {
         }
       );
 
-      console.log("notification", notificationsResult.data.notifications);
-
       this.setState({
         user: userInfo.data,
         requests: friendRequestResult.data.requests,
@@ -90,7 +88,8 @@ class Chat extends Component {
       this.setState({ notifications });
     });
 
-    socket.on("DELETE_GROUP", async ({ groupName, adminName }) => {
+    // When admin delete the group chat
+    socket.on("DELETE_GROUP", ({ groupName, adminName }) => {
       const user = { ...this.state.user };
       const groups = user.groups.filter((group) => {
         group.name !== groupName;
@@ -107,6 +106,22 @@ class Chat extends Component {
       } else {
         this.setState({ user });
       }
+    });
+
+    // When a member is deleted from a group
+    socket.on("DELETE_MEMBER", ({ groupName, userName }) => {
+      const user = { ...this.state.user };
+      const groups = user.groups.filter((group) => {
+        group.name !== groupName;
+      });
+      user.groups = groups;
+      let notifications = this.state.notifications;
+      notifications.push({
+        type: "delete member",
+        groupName: groupName,
+        userName: userName,
+      });
+      this.setState({ notifications, user });
     });
   }
 

@@ -579,7 +579,7 @@ body {
   position: relative;
   z-index: 1;
   margin-top: 4rem;
-  border: 0.8rem solid #222732;
+  border: 0.7rem solid #222732;
   width: 6.5rem !important;
   border-radius: 50%;
 }
@@ -594,6 +594,15 @@ body {
   font-family: "Arimo", sans-serif;
   letter-spacing: 0.03rem;
   font-weight: 600;
+}
+
+.fa-user-minus {
+  color: white;
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .member-admin {

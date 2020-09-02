@@ -159,6 +159,17 @@ router.post("/notifications", async (req, res) => {
       { name: userName },
       { $push: { notifications: newNotification._id } }
     );
+  } else if (type === "delete member") {
+    const { groupName, userName } = req.body;
+    const newNotification = new Notification({
+      type: type,
+      groupName: groupName,
+    });
+    await newNotification.save();
+    await User.findOneAndUpdate(
+      { name: userName },
+      { $push: { notifications: newNotification._id } }
+    );
   }
   return res.status(200).json({ success: true });
 });

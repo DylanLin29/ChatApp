@@ -162,6 +162,15 @@ nextApp
         }
       });
 
+      socket.on("DELETE_MEMBER", ({ groupName, userName }) => {
+        if (usersList[userName]) {
+          usersList[userName].emit("DELETE_MEMBER", {
+            groupName: groupName,
+            userName: userName,
+          });
+        }
+      });
+
       socket.on("LOGOUT", (userName) => {
         delete usersList[userName];
         io.emit("USER_STATUS", { userName: userName, status: false });

@@ -1,16 +1,26 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserMinus } from "@fortawesome/free-solid-svg-icons";
 const MemberProfile = ({
   imagePath,
   name,
   handleCloseClick,
   handleAddFriend,
+  handleDeleteMember,
   handleChat,
   isAdmin,
+  currentUserAdmin,
   memberStatus,
 }) => {
   return (
     <div className="group-form group-form-open member-profile">
       <img src={imagePath} />
       <div className="member-position">{isAdmin ? "Admin" : "Member"}</div>
+      {currentUserAdmin && memberStatus !== "isSelf" && (
+        <FontAwesomeIcon
+          icon={faUserMinus}
+          onClick={() => handleDeleteMember(name)}
+        />
+      )}
       <div
         className={
           isAdmin ? "member-header member-admin" : "member-header member-member"
