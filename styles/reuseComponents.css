@@ -1,3 +1,8 @@
+:root {
+  --form-background-color: #222632;
+  --button-close-color: #aeb1be;
+}
+
 .cancel-button,
 .continue-button,
 .close-button {
@@ -18,8 +23,8 @@
 }
 
 .close-button {
-  color: #797a7e;
-  border: #797a7e 1px solid;
+  color: var(--button-close-color);
+  border: var(--button-close-color) 1px solid;
 }
 
 .cancel-button:hover {
@@ -34,7 +39,7 @@
 
 .close-button:hover {
   color: white;
-  background-color: #797a7e;
+  background-color: var(--button-close-color);
 }
 
 .cancel-button:focus,

@@ -4,6 +4,8 @@ import { Component } from "react";
 import Router from "next/router";
 import axios from "axios";
 import Link from "next/link";
+import Notification from "./navbarComponents/notification";
+import FriendRequest from "./navbarComponents/friendRequest";
 const links = require("../config/links");
 
 class Navbar extends Component {
@@ -82,99 +84,21 @@ class Navbar extends Component {
                       {requests.length === 0 && notifications.length === 0 && (
                         <span>You Don't Have Any Notifications</span>
                       )}
-                      {notifications.map((notification) => {
+                      {notifications.map((notification, index) => {
                         return (
-                          (notification.type === "delete friend" && (
-                            <div className="each-notification notification">
-                              Oops! You Have Been Deleted By{" "}
-                              <div
-                                style={{
-                                  paddingTop: "0.45rem",
-                                  marginTop: "0.45rem",
-                                  margin: "0",
-                                  color: "#d6d8e0",
-                                }}
-                              >
-                                {notification.friendName}
-                              </div>
-                            </div>
-                          )) ||
-                          (notification.type === "delete group" && (
-                            <div className="each-notification notification">
-                              <span
-                                style={{
-                                  color: "#d6d8e0",
-                                  margin: "0",
-                                  padding: "0",
-                                }}
-                              >
-                                {notification.adminName}{" "}
-                              </span>
-                              has deleted{" "}
-                              <span
-                                style={{
-                                  color: "#d6d8e0",
-                                  margin: "0",
-                                  padding: "0",
-                                }}
-                              >
-                                {notification.groupName}
-                              </span>
-                            </div>
-                          )) ||
-                          (notification.type === "delete member" && (
-                            <div className="each-notification notification">
-                              You have been deleted from{" "}
-                              <span
-                                style={{
-                                  color: "#d6d8e0",
-                                  margin: "0",
-                                  padding: "0",
-                                }}
-                              >
-                                {notification.groupName}
-                              </span>
-                            </div>
-                          ))
+                          <Notification
+                            notification={notification}
+                            key={`notification-${index}`}
+                          />
                         );
                       })}
-                      {requests.map((requestSenderName) => {
+                      {requests.map((requestSenderName, index) => {
                         return (
-                          <div
-                            className="each-notification"
-                            key={`friend-request-${requestSenderName}-${user.name}`}
-                          >
-                            <span>
-                              <span
-                                style={{ color: "#d6d8e0", padding: "0rem" }}
-                              >
-                                Dylan
-                              </span>{" "}
-                              Sent You a Friend Request
-                            </span>
-                            <div className="notification-buttons-wrapper">
-                              <button
-                                className="cancel-button"
-                                onClick={() =>
-                                  this.props.handleFriendRequestDecline(
-                                    requestSenderName
-                                  )
-                                }
-                              >
-                                Decline
-                              </button>
-                              <button
-                                className="continue-button"
-                                onClick={() =>
-                                  this.props.handleFriendRequestAccept(
-                                    requestSenderName
-                                  )
-                                }
-                              >
-                                Accept
-                              </button>
-                            </div>
-                          </div>
+                          <FriendRequest
+                            requestSenderName={requestSenderName}
+                            user={user}
+                            key={`friend-request-${index}`}
+                          />
                         );
                       })}
                     </div>

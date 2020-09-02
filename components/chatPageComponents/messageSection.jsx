@@ -1,4 +1,6 @@
-import Message from "./message";
+import MessageSent from "./messageComponents/messageSent";
+import MessageReceive from "./messageComponents/messageReceive";
+import GroupNotification from "./messageComponents/groupNotification";
 
 const MessageSection = ({
   messagesRef,
@@ -15,55 +17,45 @@ const MessageSection = ({
         ? // Private Messages
           response?.map(({ friendName, content, id }, index) => {
             return (id && id === username) || friendName === friendname ? (
-              <div
-                className="chat-message chat-message-sent"
+              <MessageSent
+                imagePath={userImagePath}
+                content={content}
                 key={`chat-message-friend-${index}`}
-              >
-                <Message messageType="message-sent" message={content} />
-                <img src={userImagePath} />
-              </div>
+              />
             ) : (
-              <div
-                className="chat-message is-private-message"
+              <MessageReceive
+                imagePath={friendImagePath}
+                content={content}
+                name={friendname}
+                isPrivateMessage={true}
                 key={`chat-message-${index}`}
-              >
-                <img src={friendImagePath} />
-                <Message
-                  messageType="message-receive"
-                  message={content}
-                  name={friendname}
-                  isPrivateMessage={true}
-                />
-              </div>
+              />
             );
           })
         : // Group Messages
           response?.map(({ id, content, imagePath }, index) => {
             if (!id) {
               return (
-                <div id="group-notification" key={`chat-message-${index}`}>
-                  {content}
-                </div>
+                <GroupNotification
+                  key={`chat-message-${index}`}
+                  content={content}
+                />
               );
             } else {
               return id === username ? (
-                <div
-                  className="chat-message chat-message-sent"
+                <MessageSent
+                  imagePath={userImagePath}
+                  content={content}
                   key={`chat-message-${index}`}
-                >
-                  <Message messageType="message-sent" message={content} />
-                  <img src={userImagePath} />
-                </div>
+                />
               ) : (
-                <div className="chat-message" key={`chat-message-${index}`}>
-                  <img src={imagePath} />
-                  <Message
-                    messageType="message-receive"
-                    message={content}
-                    name={id}
-                    isPrivateMessage={false}
-                  />
-                </div>
+                <MessageReceive
+                  imagePath={imagePath}
+                  content={content}
+                  name={id}
+                  isPrivateMessage={false}
+                  key={`chat-message-${index}`}
+                />
               );
             }
           })}

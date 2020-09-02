@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import UserProfile from "./membersListComponents/userProfile";
-import MemberProfile from "./membersListComponents/memberProfile";
+import UserProfile from "./memberSectionComponents/userProfile";
+import MemberProfile from "./memberSectionComponents/memberProfile";
+import MembersList from "./memberSectionComponents/membersList";
 const links = require("../../config/links");
 
-const MembersList = ({
+const MemberSection = ({
   currentChat,
-  membersListOpen,
+  memberSectionOpen,
   handleLeaveClick,
   handleCloseClick,
   handleUserUpdate,
@@ -143,78 +144,44 @@ const MembersList = ({
 
   if (isFriendChat) {
     return (
-      <div
-        className={
-          membersListOpen
-            ? "friend-chat-profile join-group-form friend-chat-profile-open"
-            : "friend-chat-profile join-group-form"
-        }
-      >
-        <UserProfile
-          name={currentChat.name}
-          imagePath={imagePath}
-          handleCloseClick={handleMemberInfoClick}
-          handleDeleteFriend={handleDeleteFriend}
-        />
-      </div>
+      <UserProfile
+        name={currentChat.name}
+        imagePath={imagePath}
+        memberSectionOpen={memberSectionOpen}
+        handleCloseClick={handleMemberInfoClick}
+        handleDeleteFriend={handleDeleteFriend}
+      />
     );
   } else {
     return (
       <div>
-        <div
-          className={
-            membersListOpen ? "members-list members-list-open" : "members-list"
-          }
-        >
-          {members.map(({ name, imagePath }, index) => {
-            return (
-              <div
-                className={
-                  name === memberName && memberInfoOpen
-                    ? "member-info member-info-active"
-                    : "member-info"
-                }
-                key={`member-info-${index}`}
-                onClick={() => handleMemberInfoClick(name, imagePath)}
-              >
-                <img src={imagePath} />
-                <span>{name}</span>
-              </div>
-            );
-          })}
-          {user.name === groupAdmin ? (
-            <div className="group-options">
-              <div onClick={handleDeleteGroup}>Delete</div>
-              <div onClick={handleLeaveClick}>Leave</div>
-            </div>
-          ) : (
-            <div className="group-options">
-              <div onClick={handleLeaveClick}>Leave</div>
-            </div>
-          )}
-        </div>
-        <div
-          className={
-            memberInfoOpen
-              ? "friend-chat-profile join-group-form member-profile-open"
-              : "friend-chat-profile join-group-form"
-          }
-        >
-          <MemberProfile
-            name={memberName}
-            imagePath={memberImagePath}
-            handleCloseClick={handleMemberInfoClose}
-            handleAddFriend={handleAddFriend}
-            handleDeleteMember={handleDeleteMember}
-            handleChat={handleChat}
-            isAdmin={memberName === groupAdmin}
-            currentUserAdmin={user.name === groupAdmin}
-            memberStatus={getMemberStatus(memberName)}
-          />
-        </div>
+        <MembersList
+          memberSectionOpen={memberSectionOpen}
+          memberInfoOpen={memberInfoOpen}
+          members={members}
+          user={user}
+          memberName={memberName}
+          groupAdmin={groupAdmin}
+          handleMemberInfoClick={handleMemberInfoClick}
+          handleDeleteGroup={handleDeleteGroup}
+          handleLeaveClick={handleLeaveClick}
+        />
+        <MemberProfile
+          name={memberName}
+          imagePath={memberImagePath}
+          handleCloseClick={handleMemberInfoClose}
+          handleAddFriend={handleAddFriend}
+          handleDeleteMember={handleDeleteMember}
+          handleChat={handleChat}
+          isAdmin={memberName === groupAdmin}
+          currentUserAdmin={user.name === groupAdmin}
+          memberStatus={getMemberStatus(memberName)}
+          memberInfoOpen={memberInfoOpen}
+          memberSectionOpen={memberSectionOpen}
+        />
       </div>
     );
   }
 };
 
-export default MembersList;
+export default MemberSection;

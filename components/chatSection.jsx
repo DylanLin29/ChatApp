@@ -4,7 +4,7 @@ import GroupChatOperations from "./chatPageComponents/groupChatOperations";
 import CreateGroupForm from "./chatPageComponents/createGroupForm";
 import SearchArea from "./chatPageComponents/searchArea";
 import FriendsList from "./chatPageComponents/friendsList";
-import MembersList from "./chatPageComponents/membersList";
+import MemberSection from "./chatPageComponents/memberSection";
 import MessageSection from "./chatPageComponents/messageSection";
 import Background from "./chatPageComponents/background";
 import ChatInputArea from "./chatPageComponents/chatInputArea";
@@ -46,7 +46,7 @@ class ChatSection extends Component {
       joinGroupFormOpen: false,
       profileOpen: false,
       searchNotFound: false,
-      membersListOpen: false,
+      memberSectionOpen: false,
     };
   }
 
@@ -154,7 +154,7 @@ class ChatSection extends Component {
         groupAdmin: result.data.groupAdmin,
       },
       response: responseResult.data.response,
-      membersListOpen: false,
+      memberSectionOpen: false,
     });
   };
 
@@ -170,7 +170,7 @@ class ChatSection extends Component {
         isFriendChat: true,
       },
       response: responseResult.data.responses,
-      membersListOpen: false,
+      memberSectionOpen: false,
     });
     this.props.socket.emit("USER_STATUS", name);
   };
@@ -231,8 +231,8 @@ class ChatSection extends Component {
   };
 
   handleTitleInfoClick = () => {
-    const membersListStatus = !this.state.membersListOpen;
-    this.setState({ membersListOpen: membersListStatus });
+    const memberSectionStatus = !this.state.memberSectionOpen;
+    this.setState({ memberSectionOpen: memberSectionStatus });
   };
 
   handleLeaveClick = async () => {
@@ -255,7 +255,7 @@ class ChatSection extends Component {
     const user = { ...this.props.user };
     user.groups = result.data.groups;
     this.props.handleUserUpdate(user);
-    this.setState({ currentChat, membersListOpen: false });
+    this.setState({ currentChat, memberSectionOpen: false });
   };
 
   handleDeleteClick = async () => {
@@ -310,9 +310,9 @@ class ChatSection extends Component {
               clearCurrentChat={this.clearCurrentChat}
             />
             <div className="chat-section-below-header">
-              <MembersList
+              <MemberSection
                 currentChat={this.state.currentChat}
-                membersListOpen={this.state.membersListOpen}
+                memberSectionOpen={this.state.memberSectionOpen}
                 handleLeaveClick={this.handleLeaveClick}
                 handleCloseClick={this.handleTitleInfoClick}
                 handleUserUpdate={this.props.handleUserUpdate}
