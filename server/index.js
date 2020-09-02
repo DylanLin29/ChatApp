@@ -125,8 +125,12 @@ nextApp
         }
       });
 
-      socket.on("TYPING", ({ name, room }) => {
-        socket.to(room).broadcast.emit("TYPING", name);
+      socket.on("TYPING", ({ name, room, isFriendChat }) => {
+        if (isFriendChat && usersList[room]) {
+          usersList[room].emit("TYPING", name);
+        } else {
+          socket.to(room).broadcast.emit("TYPING", name);
+        }
       });
       socket.on("NOT_TYPING", (data) => {
         socket.broadcast.emit("NOT_TYPING", data);

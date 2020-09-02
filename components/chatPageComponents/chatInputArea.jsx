@@ -3,13 +3,7 @@ import axios from "axios";
 const links = require("../../config/links");
 var timeout = undefined;
 
-const ChatInputArea = ({
-  user,
-  typingUser,
-  currentChatName,
-  socket,
-  isFriendChat,
-}) => {
+const ChatInputArea = ({ user, typingUser, currentChat, socket }) => {
   const [content, setContent] = useState("");
   const message = {
     id: user.name,
@@ -33,7 +27,8 @@ const ChatInputArea = ({
     if (event.key !== "Enter") {
       socket.emit("TYPING", {
         name: user.name,
-        room: currentChatName,
+        room: currentChat.name,
+        isFriendChat: currentChat.isFriendChat,
       });
       clearTimeout(timeout);
       // If user doesn't type in 5 seconds, indicates not typing
@@ -43,28 +38,28 @@ const ChatInputArea = ({
       if (event.key === "Enter" && removeSpaces) {
         setContent("");
         clearTimeout(timeout);
-        if (isFriendChat) {
+        if (currentChat.isFriendChat) {
           socket.emit("PRIVATE_MESSAGE", {
-            friendName: currentChatName,
+            friendName: currentChat.name,
             message: message,
           });
           // save private message to database
           await axios.post(`${links.messages}/privateMessage`, {
             content: message.content,
-            friendName: currentChatName,
+            friendName: currentChat.name,
             userName: user.name,
           });
         } else {
           socket.emit("MESSAGE", {
             message: message,
-            room: currentChatName,
+            room: currentChat.name,
           });
           // save group message to database
           await axios.post(links.messages, {
             username: message.id,
             imagePath: message.imagePath,
             content: message.content,
-            groupName: currentChatName,
+            groupName: currentChat.name,
           });
         }
         handleNoTyping();
@@ -72,6 +67,7 @@ const ChatInputArea = ({
     }
   };
 
+  console.log("Typing user", typingUser);
   return (
     <div className="chat-input">
       <textarea

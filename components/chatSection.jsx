@@ -75,7 +75,7 @@ class ChatSection extends Component {
     });
 
     if (this.state.currentChat.name) {
-      this.messagesRef.current.scrollTop = this.messagesRef.current.scrollHeight;
+      this.messagesRef.current.scrollTop = this.messagesRef.current?.scrollHeight;
     }
 
     this.props.socket.on("TYPING", (typingUser) => {
@@ -369,9 +369,8 @@ class ChatSection extends Component {
                   handleChatInputEnter={this.handleChatInputEnter}
                   user={this.props.user}
                   typingUser={this.state.typingUser}
-                  currentChatName={this.state.currentChat.name}
+                  currentChat={this.state.currentChat}
                   socket={this.props.socket}
-                  isFriendChat={this.state.currentChat.isFriendChat}
                 />
               )}
             </div>
