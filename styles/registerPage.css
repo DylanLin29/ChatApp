@@ -119,3 +119,7 @@
   padding-top: 0.3rem;
   color: #aeb1becc;
 }
+
+.register-form-buttons a:hover {
+  text-decoration: none;
+}

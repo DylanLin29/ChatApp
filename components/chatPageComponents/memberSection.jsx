@@ -148,7 +148,7 @@ const MemberSection = ({
         name={currentChat.name}
         imagePath={imagePath}
         memberSectionOpen={memberSectionOpen}
-        handleCloseClick={handleMemberInfoClick}
+        handleCloseClick={handleCloseClick}
         handleDeleteFriend={handleDeleteFriend}
       />
     );
