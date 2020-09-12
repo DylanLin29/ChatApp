@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 .chat-page {
   background: linear-gradient(#96efe6, #3c7bd3);
@@ -27,7 +27,7 @@
   letter-spacing: 0.2rem;
   color: #d4e1f7;
   position: absolute;
-  top: 35%;
+  top: 30%;
   right: 50%;
 }
 
@@ -39,4 +39,183 @@
   padding-top: 2rem;
   padding-bottom: 2rem;
   z-index: 1;
+}
+
+.wrap {
+  background: rgba(0, 0, 0, 0.5) url(../public/images/LandingPage.png) no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  overflow: hidden;
+  background-blend-mode: overlay;
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  bottom: 20vh;
+  color: #fff;
+  opacity: 1;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px 80px;
+  background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.6));
+  font-family: "roboto";
+}
+
+header a:hover {
+  color: white;
+}
+
+.wrap .logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 700;
+  color: white;
+  font-family: "roboto", sans-serif;
+  position: fixed;
+}
+
+header span {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+header .menu {
+  float: right;
+  margin-top: 5px;
+}
+
+header ul li {
+  display: inline-block;
+}
+
+header ul li a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: rgb(209, 206, 206);
+  margin: 0 25px;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.content {
+  max-width: 55%;
+  margin-top: 20vh;
+  margin-left: 15%;
+  color: #fff;
+}
+
+.content h1 {
+  font-size: 48px;
+}
+
+.content p {
+  font-size: 20px;
+  padding-top: 1rem;
+  font-weight: 300;
+}
+
+.content .btn-group {
+  margin-top: 3rem;
+  font-size: 1.2rem;
+}
+
+.content a {
+  display: inline-block;
+  padding: 15px 30px;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 50px;
+  background-color: #4254f3;
+}
+
+.content a:hover {
+  cursor: pointer;
+}
+
+.white-background {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20vh;
+  background-color: white;
+}
+
+header .fa-comments {
+  margin-left: 7%;
+}
+
+.functionality h2 {
+  position: absolute;
+  bottom: 30vh;
+  left: 14%;
+  z-index: 1;
+  color: #222632;
+  font-family: "roboto", sans-serif;
+  padding-bottom: 1rem;
+  border-bottom: #ff9a3c 0.45rem solid;
+  border-radius: 0.2rem;
+  font-size: 2rem;
+}
+
+.functionality-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 15vh;
+  z-index: 1;
+  left: 14%;
+}
+
+.functionality-wrapper div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem 1rem;
+  border: 1px solid rgba(136, 133, 133, 0.1);
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  margin-right: 3rem;
+}
+
+.functionality-wrapper div span {
+  font-size: 1.4rem;
+  font-family: "roboto", sans-serif;
+  font-weight: 500;
+}
+
+.fa-user-friends {
+  color: #3282b8;
+  margin-right: 0.4rem;
+}
+
+.fa-users {
+  color: #febf63;
+  margin-right: 0.4rem;
+}
+
+.functionality-wrapper div:nth-of-type(1) span {
+  color: #febf63;
+}
+
+.functionality-wrapper div:nth-of-type(2) span {
+  color: #3282b8;
+}
+
+.fa-database {
+  color: #68b0ab;
+  margin-right: 0.4rem;
+}
+
+.functionality-wrapper div:nth-of-type(3) span {
+  color: #68b0ab;
 }
