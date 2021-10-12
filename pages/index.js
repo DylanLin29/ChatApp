@@ -16,7 +16,7 @@ class Home extends Component {
       //   <img src="../images/LandingPage_1.png" />
       //   <img src="../images/LandingPage_2.png" />
       // </div>
-      <div className="wrap">
+      <div className="landingPage">
         <header>
           <div className="logo">
             <FontAwesomeIcon icon={faComments} size="2x" />
@@ -37,12 +37,12 @@ class Home extends Component {
         <div className="content">
           <h1>FLASH CHAT</h1>
           <p>
-            A chat app provides the oppotunity to join a group that you are
+            A chat app creates the oppotunity to join a group that you are
             insterested in
           </p>
-          <div className="btn-group">
-            <a href="/login">Start Chatting</a>
-          </div>
+          <a href="/login">
+            <div className="btn-group">Start Chatting</div>
+          </a>
         </div>
 
         <div className="functionality">

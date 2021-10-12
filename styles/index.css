@@ -41,7 +41,7 @@
   z-index: 1;
 }
 
-.wrap {
+.landingPage {
   background: rgba(0, 0, 0, 0.5) url(../public/images/LandingPage.png) no-repeat;
   background-position: center;
   background-size: cover;
@@ -72,7 +72,7 @@ header a:hover {
   color: white;
 }
 
-.wrap .logo {
+.landingPage .logo {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -105,18 +105,18 @@ header ul li a {
   letter-spacing: 1px;
 }
 
-.content {
+.landingPage .content {
   max-width: 55%;
   margin-top: 20vh;
   margin-left: 15%;
   color: #fff;
 }
 
-.content h1 {
+.landingPage .content h1 {
   font-size: 48px;
 }
 
-.content p {
+.landingPage .content p {
   font-size: 20px;
   padding-top: 1rem;
   font-weight: 300;
@@ -125,16 +125,18 @@ header ul li a {
 .content .btn-group {
   margin-top: 3rem;
   font-size: 1.2rem;
-}
-
-.content a {
-  display: inline-block;
+	max-width: 13rem;
+	display: inline-block;
   padding: 15px 30px;
   text-decoration: none;
   color: #fff;
   border-radius: 50px;
   background-color: #4254f3;
+	z-index: 2;
 }
+
+/* .content a {
+} */
 
 .content a:hover {
   cursor: pointer;
