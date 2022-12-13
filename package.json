@@ -17,7 +17,7 @@
     "bootstrap": "^4.5.0",
     "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "font-awesome": "^4.7.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
